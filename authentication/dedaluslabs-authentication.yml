@@ -1,0 +1,23 @@
+generated: '2026-07-18'
+method: derived
+source: openapi/dedaluslabs-agents-openapi-original.json, openapi/dedaluslabs-machines-openapi-original.yml
+summary:
+  types:
+  - apiKey
+  - http
+  api_key_in:
+  - header
+schemes:
+- name: Bearer
+  type: http
+  scheme: bearer
+  sources:
+  - openapi/dedaluslabs-agents-openapi-original.json
+  - openapi/dedaluslabs-machines-openapi-original.yml
+- name: ApiKeyAuth
+  type: apiKey
+  in: header
+  parameter: x-api-key
+  description: Dedalus API key. Alternative to Bearer token.
+  sources:
+  - openapi/dedaluslabs-machines-openapi-original.yml
