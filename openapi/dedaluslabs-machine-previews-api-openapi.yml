@@ -1,0 +1,968 @@
+openapi: 3.1.0
+info:
+  title: Dedalus Audio Machine Previews API
+  description: 'MCP gateway for AI agents. Mix-and-match any model with any tool from our marketplace.
+
+
+    ## Authentication
+
+    Use Bearer token or X-API-Key header authentication:
+
+    ```
+
+    Authorization: Bearer your-api-key-here
+
+    ```
+
+    ```
+
+    x-api-key: your-api-key-here
+
+    ```
+
+
+    ## Available Endpoints
+
+    - **GET /v1/models**: list available models
+
+    - **POST /v1/chat/completions**: Chat completions with MCP tools
+
+    - **GET /health**: Service health check'
+  version: 0.0.1
+servers:
+- url: https://api.dedaluslabs.ai
+  description: Official Dedalus API
+tags:
+- name: Machine Previews
+paths:
+  /v1/machines/{machine_id}/previews:
+    get:
+      operationId: listMachinePreviews
+      parameters:
+      - in: header
+        name: X-Dedalus-Org-Id
+        schema:
+          type: string
+      - in: path
+        name: machine_id
+        required: true
+        schema:
+          type: string
+      - explode: false
+        in: query
+        name: limit
+        schema:
+          format: int64
+          type: integer
+      - explode: false
+        in: query
+        name: cursor
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PreviewListResponse'
+          description: OK
+        '401':
+          content:
+            application/json:
+              examples:
+                invalid_key:
+                  value:
+                    error_code: AUTH_INVALID
+                    message: invalid Dedalus API key
+                    retryable: false
+                missing_key:
+                  value:
+                    error_code: AUTH_REQUIRED
+                    message: missing Dedalus API key
+                    retryable: false
+              schema:
+                additionalProperties: false
+                properties:
+                  details:
+                    additionalProperties:
+                      type: string
+                    type: object
+                  error_code:
+                    type: string
+                  message:
+                    type: string
+                  retry_after_ms:
+                    format: int64
+                    type: integer
+                  retryable:
+                    type: boolean
+                required:
+                - error_code
+                - message
+                - retryable
+                type: object
+          description: Authentication required
+        '403':
+          content:
+            application/json:
+              examples:
+                org_mismatch:
+                  value:
+                    error_code: AUTH_ORG_MISMATCH
+                    message: org scope does not match API key ownership
+                    retryable: false
+                scope_forbidden:
+                  value:
+                    error_code: AUTH_SCOPE_FORBIDDEN
+                    message: internal service authorization is required
+                    retryable: false
+              schema:
+                additionalProperties: false
+                properties:
+                  details:
+                    additionalProperties:
+                      type: string
+                    type: object
+                  error_code:
+                    type: string
+                  message:
+                    type: string
+                  retry_after_ms:
+                    format: int64
+                    type: integer
+                  retryable:
+                    type: boolean
+                required:
+                - error_code
+                - message
+                - retryable
+                type: object
+          description: Forbidden
+        '429':
+          content:
+            application/json:
+              examples:
+                idempotency_in_flight:
+                  value:
+                    error_code: RATE_LIMITED
+                    message: idempotency key is already in-flight
+                    retryable: true
+                    retry_after_ms: 250
+                mutation_rate_limited:
+                  value:
+                    error_code: RATE_LIMITED
+                    message: mutation rate limit exceeded
+                    retryable: true
+                    retry_after_ms: 84
+                    details:
+                      rate_limit_scope: read_lifecycle_routes
+              schema:
+                additionalProperties: false
+                properties:
+                  details:
+                    additionalProperties:
+                      type: string
+                    type: object
+                  error_code:
+                    type: string
+                  message:
+                    type: string
+                  retry_after_ms:
+                    format: int64
+                    type: integer
+                  retryable:
+                    type: boolean
+                required:
+                - error_code
+                - message
+                - retryable
+                type: object
+          description: Rate limited
+        '503':
+          content:
+            application/json:
+              examples:
+                mutation_limiter_unavailable:
+                  value:
+                    error_code: DEPENDENCY_UNAVAILABLE
+                    message: mutation rate limiter unavailable
+                    retryable: true
+                    details:
+                      rate_limit_backend: redis
+                      rate_limit_scope: read_lifecycle_routes
+                runtime_unavailable:
+                  value:
+                    error_code: DEPENDENCY_UNAVAILABLE
+                    message: runtime unavailable
+                    retryable: true
+              schema:
+                additionalProperties: false
+                properties:
+                  details:
+                    additionalProperties:
+                      type: string
+                    type: object
+                  error_code:
+                    type: string
+                  message:
+                    type: string
+                  retry_after_ms:
+                    format: int64
+                    type: integer
+                  retryable:
+                    type: boolean
+                required:
+                - error_code
+                - message
+                - retryable
+                type: object
+          description: Dependency unavailable
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+          description: Error
+      summary: List previews
+      tags:
+      - Machine Previews
+    post:
+      operationId: createMachinePreview
+      parameters:
+      - in: header
+        name: X-Dedalus-Org-Id
+        schema:
+          type: string
+      - in: path
+        name: machine_id
+        required: true
+        schema:
+          type: string
+      - in: header
+        name: Idempotency-Key
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreatePreviewRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PreviewResponse'
+          description: OK
+        '401':
+          content:
+            application/json:
+              examples:
+                invalid_key:
+                  value:
+                    error_code: AUTH_INVALID
+                    message: invalid Dedalus API key
+                    retryable: false
+                missing_key:
+                  value:
+                    error_code: AUTH_REQUIRED
+                    message: missing Dedalus API key
+                    retryable: false
+              schema:
+                additionalProperties: false
+                properties:
+                  details:
+                    additionalProperties:
+                      type: string
+                    type: object
+                  error_code:
+                    type: string
+                  message:
+                    type: string
+                  retry_after_ms:
+                    format: int64
+                    type: integer
+                  retryable:
+                    type: boolean
+                required:
+                - error_code
+                - message
+                - retryable
+                type: object
+          description: Authentication required
+        '403':
+          content:
+            application/json:
+              examples:
+                org_mismatch:
+                  value:
+                    error_code: AUTH_ORG_MISMATCH
+                    message: org scope does not match API key ownership
+                    retryable: false
+                scope_forbidden:
+                  value:
+                    error_code: AUTH_SCOPE_FORBIDDEN
+                    message: internal service authorization is required
+                    retryable: false
+              schema:
+                additionalProperties: false
+                properties:
+                  details:
+                    additionalProperties:
+                      type: string
+                    type: object
+                  error_code:
+                    type: string
+                  message:
+                    type: string
+                  retry_after_ms:
+                    format: int64
+                    type: integer
+                  retryable:
+                    type: boolean
+                required:
+                - error_code
+                - message
+                - retryable
+                type: object
+          description: Forbidden
+        '409':
+          content:
+            application/json:
+              examples:
+                idempotency_key_reused:
+                  value:
+                    error_code: IDEMPOTENCY_KEY_REUSED
+                    message: idempotency key reused with different request parameters
+                    retryable: false
+                    details:
+                      expected_request_hash: 9ad5f2ad
+                      provided_request_hash: a2b7e8d4
+              schema:
+                additionalProperties: false
+                properties:
+                  details:
+                    additionalProperties:
+                      type: string
+                    type: object
+                  error_code:
+                    type: string
+                  message:
+                    type: string
+                  retry_after_ms:
+                    format: int64
+                    type: integer
+                  retryable:
+                    type: boolean
+                required:
+                - error_code
+                - message
+                - retryable
+                type: object
+          description: Create conflict
+        '429':
+          content:
+            application/json:
+              examples:
+                idempotency_in_flight:
+                  value:
+                    error_code: RATE_LIMITED
+                    message: idempotency key is already in-flight
+                    retryable: true
+                    retry_after_ms: 250
+                mutation_rate_limited:
+                  value:
+                    error_code: RATE_LIMITED
+                    message: mutation rate limit exceeded
+                    retryable: true
+                    retry_after_ms: 84
+                    details:
+                      rate_limit_scope: mutating_lifecycle_routes
+              schema:
+                additionalProperties: false
+                properties:
+                  details:
+                    additionalProperties:
+                      type: string
+                    type: object
+                  error_code:
+                    type: string
+                  message:
+                    type: string
+                  retry_after_ms:
+                    format: int64
+                    type: integer
+                  retryable:
+                    type: boolean
+                required:
+                - error_code
+                - message
+                - retryable
+                type: object
+          description: Rate limited
+        '503':
+          content:
+            application/json:
+              examples:
+                mutation_limiter_unavailable:
+                  value:
+                    error_code: DEPENDENCY_UNAVAILABLE
+                    message: mutation rate limiter unavailable
+                    retryable: true
+                    details:
+                      rate_limit_backend: redis
+                      rate_limit_scope: mutating_lifecycle_routes
+                runtime_unavailable:
+                  value:
+                    error_code: DEPENDENCY_UNAVAILABLE
+                    message: runtime unavailable
+                    retryable: true
+              schema:
+                additionalProperties: false
+                properties:
+                  details:
+                    additionalProperties:
+                      type: string
+                    type: object
+                  error_code:
+                    type: string
+                  message:
+                    type: string
+                  retry_after_ms:
+                    format: int64
+                    type: integer
+                  retryable:
+                    type: boolean
+                required:
+                - error_code
+                - message
+                - retryable
+                type: object
+          description: Dependency unavailable
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+          description: Error
+      summary: Create preview
+      tags:
+      - Machine Previews
+  /v1/machines/{machine_id}/previews/{preview_id}:
+    delete:
+      operationId: deleteMachinePreview
+      parameters:
+      - in: header
+        name: X-Dedalus-Org-Id
+        schema:
+          type: string
+      - in: path
+        name: machine_id
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: preview_id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PreviewResponse'
+          description: OK
+        '401':
+          content:
+            application/json:
+              examples:
+                invalid_key:
+                  value:
+                    error_code: AUTH_INVALID
+                    message: invalid Dedalus API key
+                    retryable: false
+                missing_key:
+                  value:
+                    error_code: AUTH_REQUIRED
+                    message: missing Dedalus API key
+                    retryable: false
+              schema:
+                additionalProperties: false
+                properties:
+                  details:
+                    additionalProperties:
+                      type: string
+                    type: object
+                  error_code:
+                    type: string
+                  message:
+                    type: string
+                  retry_after_ms:
+                    format: int64
+                    type: integer
+                  retryable:
+                    type: boolean
+                required:
+                - error_code
+                - message
+                - retryable
+                type: object
+          description: Authentication required
+        '403':
+          content:
+            application/json:
+              examples:
+                org_mismatch:
+                  value:
+                    error_code: AUTH_ORG_MISMATCH
+                    message: org scope does not match API key ownership
+                    retryable: false
+                scope_forbidden:
+                  value:
+                    error_code: AUTH_SCOPE_FORBIDDEN
+                    message: internal service authorization is required
+                    retryable: false
+              schema:
+                additionalProperties: false
+                properties:
+                  details:
+                    additionalProperties:
+                      type: string
+                    type: object
+                  error_code:
+                    type: string
+                  message:
+                    type: string
+                  retry_after_ms:
+                    format: int64
+                    type: integer
+                  retryable:
+                    type: boolean
+                required:
+                - error_code
+                - message
+                - retryable
+                type: object
+          description: Forbidden
+        '429':
+          content:
+            application/json:
+              examples:
+                idempotency_in_flight:
+                  value:
+                    error_code: RATE_LIMITED
+                    message: idempotency key is already in-flight
+                    retryable: true
+                    retry_after_ms: 250
+                mutation_rate_limited:
+                  value:
+                    error_code: RATE_LIMITED
+                    message: mutation rate limit exceeded
+                    retryable: true
+                    retry_after_ms: 84
+                    details:
+                      rate_limit_scope: mutating_lifecycle_routes
+              schema:
+                additionalProperties: false
+                properties:
+                  details:
+                    additionalProperties:
+                      type: string
+                    type: object
+                  error_code:
+                    type: string
+                  message:
+                    type: string
+                  retry_after_ms:
+                    format: int64
+                    type: integer
+                  retryable:
+                    type: boolean
+                required:
+                - error_code
+                - message
+                - retryable
+                type: object
+          description: Rate limited
+        '503':
+          content:
+            application/json:
+              examples:
+                mutation_limiter_unavailable:
+                  value:
+                    error_code: DEPENDENCY_UNAVAILABLE
+                    message: mutation rate limiter unavailable
+                    retryable: true
+                    details:
+                      rate_limit_backend: redis
+                      rate_limit_scope: mutating_lifecycle_routes
+                runtime_unavailable:
+                  value:
+                    error_code: DEPENDENCY_UNAVAILABLE
+                    message: runtime unavailable
+                    retryable: true
+              schema:
+                additionalProperties: false
+                properties:
+                  details:
+                    additionalProperties:
+                      type: string
+                    type: object
+                  error_code:
+                    type: string
+                  message:
+                    type: string
+                  retry_after_ms:
+                    format: int64
+                    type: integer
+                  retryable:
+                    type: boolean
+                required:
+                - error_code
+                - message
+                - retryable
+                type: object
+          description: Dependency unavailable
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+          description: Error
+      summary: Delete preview
+      tags:
+      - Machine Previews
+    get:
+      operationId: getMachinePreview
+      parameters:
+      - in: header
+        name: X-Dedalus-Org-Id
+        schema:
+          type: string
+      - in: path
+        name: machine_id
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: preview_id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PreviewResponse'
+          description: OK
+        '401':
+          content:
+            application/json:
+              examples:
+                invalid_key:
+                  value:
+                    error_code: AUTH_INVALID
+                    message: invalid Dedalus API key
+                    retryable: false
+                missing_key:
+                  value:
+                    error_code: AUTH_REQUIRED
+                    message: missing Dedalus API key
+                    retryable: false
+              schema:
+                additionalProperties: false
+                properties:
+                  details:
+                    additionalProperties:
+                      type: string
+                    type: object
+                  error_code:
+                    type: string
+                  message:
+                    type: string
+                  retry_after_ms:
+                    format: int64
+                    type: integer
+                  retryable:
+                    type: boolean
+                required:
+                - error_code
+                - message
+                - retryable
+                type: object
+          description: Authentication required
+        '403':
+          content:
+            application/json:
+              examples:
+                org_mismatch:
+                  value:
+                    error_code: AUTH_ORG_MISMATCH
+                    message: org scope does not match API key ownership
+                    retryable: false
+                scope_forbidden:
+                  value:
+                    error_code: AUTH_SCOPE_FORBIDDEN
+                    message: internal service authorization is required
+                    retryable: false
+              schema:
+                additionalProperties: false
+                properties:
+                  details:
+                    additionalProperties:
+                      type: string
+                    type: object
+                  error_code:
+                    type: string
+                  message:
+                    type: string
+                  retry_after_ms:
+                    format: int64
+                    type: integer
+                  retryable:
+                    type: boolean
+                required:
+                - error_code
+                - message
+                - retryable
+                type: object
+          description: Forbidden
+        '429':
+          content:
+            application/json:
+              examples:
+                idempotency_in_flight:
+                  value:
+                    error_code: RATE_LIMITED
+                    message: idempotency key is already in-flight
+                    retryable: true
+                    retry_after_ms: 250
+                mutation_rate_limited:
+                  value:
+                    error_code: RATE_LIMITED
+                    message: mutation rate limit exceeded
+                    retryable: true
+                    retry_after_ms: 84
+                    details:
+                      rate_limit_scope: read_lifecycle_routes
+              schema:
+                additionalProperties: false
+                properties:
+                  details:
+                    additionalProperties:
+                      type: string
+                    type: object
+                  error_code:
+                    type: string
+                  message:
+                    type: string
+                  retry_after_ms:
+                    format: int64
+                    type: integer
+                  retryable:
+                    type: boolean
+                required:
+                - error_code
+                - message
+                - retryable
+                type: object
+          description: Rate limited
+        '503':
+          content:
+            application/json:
+              examples:
+                mutation_limiter_unavailable:
+                  value:
+                    error_code: DEPENDENCY_UNAVAILABLE
+                    message: mutation rate limiter unavailable
+                    retryable: true
+                    details:
+                      rate_limit_backend: redis
+                      rate_limit_scope: read_lifecycle_routes
+                runtime_unavailable:
+                  value:
+                    error_code: DEPENDENCY_UNAVAILABLE
+                    message: runtime unavailable
+                    retryable: true
+              schema:
+                additionalProperties: false
+                properties:
+                  details:
+                    additionalProperties:
+                      type: string
+                    type: object
+                  error_code:
+                    type: string
+                  message:
+                    type: string
+                  retry_after_ms:
+                    format: int64
+                    type: integer
+                  retryable:
+                    type: boolean
+                required:
+                - error_code
+                - message
+                - retryable
+                type: object
+          description: Dependency unavailable
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+          description: Error
+      summary: Get preview
+      tags:
+      - Machine Previews
+components:
+  schemas:
+    ErrorModel:
+      additionalProperties: false
+      properties:
+        detail:
+          description: A human-readable explanation specific to this occurrence of the problem.
+          examples:
+          - Property foo is required but is missing.
+          type: string
+        errors:
+          description: Optional list of individual error details
+          items:
+            $ref: '#/components/schemas/ErrorDetail'
+          type:
+          - array
+          - 'null'
+        instance:
+          description: A URI reference that identifies the specific occurrence of the problem.
+          examples:
+          - https://example.com/error-log/abc123
+          format: uri
+          type: string
+        status:
+          description: HTTP status code
+          examples:
+          - 400
+          format: int64
+          type: integer
+        title:
+          description: A short, human-readable summary of the problem type. This value should not change between occurrences of the error.
+          examples:
+          - Bad Request
+          type: string
+        type:
+          default: about:blank
+          description: A URI reference to human-readable documentation for the error.
+          examples:
+          - https://example.com/errors/example
+          format: uri
+          type: string
+      type: object
+    PreviewListResponse:
+      additionalProperties: false
+      properties:
+        items:
+          items:
+            $ref: '#/components/schemas/PreviewResponse'
+          type:
+          - array
+          - 'null'
+        next_cursor:
+          type: string
+      required:
+      - items
+      type: object
+    CreatePreviewRequest:
+      additionalProperties: false
+      properties:
+        port:
+          format: int64
+          type: integer
+        protocol:
+          enum:
+          - http
+          - https
+          type: string
+        visibility:
+          enum:
+          - public
+          - private
+          - org
+          type: string
+      required:
+      - port
+      type: object
+    PreviewResponse:
+      additionalProperties: false
+      properties:
+        created_at:
+          format: date-time
+          type: string
+        error_code:
+          type: string
+        error_message:
+          type: string
+        expires_at:
+          format: date-time
+          type: string
+        machine_id:
+          type: string
+        port:
+          format: int64
+          type: integer
+        preview_id:
+          type: string
+        protocol:
+          enum:
+          - http
+          - https
+          type: string
+        ready_at:
+          format: date-time
+          type: string
+        retry_after_ms:
+          format: int64
+          type: integer
+        status:
+          enum:
+          - wake_in_progress
+          - ready
+          - closed
+          - expired
+          - failed
+          type: string
+        url:
+          type: string
+        visibility:
+          enum:
+          - public
+          - private
+          - org
+          type: string
+      required:
+      - preview_id
+      - machine_id
+      - status
+      - port
+      - visibility
+      - created_at
+      type: object
+    ErrorDetail:
+      additionalProperties: false
+      properties:
+        location:
+          description: Where the error occurred, e.g. 'body.items[3].tags' or 'path.thing-id'
+          type: string
+        message:
+          description: Error message text
+          type: string
+        value:
+          description: The value at the given location
+      type: object
+  securitySchemes:
+    Bearer:
+      type: http
+      scheme: bearer

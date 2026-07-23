@@ -1,0 +1,439 @@
+openapi: 3.1.0
+info:
+  title: Dedalus Audio Marketplace API
+  description: 'MCP gateway for AI agents. Mix-and-match any model with any tool from our marketplace.
+
+
+    ## Authentication
+
+    Use Bearer token or X-API-Key header authentication:
+
+    ```
+
+    Authorization: Bearer your-api-key-here
+
+    ```
+
+    ```
+
+    x-api-key: your-api-key-here
+
+    ```
+
+
+    ## Available Endpoints
+
+    - **GET /v1/models**: list available models
+
+    - **POST /v1/chat/completions**: Chat completions with MCP tools
+
+    - **GET /health**: Service health check'
+  version: 0.0.1
+servers:
+- url: https://api.dedaluslabs.ai
+  description: Official Dedalus API
+tags:
+- name: Marketplace
+paths:
+  /marketplace/connect/onboard:
+    post:
+      tags:
+      - Marketplace
+      summary: Start Onboarding
+      description: "Create Stripe Express account and return onboarding link.\n\nArgs:\n    body: Contains return and refresh URLs.\n    request: FastAPI request for auth extraction.\n\nReturns:\n    OnboardResponse with onboarding URL or error."
+      operationId: start_onboarding_marketplace_connect_onboard_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OnboardRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OnboardResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /marketplace/connect/status:
+    get:
+      tags:
+      - Marketplace
+      summary: Get Status
+      description: "Return Stripe Connect onboarding status.\n\nArgs:\n    request: FastAPI request. Pass ?sync=true for fresh Stripe data.\n\nReturns:\n    ConnectStatusResponse with onboarding status."
+      operationId: get_status_marketplace_connect_status_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConnectStatusResponse'
+  /marketplace/connect/dashboard:
+    post:
+      tags:
+      - Marketplace
+      summary: Get Dashboard
+      description: "Get Stripe Express dashboard login link.\n\nArgs:\n    request: FastAPI request for auth extraction.\n\nReturns:\n    DashboardResponse with dashboard URL or error."
+      operationId: get_dashboard_marketplace_connect_dashboard_post
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DashboardResponse'
+  /marketplace/payouts/balance:
+    get:
+      tags:
+      - Marketplace
+      summary: Get Payout Balance
+      description: 'Get seller''s current balance and payout eligibility.
+
+
+        Returns balance info and whether the seller can request a payout.
+
+        Active, unexpired Pro sellers have no minimum; everyone else needs $20.'
+      operationId: get_payout_balance_marketplace_payouts_balance_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PayoutBalanceResponse'
+  /marketplace/payouts/request:
+    post:
+      tags:
+      - Marketplace
+      summary: Request Payout
+      description: 'Request an on-demand payout of matured earnings.
+
+
+        All sellers can request payouts subject to tier-based thresholds:
+
+        - Active, unexpired Pro sellers: No minimum.
+
+        - Everyone else: Minimum $20 required.
+
+
+        The payout is executed immediately via Stripe Transfer.'
+      operationId: request_payout_marketplace_payouts_request_post
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PayoutRequestResponse'
+  /marketplace/stripe-balance:
+    get:
+      tags:
+      - Marketplace
+      summary: Get Stripe Balance
+      description: 'Get the actual balance from Stripe for the connected account.
+
+
+        This fetches the real-time balance from Stripe, useful for comparing
+
+        with the app''s internal ledger or for debugging.'
+      operationId: get_stripe_balance_marketplace_stripe_balance_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StripeBalanceResponse'
+components:
+  schemas:
+    OnboardRequest:
+      properties:
+        return_url:
+          type: string
+          title: Return Url
+          description: Redirect after successful onboarding
+        refresh_url:
+          type: string
+          title: Refresh Url
+          description: Redirect if link expires
+        email:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Email
+          description: Contact email for the Stripe account
+        country:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Country
+          description: ISO 3166-1 alpha-2 country code
+      type: object
+      required:
+      - return_url
+      - refresh_url
+      title: OnboardRequest
+      description: Request to start Stripe Connect onboarding.
+    DashboardResponse:
+      properties:
+        success:
+          type: boolean
+          title: Success
+        dashboard_url:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Dashboard Url
+        error:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Error
+      type: object
+      required:
+      - success
+      title: DashboardResponse
+      description: Response with Stripe dashboard link.
+    StripeBalanceResponse:
+      properties:
+        available_cents:
+          type: integer
+          title: Available Cents
+          description: Available balance in cents
+        pending_cents:
+          type: integer
+          title: Pending Cents
+          description: Pending balance in cents
+        stripe_connect_account_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Stripe Connect Account Id
+          description: Stripe account ID
+      type: object
+      required:
+      - available_cents
+      - pending_cents
+      - stripe_connect_account_id
+      title: StripeBalanceResponse
+      description: Balance from Stripe connected account.
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    PayoutRequestResponse:
+      properties:
+        success:
+          type: boolean
+          title: Success
+        payout_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Payout Id
+        amount_milli_cents:
+          type: integer
+          title: Amount Milli Cents
+          default: 0
+        amount_cents:
+          type: integer
+          title: Amount Cents
+          default: 0
+        error:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Error
+      type: object
+      required:
+      - success
+      title: PayoutRequestResponse
+      description: Response from payout request.
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    ConnectStatusResponse:
+      properties:
+        stripe_connect_account_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Stripe Connect Account Id
+        details_submitted:
+          type: boolean
+          title: Details Submitted
+        transfer_enabled:
+          type: boolean
+          title: Transfer Enabled
+        payouts_enabled:
+          type: boolean
+          title: Payouts Enabled
+        is_onboarded:
+          type: boolean
+          title: Is Onboarded
+        last_payout_failure:
+          anyOf:
+          - $ref: '#/components/schemas/PayoutFailureResponse'
+          - type: 'null'
+        requirements_currently_due:
+          type: integer
+          title: Requirements Currently Due
+          default: 0
+        requirements_pending_verification:
+          type: integer
+          title: Requirements Pending Verification
+          default: 0
+      type: object
+      required:
+      - stripe_connect_account_id
+      - details_submitted
+      - transfer_enabled
+      - payouts_enabled
+      - is_onboarded
+      title: ConnectStatusResponse
+      description: Stripe Connect onboarding status.
+    PayoutFailureResponse:
+      properties:
+        stripe_payout_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Stripe Payout Id
+        failure_code:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Failure Code
+        failure_message:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Failure Message
+        amount_cents:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Amount Cents
+        currency:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Currency
+        occurred_at:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Occurred At
+      type: object
+      title: PayoutFailureResponse
+      description: Latest Stripe payout failure metadata for the seller.
+    PayoutBalanceResponse:
+      properties:
+        total_earning_milli_cents:
+          type: integer
+          title: Total Earning Milli Cents
+          description: Total lifetime earnings
+        redeemable_milli_cents:
+          type: integer
+          title: Redeemable Milli Cents
+          description: Current withdrawable balance
+        redeemable_cents:
+          type: integer
+          title: Redeemable Cents
+          description: Withdrawable balance in cents
+        total_withdrawn_milli_cents:
+          type: integer
+          title: Total Withdrawn Milli Cents
+          description: Lifetime whole-cent amount transferred to Stripe Connect
+        in_flight_milli_cents:
+          type: integer
+          title: In Flight Milli Cents
+          description: Whole-cent amount currently being withdrawn
+        is_onboarded:
+          type: boolean
+          title: Is Onboarded
+          description: Stripe Connect onboarding complete
+        min_threshold_milli_cents:
+          type: integer
+          title: Min Threshold Milli Cents
+          description: Minimum payout threshold
+        can_request_payout:
+          type: boolean
+          title: Can Request Payout
+          description: Eligible to request payout now
+      type: object
+      required:
+      - total_earning_milli_cents
+      - redeemable_milli_cents
+      - redeemable_cents
+      - total_withdrawn_milli_cents
+      - in_flight_milli_cents
+      - is_onboarded
+      - min_threshold_milli_cents
+      - can_request_payout
+      title: PayoutBalanceResponse
+      description: Seller payout balance and eligibility.
+    OnboardResponse:
+      properties:
+        success:
+          type: boolean
+          title: Success
+        onboarding_url:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Onboarding Url
+        stripe_connect_account_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Stripe Connect Account Id
+        error:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Error
+      type: object
+      required:
+      - success
+      title: OnboardResponse
+      description: Response with Stripe onboarding link.
+  securitySchemes:
+    Bearer:
+      type: http
+      scheme: bearer

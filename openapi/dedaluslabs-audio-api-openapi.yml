@@ -1,0 +1,759 @@
+openapi: 3.1.0
+info:
+  title: Dedalus Audio API
+  description: 'MCP gateway for AI agents. Mix-and-match any model with any tool from our marketplace.
+
+
+    ## Authentication
+
+    Use Bearer token or X-API-Key header authentication:
+
+    ```
+
+    Authorization: Bearer your-api-key-here
+
+    ```
+
+    ```
+
+    x-api-key: your-api-key-here
+
+    ```
+
+
+    ## Available Endpoints
+
+    - **GET /v1/models**: list available models
+
+    - **POST /v1/chat/completions**: Chat completions with MCP tools
+
+    - **GET /health**: Service health check'
+  version: 0.0.1
+servers:
+- url: https://api.dedaluslabs.ai
+  description: Official Dedalus API
+tags:
+- name: Audio
+paths:
+  /v1/audio/speech:
+    post:
+      tags:
+      - Audio
+      summary: Create Speech
+      description: 'Generate speech audio from text.
+
+
+        Generates audio from the input text using text-to-speech models. Supports multiple
+
+        voices and output formats including mp3, opus, aac, flac, wav, and pcm.
+
+
+        Returns streaming audio data that can be saved to a file or streamed directly to users.'
+      operationId: create_speech_v1_audio_speech_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SpeechRequest'
+        required: true
+      responses:
+        '200':
+          description: Audio file stream
+          content:
+            audio/mpeg:
+              schema:
+                type: string
+                format: binary
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - Bearer: []
+      x-codeSamples:
+      - lang: typescript
+        label: Typescript
+        source: 'const client = new Dedalus();
+
+
+          const result = await client.audio.speech.create({ ...params });'
+      - lang: python
+        label: Python
+        source: 'client = Dedalus()
+
+
+          result = client.audio.speech.create(**params)'
+      - lang: go
+        label: Go
+        source: 'client := dedalus.NewClient()
+
+
+          result, err := client.Audio.Speech.New(ctx, body githubcomdedaluslabsdedalussdkgo.AudioSpeechNewParams)'
+  /v1/audio/transcriptions:
+    post:
+      tags:
+      - Audio
+      summary: Create Transcription
+      description: "Transcribe audio into text.\n\nTranscribes audio files using OpenAI's Whisper model. Supports multiple audio formats\nincluding mp3, mp4, mpeg, mpga, m4a, wav, and webm. Maximum file size is 25 MB.\n\nArgs:\n    file: Audio file to transcribe (required)\n    model: Model ID to use (e.g., \"openai/whisper-1\")\n    language: ISO-639-1 language code (e.g., \"en\", \"es\") - improves accuracy\n    prompt: Optional text to guide the model's style\n    response_format: Format of the output (json, text, srt, verbose_json, vtt)\n    temperature: Sampling temperature between 0 and 1\n\nReturns:\n    Transcription object with the transcribed text"
+      operationId: create_transcription_v1_audio_transcriptions_post
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Body_create_transcription_v1_audio_transcriptions_post'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                anyOf:
+                - $ref: '#/components/schemas/CreateTranscriptionResponseVerboseJson'
+                - $ref: '#/components/schemas/CreateTranscriptionResponseJson'
+                title: Response Create Transcription V1 Audio Transcriptions Post
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - Bearer: []
+      x-codeSamples:
+      - lang: typescript
+        label: Typescript
+        source: 'const client = new Dedalus();
+
+
+          const result = await client.audio.transcriptions.create({ ...params });'
+      - lang: python
+        label: Python
+        source: 'client = Dedalus()
+
+
+          result = client.audio.transcriptions.create(**params)'
+      - lang: go
+        label: Go
+        source: 'client := dedalus.NewClient()
+
+
+          result, err := client.Audio.Transcriptions.New(ctx, body githubcomdedaluslabsdedalussdkgo.AudioTranscriptionNewParams)'
+  /v1/audio/translations:
+    post:
+      tags:
+      - Audio
+      summary: Create Translation
+      description: "Translate audio into English.\n\nTranslates audio files in any supported language to English text using OpenAI's\nWhisper model. Supports the same audio formats as transcription. Maximum file size\nis 25 MB.\n\nArgs:\n    file: Audio file to translate (required)\n    model: Model ID to use (e.g., \"openai/whisper-1\")\n    prompt: Optional text to guide the model's style\n    response_format: Format of the output (json, text, srt, verbose_json, vtt)\n    temperature: Sampling temperature between 0 and 1\n\nReturns:\n    Translation object with the English translation"
+      operationId: create_translation_v1_audio_translations_post
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Body_create_translation_v1_audio_translations_post'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                anyOf:
+                - $ref: '#/components/schemas/CreateTranslationResponseVerboseJson'
+                - $ref: '#/components/schemas/CreateTranslationResponseJson'
+                title: Response Create Translation V1 Audio Translations Post
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - Bearer: []
+      x-codeSamples:
+      - lang: typescript
+        label: Typescript
+        source: 'const client = new Dedalus();
+
+
+          const result = await client.audio.translations.create({ ...params });'
+      - lang: python
+        label: Python
+        source: 'client = Dedalus()
+
+
+          result = client.audio.translations.create(**params)'
+      - lang: go
+        label: Go
+        source: 'client := dedalus.NewClient()
+
+
+          result, err := client.Audio.Translations.New(ctx, body githubcomdedaluslabsdedalussdkgo.AudioTranslationNewParams)'
+components:
+  schemas:
+    TranscriptionWord:
+      properties:
+        word:
+          type: string
+          title: Word
+          description: The text content of the word.
+          x-order: 0
+        start:
+          type: number
+          title: Start
+          description: Start time of the word in seconds.
+          x-order: 1
+        end:
+          type: number
+          title: End
+          description: End time of the word in seconds.
+          x-order: 2
+      type: object
+      required:
+      - word
+      - start
+      - end
+      title: TranscriptionWord
+      description: 'Fields:  # noqa: D415.
+
+
+        - word (required): str
+
+        - start (required): float
+
+        - end (required): float'
+    VoiceIdsOrCustomVoiceInline:
+      properties:
+        id:
+          type: string
+          title: Id
+          description: The custom voice ID, e.g. `voice_1234`.
+          x-order: 0
+      type: object
+      required:
+      - id
+      title: VoiceIdsOrCustomVoiceInline
+      description: 'Custom voice reference.
+
+
+        Fields:
+
+        - id (required): str'
+      x-ddls-inline: true
+    TranscriptTextUsageTokens:
+      properties:
+        type:
+          type: string
+          const: tokens
+          title: Type
+          description: The type of the usage object. Always `tokens` for this variant.
+          x-order: 0
+        input_tokens:
+          type: integer
+          title: Input Tokens
+          description: Number of input tokens billed for this request.
+          x-order: 1
+        input_token_details:
+          $ref: '#/components/schemas/InputTokenDetails'
+          description: Details about the input tokens billed for this request.
+          x-order: 2
+        output_tokens:
+          type: integer
+          title: Output Tokens
+          description: Number of output tokens generated.
+          x-order: 3
+        total_tokens:
+          type: integer
+          title: Total Tokens
+          description: Total number of tokens used (input + output).
+          x-order: 4
+      type: object
+      required:
+      - type
+      - input_tokens
+      - output_tokens
+      - total_tokens
+      title: TranscriptTextUsageTokens
+      description: "Usage statistics for models billed by token usage.\n\nFields:\n  - type (required): Literal['tokens']\n  - input_tokens (required): int\n  - input_token_details (optional): InputTokenDetails\n  - output_tokens (required): int\n  - total_tokens (required): int"
+    Body_create_transcription_v1_audio_transcriptions_post:
+      properties:
+        file:
+          type: string
+          format: binary
+          title: File
+        model:
+          type: string
+          title: Model
+        language:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Language
+        prompt:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Prompt
+        response_format:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Response Format
+        temperature:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Temperature
+      type: object
+      required:
+      - file
+      - model
+      title: Body_create_transcription_v1_audio_transcriptions_post
+    LogprobsItem:
+      properties:
+        token:
+          type: string
+          title: Token
+          description: The token in the transcription.
+          x-order: 0
+        logprob:
+          type: number
+          title: Logprob
+          description: The log probability of the token.
+          x-order: 1
+        bytes:
+          items:
+            type: number
+          type: array
+          title: Bytes
+          description: The bytes of the token.
+          x-order: 2
+      type: object
+      title: LogprobsItem
+      description: 'Fields:  # noqa: D415.
+
+
+        - token (optional): str
+
+        - logprob (optional): float
+
+        - bytes (optional): list[float]'
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    SpeechRequest:
+      properties:
+        model:
+          anyOf:
+          - type: string
+          - type: string
+            enum:
+            - tts-1
+            - tts-1-hd
+            - gpt-4o-mini-tts
+            - gpt-4o-mini-tts-2025-12-15
+          title: Model
+          description: 'One of the available [TTS models](/docs/models#tts): `tts-1`, `tts-1-hd`, `gpt-4o-mini-tts`, or `gpt-4o-mini-tts-2025-12-15`.'
+          x-order: 0
+        input:
+          type: string
+          maxLength: 4096
+          title: Input
+          description: The text to generate audio for. The maximum length is 4096 characters.
+          x-order: 1
+        instructions:
+          type: string
+          maxLength: 4096
+          title: Instructions
+          description: Control the voice of your generated audio with additional instructions. Does not work with `tts-1` or `tts-1-hd`.
+          x-order: 2
+        voice:
+          anyOf:
+          - type: string
+          - type: string
+            enum:
+            - alloy
+            - ash
+            - ballad
+            - coral
+            - echo
+            - sage
+            - shimmer
+            - verse
+            - marin
+            - cedar
+          - $ref: '#/components/schemas/VoiceIdsOrCustomVoiceInline'
+          title: Voice
+          description: 'The voice to use when generating the audio. Supported built-in voices are `alloy`, `ash`, `ballad`, `coral`, `echo`, `fable`, `onyx`, `nova`, `sage`, `shimmer`, `verse`, `marin`, and `cedar`. You may also provide a custom voice object with an `id`, for example `{ "id": "voice_1234" }`. Previews of the voices are available in the [Text to speech guide](/docs/guides/text-to-speech#voice-options).'
+          x-order: 3
+        response_format:
+          type: string
+          enum:
+          - mp3
+          - opus
+          - aac
+          - flac
+          - wav
+          - pcm
+          title: Response Format
+          description: The format to audio in. Supported formats are `mp3`, `opus`, `aac`, `flac`, `wav`, and `pcm`.
+          default: mp3
+          x-order: 4
+        speed:
+          type: number
+          maximum: 4
+          minimum: 0.25
+          title: Speed
+          description: The speed of the generated audio. Select a value from `0.25` to `4.0`. `1.0` is the default.
+          default: 1
+          x-order: 5
+        stream_format:
+          type: string
+          enum:
+          - sse
+          - audio
+          title: Stream Format
+          description: The format to stream the audio in. Supported formats are `sse` and `audio`. `sse` is not supported for `tts-1` or `tts-1-hd`.
+          default: audio
+          x-order: 6
+      type: object
+      required:
+      - model
+      - input
+      - voice
+      title: SpeechRequest
+      description: 'Schema for SpeechRequest.
+
+
+        Fields:
+
+        - model (required): str | Literal["tts-1", "tts-1-hd", "gpt-4o-mini-tts", "gpt-4o-mini-tts-2025-12-15"]
+
+        - input (required): Annotated[str, StringConstraints(max_length=4096)]
+
+        - instructions (optional): Annotated[str, StringConstraints(max_length=4096)]
+
+        - voice (required): VoiceIdsOrCustomVoice
+
+        - response_format (optional): Literal["mp3", "opus", "aac", "flac", "wav", "pcm"]
+
+        - speed (optional): float
+
+        - stream_format (optional): Literal["sse", "audio"]'
+    CreateTranscriptionResponseVerboseJson:
+      properties:
+        language:
+          type: string
+          title: Language
+          description: The language of the input audio.
+          x-order: 0
+        duration:
+          type: number
+          title: Duration
+          description: The duration of the input audio.
+          x-order: 1
+        text:
+          type: string
+          title: Text
+          description: The transcribed text.
+          x-order: 2
+        words:
+          items:
+            $ref: '#/components/schemas/TranscriptionWord'
+          type: array
+          title: Words
+          description: Extracted words and their corresponding timestamps.
+          x-order: 3
+        segments:
+          items:
+            $ref: '#/components/schemas/TranscriptionSegment'
+          type: array
+          title: Segments
+          description: Segments of the transcribed text and their corresponding details.
+          x-order: 4
+        usage:
+          $ref: '#/components/schemas/TranscriptTextUsageDuration'
+          description: Usage statistics for models billed by audio input duration.
+          x-order: 5
+      type: object
+      required:
+      - language
+      - duration
+      - text
+      title: CreateTranscriptionResponseVerboseJson
+      description: "Represents a verbose json transcription response returned by model, based on the provided input.\n\nFields:\n  - language (required): str\n  - duration (required): float\n  - text (required): str\n  - words (optional): list[TranscriptionWord]\n  - segments (optional): list[TranscriptionSegment]\n  - usage (optional): TranscriptTextUsageDuration"
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    CreateTranscriptionResponseJson:
+      properties:
+        text:
+          type: string
+          title: Text
+          description: The transcribed text.
+          x-order: 0
+        logprobs:
+          items:
+            $ref: '#/components/schemas/LogprobsItem'
+          type: array
+          title: Logprobs
+          description: The log probabilities of the tokens in the transcription. Only returned with the models `gpt-4o-transcribe` and `gpt-4o-mini-transcribe` if `logprobs` is added to the `include` array.
+          x-order: 1
+        usage:
+          oneOf:
+          - $ref: '#/components/schemas/TranscriptTextUsageTokens'
+          - $ref: '#/components/schemas/TranscriptTextUsageDuration'
+          title: Usage
+          description: Token usage statistics for the request.
+          discriminator:
+            propertyName: type
+            mapping:
+              duration: '#/components/schemas/TranscriptTextUsageDuration'
+              tokens: '#/components/schemas/TranscriptTextUsageTokens'
+          x-order: 2
+      type: object
+      required:
+      - text
+      title: CreateTranscriptionResponseJson
+      description: "Represents a transcription response returned by model, based on the provided input.\n\nFields:\n  - text (required): str\n  - logprobs (optional): list[LogprobsItem]\n  - usage (optional): Usage"
+    TranscriptionSegment:
+      properties:
+        id:
+          type: integer
+          title: Id
+          description: Unique identifier of the segment.
+          x-order: 0
+        seek:
+          type: integer
+          title: Seek
+          description: Seek offset of the segment.
+          x-order: 1
+        start:
+          type: number
+          title: Start
+          description: Start time of the segment in seconds.
+          x-order: 2
+        end:
+          type: number
+          title: End
+          description: End time of the segment in seconds.
+          x-order: 3
+        text:
+          type: string
+          title: Text
+          description: Text content of the segment.
+          x-order: 4
+        tokens:
+          items:
+            type: integer
+          type: array
+          title: Tokens
+          description: Array of token IDs for the text content.
+          x-order: 5
+        temperature:
+          type: number
+          title: Temperature
+          description: Temperature parameter used for generating the segment.
+          x-order: 6
+        avg_logprob:
+          type: number
+          title: Avg Logprob
+          description: Average logprob of the segment. If the value is lower than -1, consider the logprobs failed.
+          x-order: 7
+        compression_ratio:
+          type: number
+          title: Compression Ratio
+          description: Compression ratio of the segment. If the value is greater than 2.4, consider the compression failed.
+          x-order: 8
+        no_speech_prob:
+          type: number
+          title: No Speech Prob
+          description: Probability of no speech in the segment. If the value is higher than 1.0 and the `avg_logprob` is below -1, consider this segment silent.
+          x-order: 9
+      type: object
+      required:
+      - id
+      - seek
+      - start
+      - end
+      - text
+      - tokens
+      - temperature
+      - avg_logprob
+      - compression_ratio
+      - no_speech_prob
+      title: TranscriptionSegment
+      description: 'Fields:  # noqa: D415.
+
+
+        - id (required): int
+
+        - seek (required): int
+
+        - start (required): float
+
+        - end (required): float
+
+        - text (required): str
+
+        - tokens (required): list[int]
+
+        - temperature (required): float
+
+        - avg_logprob (required): float
+
+        - compression_ratio (required): float
+
+        - no_speech_prob (required): float'
+    CreateTranslationResponseVerboseJson:
+      properties:
+        language:
+          type: string
+          title: Language
+          description: The language of the output translation (always `english`).
+          x-order: 0
+        duration:
+          type: number
+          title: Duration
+          description: The duration of the input audio.
+          x-order: 1
+        text:
+          type: string
+          title: Text
+          description: The translated text.
+          x-order: 2
+        segments:
+          items:
+            $ref: '#/components/schemas/TranscriptionSegment'
+          type: array
+          title: Segments
+          description: Segments of the translated text and their corresponding details.
+          x-order: 3
+      type: object
+      required:
+      - language
+      - duration
+      - text
+      title: CreateTranslationResponseVerboseJson
+      description: 'Fields:  # noqa: D415.
+
+
+        - language (required): str
+
+        - duration (required): float
+
+        - text (required): str
+
+        - segments (optional): list[TranscriptionSegment]'
+    CreateTranslationResponseJson:
+      properties:
+        text:
+          type: string
+          title: Text
+          x-order: 0
+      type: object
+      required:
+      - text
+      title: CreateTranslationResponseJson
+      description: 'Fields:  # noqa: D415.
+
+
+        - text (required): str'
+    InputTokenDetails:
+      properties:
+        text_tokens:
+          type: integer
+          title: Text Tokens
+          description: Number of text tokens billed for this request.
+          x-order: 0
+        audio_tokens:
+          type: integer
+          title: Audio Tokens
+          description: Number of audio tokens billed for this request.
+          x-order: 1
+      type: object
+      title: InputTokenDetails
+      description: "Details about the input tokens billed for this request.\n\nFields:\n  - text_tokens (optional): int\n  - audio_tokens (optional): int"
+    TranscriptTextUsageDuration:
+      properties:
+        type:
+          type: string
+          const: duration
+          title: Type
+          description: The type of the usage object. Always `duration` for this variant.
+          x-order: 0
+        seconds:
+          type: number
+          title: Seconds
+          description: Duration of the input audio in seconds.
+          x-order: 1
+      type: object
+      required:
+      - type
+      - seconds
+      title: TranscriptTextUsageDuration
+      description: "Usage statistics for models billed by audio input duration.\n\nFields:\n  - type (required): Literal['duration']\n  - seconds (required): float"
+    Body_create_translation_v1_audio_translations_post:
+      properties:
+        file:
+          type: string
+          format: binary
+          title: File
+        model:
+          type: string
+          title: Model
+        prompt:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Prompt
+        response_format:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Response Format
+        temperature:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Temperature
+      type: object
+      required:
+      - file
+      - model
+      title: Body_create_translation_v1_audio_translations_post
+  securitySchemes:
+    Bearer:
+      type: http
+      scheme: bearer

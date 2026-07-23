@@ -1,0 +1,3404 @@
+openapi: 3.1.0
+info:
+  title: Dedalus Audio Chat API
+  description: 'MCP gateway for AI agents. Mix-and-match any model with any tool from our marketplace.
+
+
+    ## Authentication
+
+    Use Bearer token or X-API-Key header authentication:
+
+    ```
+
+    Authorization: Bearer your-api-key-here
+
+    ```
+
+    ```
+
+    x-api-key: your-api-key-here
+
+    ```
+
+
+    ## Available Endpoints
+
+    - **GET /v1/models**: list available models
+
+    - **POST /v1/chat/completions**: Chat completions with MCP tools
+
+    - **GET /health**: Service health check'
+  version: 0.0.1
+servers:
+- url: https://api.dedaluslabs.ai
+  description: Official Dedalus API
+tags:
+- name: Chat
+paths:
+  /v1/chat/completions:
+    post:
+      tags:
+      - Chat
+      summary: Create Chat Completion
+      description: "Create a chat completion.\n\nGenerates a model response for the given conversation and configuration.\nSupports OpenAI-compatible parameters and provider-specific extensions.\n\nHeaders:\n  - Authorization: bearer key for the calling account.\n  - X-Provider / X-Provider-Key: optional headers for using your own provider API key.\n\nBehavior:\n  - If multiple models are supplied, the first one is used, and the agent may hand off to another model.\n  - Tools may be invoked on the server or signaled for the client to run.\n  - Streaming responses emit incremental deltas; non-streaming returns a single object.\n  - Usage metrics are computed when available and returned in the response.\n\nResponses:\n  - 200 OK: JSON completion object with choices, message content, and usage.\n  - 400 Bad Request: validation error.\n  - 401 Unauthorized: authentication failed.\n  - 402 Payment Required or 429 Too Many Requests: quota, balance, or rate limit issue.\n  - 500 Internal Server Error: unexpected failure.\n\nBilling:\n  - Token usage metered by the selected model(s).\n  - Tool calls and MCP sessions may be billed separately.\n  - Streaming is settled after the stream ends via an async task.\n\nExample (non-streaming HTTP):\n  POST /v1/chat/completions\n  Content-Type: application/json\n  Authorization: Bearer <key>\n\n  {\n    \"model\": \"provider/model-name\",\n    \"messages\": [{\"role\": \"user\", \"content\": \"Hello\"}]\n  }\n\n  200 OK\n  {\n    \"id\": \"cmpl_123\",\n    \"object\": \"chat.completion\",\n    \"choices\": [\n      {\"index\": 0, \"message\": {\"role\": \"assistant\", \"content\": \"Hi there!\"}, \"finish_reason\": \"stop\"}\n    ],\n    \"usage\": {\"prompt_tokens\": 3, \"completion_tokens\": 4, \"total_tokens\": 7}\n  }\n\nExample (streaming over SSE):\n  POST /v1/chat/completions\n  Accept: text/event-stream\n\n  data: {\"id\":\"cmpl_123\",\"choices\":[{\"index\":0,\"delta\":{\"content\":\"Hi\"}}]}\n  data: {\"id\":\"cmpl_123\",\"choices\":[{\"index\":0,\"delta\":{\"content\":\" there!\"}}]}\n  data: [DONE]"
+      operationId: create_chat_completion_v1_chat_completions_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChatCompletionRequest'
+        required: true
+      responses:
+        '200':
+          description: JSON or SSE stream of ChatCompletionChunk events
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChatCompletion'
+            text/event-stream:
+              schema:
+                $ref: '#/components/schemas/ChatCompletionStreamResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - Bearer: []
+      x-codeSamples:
+      - lang: typescript
+        label: Typescript
+        source: 'const client = new Dedalus();
+
+
+          const result = await client.chat.completions.create({ ...params });'
+      - lang: python
+        label: Python
+        source: 'client = Dedalus()
+
+
+          result = client.chat.completions.create(**params)'
+      - lang: go
+        label: Go
+        source: 'client := dedalus.NewClient()
+
+
+          result, err := client.Chat.Completions.New(ctx, body githubcomdedaluslabsdedalussdkgo.ChatCompletionNewParams)'
+components:
+  schemas:
+    ChatCompletionRequestDeveloperMessage:
+      properties:
+        content:
+          anyOf:
+          - type: string
+          - items:
+              $ref: '#/components/schemas/ChatCompletionRequestMessageContentPartText'
+            type: array
+            minItems: 1
+            title: ChatCompletionRequestDeveloperMessageContentArray
+          title: Content
+          description: The contents of the developer message.
+          x-order: 0
+        role:
+          type: string
+          const: developer
+          title: Role
+          description: The role of the messages author, in this case `developer`.
+          x-order: 1
+        name:
+          type: string
+          title: Name
+          description: An optional name for the participant. Provides the model information to differentiate between participants of the same role.
+          x-order: 2
+      type: object
+      required:
+      - content
+      - role
+      title: ChatCompletionRequestDeveloperMessage
+      description: 'Developer-provided instructions that the model should follow, regardless of
+
+        messages sent by the user. With o1 models and newer, `developer` messages
+
+        replace the previous `system` messages.
+
+
+        Fields:
+
+        - content (required): str | Annotated[list[ChatCompletionRequestMessageContentPartText], MinLen(1), ArrayTitle("ChatCompletionRequestDeveloperMessageContentArray")]
+
+        - role (required): Literal["developer"]
+
+        - name (optional): str'
+    CompletionUsage:
+      properties:
+        completion_tokens:
+          type: integer
+          title: Completion Tokens
+          description: Number of tokens in the generated completion.
+          x-order: 0
+        prompt_tokens:
+          type: integer
+          title: Prompt Tokens
+          description: Number of tokens in the prompt.
+          x-order: 1
+        total_tokens:
+          type: integer
+          title: Total Tokens
+          description: Total number of tokens used in the request (prompt + completion).
+          x-order: 2
+        completion_tokens_details:
+          $ref: '#/components/schemas/CompletionTokensDetails'
+          description: Breakdown of tokens used in a completion.
+          x-order: 3
+        prompt_tokens_details:
+          $ref: '#/components/schemas/PromptTokensDetails'
+          description: Breakdown of tokens used in the prompt.
+          x-order: 4
+      type: object
+      required:
+      - completion_tokens
+      - prompt_tokens
+      - total_tokens
+      title: CompletionUsage
+      description: 'Usage statistics for the completion request.
+
+
+        Fields:
+
+        - completion_tokens (required): int
+
+        - prompt_tokens (required): int
+
+        - total_tokens (required): int
+
+        - completion_tokens_details (optional): CompletionTokensDetails
+
+        - prompt_tokens_details (optional): PromptTokensDetails'
+    ChatCompletionRequestUserMessage:
+      properties:
+        content:
+          anyOf:
+          - type: string
+          - items:
+              oneOf:
+              - $ref: '#/components/schemas/ChatCompletionRequestMessageContentPartText'
+              - $ref: '#/components/schemas/ChatCompletionRequestMessageContentPartImage'
+              - $ref: '#/components/schemas/ChatCompletionRequestMessageContentPartAudio'
+              - $ref: '#/components/schemas/ChatCompletionRequestMessageContentPartFile'
+              discriminator:
+                propertyName: type
+                mapping:
+                  file: '#/components/schemas/ChatCompletionRequestMessageContentPartFile'
+                  image_url: '#/components/schemas/ChatCompletionRequestMessageContentPartImage'
+                  input_audio: '#/components/schemas/ChatCompletionRequestMessageContentPartAudio'
+                  text: '#/components/schemas/ChatCompletionRequestMessageContentPartText'
+            type: array
+            minItems: 1
+            title: ChatCompletionRequestUserMessageContentArray
+          title: Content
+          description: The contents of the user message.
+          x-order: 0
+        role:
+          type: string
+          const: user
+          title: Role
+          description: The role of the messages author, in this case `user`.
+          x-order: 1
+        name:
+          type: string
+          title: Name
+          description: An optional name for the participant. Provides the model information to differentiate between participants of the same role.
+          x-order: 2
+      type: object
+      required:
+      - content
+      - role
+      title: ChatCompletionRequestUserMessage
+      description: 'Messages sent by an end user, containing prompts or additional context
+
+        information.
+
+
+        Fields:
+
+        - content (required): str | Annotated[list[ChatCompletionRequestUserMessageContentPart], MinLen(1), ArrayTitle("ChatCompletionRequestUserMessageContentArray")]
+
+        - role (required): Literal["user"]
+
+        - name (optional): str'
+    ChatCompletionRequestMessageContentPartRefusal:
+      properties:
+        type:
+          type: string
+          const: refusal
+          title: Type
+          description: The type of the content part.
+          x-order: 0
+        refusal:
+          type: string
+          title: Refusal
+          description: The refusal message generated by the model.
+          x-order: 1
+      type: object
+      required:
+      - type
+      - refusal
+      title: ChatCompletionRequestMessageContentPartRefusal
+      description: 'Schema for ChatCompletionRequestMessageContentPartRefusal.
+
+
+        Fields:
+
+        - type (required): Literal["refusal"]
+
+        - refusal (required): str'
+    JSONValue:
+      anyOf:
+      - type: string
+      - type: integer
+      - type: number
+      - type: boolean
+      - additionalProperties:
+          $ref: '#/components/schemas/JSONValue'
+        type: object
+      - items:
+          $ref: '#/components/schemas/JSONValue'
+        type: array
+      - type: 'null'
+    Credential:
+      properties:
+        connection_name:
+          type: string
+          title: Connection Name
+          description: Connection name. Must match a connection in MCPServer.connections.
+        values:
+          additionalProperties:
+            anyOf:
+            - type: string
+            - type: integer
+            - type: boolean
+          type: object
+          title: Values
+          description: Credential values. Keys are credential field names, values are the secrets.
+      additionalProperties: false
+      type: object
+      required:
+      - connection_name
+      - values
+      title: Credential
+      description: 'Credential for MCP server authentication.
+
+
+        Passed at endpoint level (e.g., chat.completions.create) and matched
+
+        to MCP servers by connection name. Wire format matches dedalus_mcp.Credential.to_dict().'
+    ChatCompletionResponseMessage:
+      properties:
+        content:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Content
+          description: The contents of the message.
+          x-order: 0
+        refusal:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Refusal
+          description: The refusal message generated by the model.
+          x-order: 1
+        tool_calls:
+          items:
+            oneOf:
+            - $ref: '#/components/schemas/ChatCompletionMessageToolCall'
+            - $ref: '#/components/schemas/ChatCompletionMessageCustomToolCall'
+            discriminator:
+              propertyName: type
+              mapping:
+                custom: '#/components/schemas/ChatCompletionMessageCustomToolCall'
+                function: '#/components/schemas/ChatCompletionMessageToolCall'
+          type: array
+          title: Tool Calls
+          description: The tool calls generated by the model, such as function calls.
+          x-order: 2
+        annotations:
+          items:
+            properties:
+              type:
+                type: string
+                const: url_citation
+                title: Type
+                description: The type of the URL citation. Always `url_citation`.
+                x-order: 0
+              url_citation:
+                properties:
+                  end_index:
+                    type: integer
+                    title: End Index
+                    description: The index of the last character of the URL citation in the message.
+                    x-order: 0
+                  start_index:
+                    type: integer
+                    title: Start Index
+                    description: The index of the first character of the URL citation in the message.
+                    x-order: 1
+                  url:
+                    type: string
+                    title: Url
+                    description: The URL of the web resource.
+                    x-order: 2
+                  title:
+                    type: string
+                    title: Title
+                    description: The title of the web resource.
+                    x-order: 3
+                type: object
+                required:
+                - end_index
+                - start_index
+                - url
+                - title
+                description: 'A URL citation when using web search.
+
+
+                  Fields:
+
+                  - end_index (required): int
+
+                  - start_index (required): int
+
+                  - url (required): str
+
+                  - title (required): str'
+            type: object
+            required:
+            - type
+            - url_citation
+            description: 'A URL citation when using web search.
+
+
+              Fields:
+
+              - type (required): Literal["url_citation"]
+
+              - url_citation (required): UrlCitation'
+          type: array
+          title: Annotations
+          description: 'Annotations for the message, when applicable, as when using the
+
+            [web search tool](/docs/guides/tools-web-search?api-mode=chat).'
+          x-order: 3
+        role:
+          type: string
+          const: assistant
+          title: Role
+          description: The role of the author of this message.
+          x-order: 4
+        function_call:
+          properties:
+            arguments:
+              type: string
+              title: Arguments
+              description: The arguments to call the function with, as generated by the model in JSON format. Note that the model does not always generate valid JSON, and may hallucinate parameters not defined by your function schema. Validate the arguments in your code before calling your function.
+              x-order: 0
+            name:
+              type: string
+              title: Name
+              description: The name of the function to call.
+              x-order: 1
+          type: object
+          required:
+          - arguments
+          - name
+          description: 'Deprecated and replaced by `tool_calls`. The name and arguments of a function that should be called, as generated by the model.
+
+
+            Fields:
+
+            - arguments (required): str
+
+            - name (required): str'
+        audio:
+          anyOf:
+          - properties:
+              id:
+                type: string
+                title: Id
+                description: Unique identifier for this audio response.
+                x-order: 0
+              expires_at:
+                type: integer
+                title: Expires At
+                description: 'The Unix timestamp (in seconds) for when this audio response will
+
+                  no longer be accessible on the server for use in multi-turn
+
+                  conversations.'
+                x-order: 1
+              data:
+                type: string
+                title: Data
+                description: 'Base64 encoded audio bytes generated by the model, in the format
+
+                  specified in the request.'
+                x-order: 2
+              transcript:
+                type: string
+                title: Transcript
+                description: Transcript of the audio generated by the model.
+                x-order: 3
+            type: object
+            required:
+            - id
+            - expires_at
+            - data
+            - transcript
+            description: 'If the audio output modality is requested, this object contains data
+
+              about the audio response from the model. [Learn more](/docs/guides/audio).
+
+
+              Fields:
+
+              - id (required): str
+
+              - expires_at (required): int
+
+              - data (required): str
+
+              - transcript (required): str'
+          - type: 'null'
+          description: 'If the audio output modality is requested, this object contains data
+
+            about the audio response from the model. [Learn more](/docs/guides/audio).'
+          x-order: 6
+      type: object
+      required:
+      - content
+      - refusal
+      - role
+      title: ChatCompletionResponseMessage
+      description: 'A chat completion message generated by the model.
+
+
+        Fields:
+
+        - content (required): str | None
+
+        - refusal (required): str | None
+
+        - tool_calls (optional): ChatCompletionMessageToolCalls
+
+        - annotations (optional): list[AnnotationsItem]
+
+        - role (required): Literal["assistant"]
+
+        - function_call (optional): ChatCompletionResponseMessageFunctionCall
+
+        - audio (optional): ChatCompletionResponseMessageAudio | None'
+    ChatCompletionRequestMessageContentPartText:
+      properties:
+        type:
+          type: string
+          const: text
+          title: Type
+          description: The type of the content part.
+          x-order: 0
+        text:
+          type: string
+          title: Text
+          description: The text content.
+          x-order: 1
+      type: object
+      required:
+      - type
+      - text
+      title: ChatCompletionRequestMessageContentPartText
+      description: 'Learn about [text inputs](/docs/guides/text-generation).
+
+
+        Fields:
+
+        - type (required): Literal["text"]
+
+        - text (required): str'
+    JSONObject:
+      additionalProperties:
+        $ref: '#/components/schemas/JSONValue'
+      type: object
+    FunctionCall:
+      properties:
+        arguments:
+          type: string
+          title: Arguments
+          description: The arguments to call the function with, as generated by the model in JSON format. Note that the model does not always generate valid JSON, and may hallucinate parameters not defined by your function schema. Validate the arguments in your code before calling your function.
+          x-order: 0
+        name:
+          type: string
+          title: Name
+          description: The name of the function to call.
+          x-order: 1
+      type: object
+      required:
+      - arguments
+      - name
+      title: FunctionCall
+      description: 'Deprecated and replaced by `tool_calls`. The name and arguments of a function that should be called, as generated by the model.
+
+
+        Fields:
+
+        - arguments (required): str
+
+        - name (required): str'
+      x-ddls-inline: true
+    ChatCompletionRequestSystemMessage:
+      properties:
+        content:
+          anyOf:
+          - type: string
+          - items:
+              $ref: '#/components/schemas/ChatCompletionRequestMessageContentPartText'
+            type: array
+            minItems: 1
+            title: ChatCompletionRequestSystemMessageContentArray
+          title: Content
+          description: The contents of the system message.
+          x-order: 0
+        role:
+          type: string
+          const: system
+          title: Role
+          description: The role of the messages author, in this case `system`.
+          x-order: 1
+        name:
+          type: string
+          title: Name
+          description: An optional name for the participant. Provides the model information to differentiate between participants of the same role.
+          x-order: 2
+      type: object
+      required:
+      - content
+      - role
+      title: ChatCompletionRequestSystemMessage
+      description: 'Developer-provided instructions that the model should follow, regardless of
+
+        messages sent by the user. With o1 models and newer, use `developer` messages
+
+        for this purpose instead.
+
+
+        Fields:
+
+        - content (required): str | Annotated[list[ChatCompletionRequestSystemMessageContentPart], MinLen(1), ArrayTitle("ChatCompletionRequestSystemMessageContentArray")]
+
+        - role (required): Literal["system"]
+
+        - name (optional): str'
+    MCPCredentials:
+      items:
+        $ref: '#/components/schemas/Credential'
+      type: array
+      title: MCPCredentials
+      description: List of credentials for MCP server authentication.
+      x-stainless-variantName: MCPCredentials
+    ChatCompletionStreamResponseDelta:
+      description: 'A chat completion delta generated by streamed model responses.
+
+
+        Fields:
+
+        - content (optional): str | None
+
+        - function_call (optional): ChatCompletionStreamResponseDeltaFunctionCall
+
+        - tool_calls (optional): list[ChatCompletionMessageToolCallChunk]
+
+        - role (optional): Literal["developer", "system", "user", "assistant", "tool"]
+
+        - refusal (optional): str | None'
+      properties:
+        content:
+          anyOf:
+          - type: string
+          - type: 'null'
+          default: null
+          description: The contents of the chunk message.
+          title: Content
+          x-order: 0
+        function_call:
+          description: 'Deprecated and replaced by `tool_calls`. The name and arguments of a function that should be called, as generated by the model.
+
+
+            Fields:
+
+            - arguments (optional): str
+
+            - name (optional): str'
+          properties:
+            arguments:
+              default: null
+              description: The arguments to call the function with, as generated by the model in JSON format. Note that the model does not always generate valid JSON, and may hallucinate parameters not defined by your function schema. Validate the arguments in your code before calling your function.
+              title: Arguments
+              type: string
+              x-order: 0
+            name:
+              default: null
+              description: The name of the function to call.
+              title: Name
+              type: string
+              x-order: 1
+          type: object
+        tool_calls:
+          default: null
+          items:
+            $ref: '#/components/schemas/ChatCompletionMessageToolCallChunk'
+          title: Tool Calls
+          type: array
+          x-order: 2
+        role:
+          default: null
+          description: The role of the author of this message.
+          enum:
+          - developer
+          - system
+          - user
+          - assistant
+          - tool
+          title: Role
+          type: string
+          x-order: 3
+        refusal:
+          anyOf:
+          - type: string
+          - type: 'null'
+          default: null
+          description: The refusal message generated by the model.
+          title: Refusal
+          x-order: 4
+      title: ChatCompletionStreamResponseDelta
+      type: object
+    ChatCompletionMessageCustomToolCall:
+      properties:
+        id:
+          type: string
+          title: Id
+          description: The ID of the tool call.
+          x-order: 0
+        type:
+          type: string
+          const: custom
+          title: Type
+          description: The type of the tool. Always `custom`.
+          x-order: 1
+        custom:
+          properties:
+            name:
+              type: string
+              title: Name
+              description: The name of the custom tool to call.
+              x-order: 0
+            input:
+              type: string
+              title: Input
+              description: The input for the custom tool call generated by the model.
+              x-order: 1
+          type: object
+          required:
+          - name
+          - input
+          description: 'The custom tool that the model called.
+
+
+            Fields:
+
+            - name (required): str
+
+            - input (required): str'
+      type: object
+      required:
+      - id
+      - type
+      - custom
+      title: ChatCompletionMessageCustomToolCall
+      description: 'A call to a custom tool created by the model.
+
+
+        Fields:
+
+        - id (required): str
+
+        - type (required): Literal["custom"]
+
+        - custom (required): ChatCompletionMessageCustomToolCallCustom'
+    VoiceIdsOrCustomVoiceInline:
+      properties:
+        id:
+          type: string
+          title: Id
+          description: The custom voice ID, e.g. `voice_1234`.
+          x-order: 0
+      type: object
+      required:
+      - id
+      title: VoiceIdsOrCustomVoiceInline
+      description: 'Custom voice reference.
+
+
+        Fields:
+
+        - id (required): str'
+      x-ddls-inline: true
+    DedalusModel:
+      properties:
+        model:
+          type: string
+          title: Model
+          description: Model identifier with provider prefix (e.g., 'openai/gpt-5', 'anthropic/claude-3-5-sonnet').
+        settings:
+          anyOf:
+          - $ref: '#/components/schemas/ModelSettings'
+          - type: 'null'
+          description: Optional default generation settings (e.g., temperature, max_tokens) applied when this model is selected.
+      additionalProperties: false
+      type: object
+      required:
+      - model
+      title: DedalusModel
+      description: 'Structured model selection entry used in request payloads.
+
+
+        Supports OpenAI-style semantics (string model id) while enabling
+
+        optional per-model default settings for Dedalus multi-model routing.'
+    ChatCompletionTokenLogprob:
+      properties:
+        token:
+          type: string
+          title: Token
+          description: The token.
+          x-order: 0
+        logprob:
+          type: number
+          title: Logprob
+          description: The log probability of this token, if it is within the top 20 most likely tokens. Otherwise, the value `-9999.0` is used to signify that the token is very unlikely.
+          x-order: 1
+        bytes:
+          anyOf:
+          - items:
+              type: integer
+            type: array
+          - type: 'null'
+          title: Bytes
+          description: A list of integers representing the UTF-8 bytes representation of the token. Useful in instances where characters are represented by multiple tokens and their byte representations must be combined to generate the correct text representation. Can be `null` if there is no bytes representation for the token.
+          x-order: 2
+        top_logprobs:
+          items:
+            properties:
+              token:
+                type: string
+                title: Token
+                description: The token.
+                x-order: 0
+              logprob:
+                type: number
+                title: Logprob
+                description: The log probability of this token, if it is within the top 20 most likely tokens. Otherwise, the value `-9999.0` is used to signify that the token is very unlikely.
+                x-order: 1
+              bytes:
+                anyOf:
+                - items:
+                    type: integer
+                  type: array
+                - type: 'null'
+                title: Bytes
+                description: A list of integers representing the UTF-8 bytes representation of the token. Useful in instances where characters are represented by multiple tokens and their byte representations must be combined to generate the correct text representation. Can be `null` if there is no bytes representation for the token.
+                x-order: 2
+            type: object
+            required:
+            - token
+            - logprob
+            - bytes
+            description: Token and its log probability.
+          type: array
+          title: Top Logprobs
+          description: List of the most likely tokens and their log probability, at this token position. In rare cases, there may be fewer than the number of requested `top_logprobs` returned.
+          x-order: 3
+      type: object
+      required:
+      - token
+      - logprob
+      - bytes
+      - top_logprobs
+      title: ChatCompletionTokenLogprob
+      description: Token log probability information.
+    ChatCompletionStreamResponseChoicesItemLogprobs:
+      description: 'Log probability information for the choice.
+
+
+        Fields:
+
+        - content (required): list[ChatCompletionTokenLogprob]
+
+        - refusal (required): list[ChatCompletionTokenLogprob]'
+      properties:
+        content:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/ChatCompletionTokenLogprob'
+            type: array
+          - type: 'null'
+          description: A list of message content tokens with log probability information.
+          title: Content
+          x-order: 0
+        refusal:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/ChatCompletionTokenLogprob'
+            type: array
+          - type: 'null'
+          description: A list of message refusal tokens with log probability information.
+          title: Refusal
+          x-order: 1
+      required:
+      - content
+      - refusal
+      title: ChatCompletionStreamResponseChoicesItemLogprobs
+      type: object
+      x-ddls-inline: true
+    PredictionContent:
+      properties:
+        type:
+          type: string
+          const: content
+          title: Type
+          description: 'The type of the predicted content you want to provide. This type is
+
+            currently always `content`.'
+          x-order: 0
+        content:
+          anyOf:
+          - type: string
+          - items:
+              $ref: '#/components/schemas/ChatCompletionRequestMessageContentPartText'
+            type: array
+            minItems: 1
+            title: PredictionContentArray
+          title: Content
+          description: 'The content that should be matched when generating a model response.
+
+            If generated tokens would match this content, the entire model response
+
+            can be returned much more quickly.'
+          x-order: 1
+      type: object
+      required:
+      - type
+      - content
+      title: PredictionContent
+      description: 'Static predicted output content, such as the content of a text file that is
+
+        being regenerated.
+
+
+        Fields:
+
+        - type (required): Literal["content"]
+
+        - content (required): str | Annotated[list[ChatCompletionRequestMessageContentPartText], MinLen(1), ArrayTitle("PredictionContentArray")]'
+    ChatCompletionStreamResponseChoicesItem:
+      description: 'Schema for ChatCompletionStreamResponseChoicesItem.
+
+
+        Fields:
+
+        - delta (required): ChatCompletionStreamResponseDelta
+
+        - logprobs (optional): ChatCompletionStreamResponseChoicesItemLogprobs
+
+        - finish_reason (required): Literal["stop", "length", "tool_calls", "content_filter", "function_call"]
+
+        - index (required): int'
+      properties:
+        delta:
+          $ref: '#/components/schemas/ChatCompletionStreamResponseDelta'
+          description: A chat completion delta generated by streamed model responses.
+          x-order: 0
+        logprobs:
+          anyOf:
+          - $ref: '#/components/schemas/ChatCompletionStreamResponseChoicesItemLogprobs'
+          - type: 'null'
+          default: null
+          description: Log probability information for the choice.
+          x-order: 1
+        finish_reason:
+          anyOf:
+          - enum:
+            - stop
+            - length
+            - tool_calls
+            - content_filter
+            - function_call
+            type: string
+          - type: 'null'
+          description: 'The reason the model stopped generating tokens. This will be `stop` if the model hit a natural stop point or a provided stop sequence,
+
+            `length` if the maximum number of tokens specified in the request was reached,
+
+            `content_filter` if content was omitted due to a flag from our content filters,
+
+            `tool_calls` if the model called a tool, or `function_call` (deprecated) if the model called a function.'
+          title: Finish Reason
+          x-order: 2
+        index:
+          description: The index of the choice in the list of choices.
+          title: Index
+          type: integer
+          x-order: 3
+      required:
+      - delta
+      - finish_reason
+      - index
+      title: ChatCompletionStreamResponseChoicesItem
+      type: object
+      x-ddls-inline: true
+    ThinkingConfigDisabled:
+      properties:
+        type:
+          type: string
+          const: disabled
+          title: Type
+          x-order: 0
+      type: object
+      required:
+      - type
+      title: ThinkingConfigDisabled
+      description: 'Schema for ThinkingConfigDisabled.
+
+
+        Fields:
+
+        - type (required): Literal["disabled"]'
+    PendingCallResponse:
+      properties:
+        id:
+          type: string
+          title: Id
+          description: Unique identifier for this tool call.
+        name:
+          type: string
+          title: Name
+          description: Name of the tool to execute.
+        arguments:
+          $ref: '#/components/schemas/JSONObject'
+          description: Input arguments for the tool call.
+        dependencies:
+          items:
+            type: string
+          type: array
+          title: Dependencies
+          description: IDs of other pending calls that must complete first.
+      type: object
+      required:
+      - id
+      - name
+      - arguments
+      title: PendingCallResponse
+      description: Client-side tool call the SDK must execute.
+    DedalusModelChoice:
+      anyOf:
+      - $ref: '#/components/schemas/ModelId'
+      - $ref: '#/components/schemas/DedalusModel'
+      title: DedalusModelChoice
+      description: Dedalus model choice - either a string ID or DedalusModel configuration object.
+    ResponseFormatJsonSchemaSchema:
+      additionalProperties: true
+      type: object
+      title: ResponseFormatJsonSchemaSchema
+      description: 'The schema for the response format, described as a JSON Schema object.
+
+        Learn how to build JSON schemas [here](https://json-schema.org/).'
+    MCPServerSpec:
+      properties:
+        slug:
+          anyOf:
+          - type: string
+            pattern: ^[a-zA-Z0-9_-]+/[a-zA-Z0-9_-]+$
+          - type: 'null'
+          title: Slug
+          description: Marketplace identifier.
+        url:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Url
+          description: Direct URL to MCP server endpoint (Pro users).
+        name:
+          type: string
+          title: Name
+          description: Server instance name for credential matching.
+        version:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Version
+          description: Version constraint for slug-based servers.
+        credentials:
+          anyOf:
+          - additionalProperties:
+              type: string
+            type: object
+          - type: 'null'
+          title: Credentials
+          description: Encrypted credential blobs keyed by connection name. Values are base64url ciphertext produced by the SDK (client-side encryption with the AS public key).
+      additionalProperties: false
+      type: object
+      required:
+      - name
+      title: MCPServerSpec
+      description: 'Structured MCP server specification.
+
+
+        Slug-based: {"slug": "dedalus-labs/brave-search", "name": "github-integration", "version": "v1.0.0"}
+
+        URL-based:  {"url": "https://mcp.dedaluslabs.ai/acme/my-server/mcp", "name": "custom-server"}'
+    SafetySetting:
+      properties:
+        category:
+          type: string
+          enum:
+          - SEXUALLY_EXPLICIT
+          - DANGEROUS_CONTENT
+          title: Category
+          description: The category this setting applies to.
+          x-order: 0
+        threshold:
+          type: string
+          enum:
+          - BLOCK_UNSET
+          - BLOCK_LOW_THRESHOLD
+          - BLOCK_HIGH_THRESHOLD
+          title: Threshold
+          description: The blocking threshold for the category.
+          x-order: 1
+      type: object
+      required:
+      - category
+      - threshold
+      title: SafetySetting
+      description: 'Per-category safety setting that pairs a content category with a blocking threshold.
+
+
+        Fields:
+
+        - category (required): SafetyCategory
+
+        - threshold (required): SafetyThreshold'
+    JSONSchema:
+      properties:
+        description:
+          type: string
+          title: Description
+          description: 'A description of what the response format is for, used by the model to
+
+            determine how to respond in the format.'
+          x-order: 0
+        name:
+          type: string
+          title: Name
+          description: 'The name of the response format. Must be a-z, A-Z, 0-9, or contain
+
+            underscores and dashes, with a maximum length of 64.'
+          x-order: 1
+        schema:
+          $ref: '#/components/schemas/ResponseFormatJsonSchemaSchema'
+          x-order: 2
+        strict:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Strict
+          description: 'Whether to enable strict schema adherence when generating the output.
+
+            If set to true, the model will always follow the exact schema defined
+
+            in the `schema` field. Only a subset of JSON Schema is supported when
+
+            `strict` is `true`. To learn more, read the [Structured Outputs
+
+            guide](/docs/guides/structured-outputs).'
+          default: false
+          x-order: 3
+      type: object
+      required:
+      - name
+      title: JSONSchema
+      description: 'Structured Outputs configuration options, including a JSON Schema.
+
+
+        Fields:
+
+        - description (optional): str
+
+        - name (required): str
+
+        - schema (optional): ResponseFormatJsonSchemaSchema
+
+        - strict (optional): bool | None'
+      x-ddls-inline: true
+    Audio:
+      properties:
+        id:
+          type: string
+          title: Id
+          description: Unique identifier for a previous audio response from the model.
+          x-order: 0
+      type: object
+      required:
+      - id
+      title: Audio
+      description: 'Data about a previous audio response from the model.
+
+        [Learn more](/docs/guides/audio).
+
+
+        Fields:
+
+        - id (required): str'
+      x-ddls-inline: true
+    ModelId:
+      type: string
+      title: ModelId
+      description: Model identifier string (e.g., 'openai/gpt-5', 'anthropic/claude-3-5-sonnet').
+      x-stainless-variantName: ModelId
+    ThinkingConfigAdaptive:
+      properties:
+        type:
+          type: string
+          const: adaptive
+          title: Type
+          x-order: 0
+      type: object
+      required:
+      - type
+      title: ThinkingConfigAdaptive
+      description: 'Schema for ThinkingConfigAdaptive.
+
+
+        Fields:
+
+        - type (required): Literal["adaptive"]'
+    ChatCompletion:
+      properties:
+        id:
+          type: string
+          title: Id
+          description: A unique identifier for the chat completion.
+          x-order: 0
+        choices:
+          items:
+            $ref: '#/components/schemas/Choice'
+          type: array
+          title: Choices
+          description: A list of chat completion choices. Can be more than one if `n` is greater than 1.
+          x-order: 1
+        created:
+          type: integer
+          title: Created
+          description: The Unix timestamp (in seconds) of when the chat completion was created.
+          x-order: 2
+        model:
+          type: string
+          title: Model
+          description: The model used for the chat completion.
+          x-order: 3
+        service_tier:
+          anyOf:
+          - type: string
+            enum:
+            - auto
+            - default
+            - flex
+            - scale
+            - priority
+          - type: 'null'
+          title: Service Tier
+          description: "Specifies the processing type used for serving the request.\n  - If set to 'auto', then the request will be processed with the service tier configured in the Project settings. Unless otherwise configured, the Project will use 'default'.\n  - If set to 'default', then the request will be processed with the standard pricing and performance for the selected model.\n  - If set to '[flex](/docs/guides/flex-processing)' or '[priority](https://openai.com/api-priority-processing/)', then the request will be processed with the corresponding service tier.\n  - When not set, the default behavior is 'auto'.\n\n  When the `service_tier` parameter is set, the response body will include the `service_tier` value based on the processing mode actually used to serve the request. This response value may be different from the value set in the parameter."
+          x-order: 4
+        system_fingerprint:
+          type: string
+          title: System Fingerprint
+          description: 'This fingerprint represents the backend configuration that the model runs with.
+
+
+            Can be used in conjunction with the `seed` request parameter to understand when backend changes have been made that might impact determinism.'
+          x-order: 5
+        object:
+          type: string
+          const: chat.completion
+          title: Object
+          description: The object type, which is always `chat.completion`.
+          x-order: 6
+        usage:
+          $ref: '#/components/schemas/CompletionUsage'
+          description: Usage statistics for the completion request.
+          x-order: 7
+        tools_executed:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Tools Executed
+          description: List of tool names that were executed server-side (e.g., MCP tools). Only present when tools were executed on the server rather than returned for client-side execution.
+        mcp_server_errors:
+          anyOf:
+          - additionalProperties:
+              $ref: '#/components/schemas/MCPServerError'
+            type: object
+          - type: 'null'
+          title: Mcp Server Errors
+          description: MCP server failures keyed by server name.
+        mcp_tool_results:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/MCPToolResult'
+            type: array
+          - type: 'null'
+          title: Mcp Tool Results
+          description: Detailed results of MCP tool executions including inputs, outputs, and timing. Provides full visibility into server-side tool execution for debugging and audit purposes.
+        correlation_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Correlation Id
+          description: Stable session ID for cross-turn handoff state. Echo this on the next request to resume server-side execution.
+        server_results:
+          anyOf:
+          - additionalProperties:
+              $ref: '#/components/schemas/JSONValue'
+            type: object
+          - type: 'null'
+          title: Server Results
+          description: Completed server tool outputs keyed by call ID.
+        deferred:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/DeferredCallResponse'
+            type: array
+          - type: 'null'
+          title: Deferred
+          description: Server tools blocked on client results.
+        pending_tools:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/PendingCallResponse'
+            type: array
+          - type: 'null'
+          title: Pending Tools
+          description: Client tools to execute, with dependency ordering.
+        turns_consumed:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Turns Consumed
+          description: Number of internal LLM calls made during this request. SDKs can sum this across their outer loop to track total LLM calls.
+      type: object
+      required:
+      - id
+      - choices
+      - created
+      - model
+      - object
+      title: ChatCompletion
+      description: 'Chat completion response for Dedalus API.
+
+
+        OpenAI-compatible chat completion response with Dedalus extensions.
+
+        Maintains full compatibility with OpenAI API while providing additional
+
+        features like server-side tool execution tracking and MCP error reporting.'
+      example:
+        choices:
+        - finish_reason: stop
+          index: 0
+          message:
+            content: The next Warriors game is tomorrow at 7:30 PM.
+            role: assistant
+        created: 1677652288
+        id: chatcmpl-123
+        model: gpt-4o-mini
+        object: chat.completion
+        tools_executed:
+        - search_events
+        - get_event_details
+        usage:
+          completion_tokens: 12
+          prompt_tokens: 9
+          total_tokens: 21
+    MCPServerError:
+      properties:
+        message:
+          type: string
+          title: Message
+          description: Human-readable error message.
+        code:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Code
+          description: Machine-readable error code.
+        recommendation:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Recommendation
+          description: Suggested action for the user.
+      type: object
+      required:
+      - message
+      title: MCPServerError
+      description: Error details for a single MCP server failure.
+    ChatCompletionRequestFunctionMessage:
+      properties:
+        role:
+          type: string
+          const: function
+          title: Role
+          description: The role of the messages author, in this case `function`.
+          x-order: 0
+        content:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Content
+          description: The contents of the function message.
+          x-order: 1
+        name:
+          type: string
+          title: Name
+          description: The name of the function to call.
+          x-order: 2
+      type: object
+      required:
+      - role
+      - content
+      - name
+      title: ChatCompletionRequestFunctionMessage
+      description: 'Schema for ChatCompletionRequestFunctionMessage.
+
+
+        Fields:
+
+        - role (required): Literal["function"]
+
+        - content (required): str | None
+
+        - name (required): str'
+    ChatCompletionRequest:
+      properties:
+        audio:
+          anyOf:
+          - $ref: '#/components/schemas/ChatCompletionRequestAudio'
+          - type: 'null'
+          description: 'Parameters for audio output. Required when requesting audio responses with `modalities: [''audio'']`. See: https://platform.openai.com/docs/guides/audio'
+          examples:
+          - format: mp3
+            voice: alloy
+        frequency_penalty:
+          anyOf:
+          - type: number
+            maximum: 2
+            minimum: -2
+          - type: 'null'
+          title: Frequency Penalty
+          description: 'Number between -2.0 and 2.0. Positive values penalize new tokens based on their existing frequency in the text so far, decreasing the model''s likelihood to repeat the same line verbatim. '
+          default: 0
+        function_call:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Function Call
+          description: 'Deprecated in favor of `tool_choice`.  Controls which (if any) function is called by the model.  `none` means the model will not call a function and instead generates a message.  `auto` means the model can pick between generating a message or calling a function.  Specifying a particular function via `{"name": "my_function"}` forces the model to call that function.  `none` is the default when no functions are present. `auto` is the default if functions are present. '
+        functions:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/ChatCompletionFunctions'
+            type: array
+          - type: 'null'
+          title: Functions
+          description: 'Deprecated in favor of `tools`.  A list of functions the model may generate JSON inputs for. '
+        logit_bias:
+          anyOf:
+          - additionalProperties:
+              type: integer
+            type: object
+          - type: 'null'
+          title: Logit Bias
+          description: 'Modify the likelihood of specified tokens appearing in the completion.  Accepts a JSON object that maps tokens (specified by their token ID in the tokenizer) to an associated bias value from -100 to 100. Mathematically, the bias is added to the logits generated by the model prior to sampling. The exact effect will vary per model, but values between -1 and 1 should decrease or increase likelihood of selection; values like -100 or 100 should result in a ban or exclusive selection of the relevant token. '
+        logprobs:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Logprobs
+          description: 'Whether to return log probabilities of the output tokens or not. If true, returns the log probabilities of each output token returned in the `content` of `message`. '
+          default: false
+        max_completion_tokens:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Max Completion Tokens
+          description: Maximum tokens in completion (newer parameter name)
+        max_tokens:
+          anyOf:
+          - type: integer
+            minimum: 1
+          - type: 'null'
+          title: Max Tokens
+          description: Maximum tokens in completion
+        messages:
+          anyOf:
+          - items:
+              oneOf:
+              - $ref: '#/components/schemas/ChatCompletionRequestDeveloperMessage'
+              - $ref: '#/components/schemas/ChatCompletionRequestSystemMessage'
+              - $ref: '#/components/schemas/ChatCompletionRequestUserMessage'
+              - $ref: '#/components/schemas/ChatCompletionRequestAssistantMessage'
+              - $ref: '#/components/schemas/ChatCompletionRequestToolMessage'
+              - $ref: '#/components/schemas/ChatCompletionRequestFunctionMessage'
+              discriminator:
+                propertyName: role
+                mapping:
+                  assistant: '#/components/schemas/ChatCompletionRequestAssistantMessage'
+                  developer: '#/components/schemas/ChatCompletionRequestDeveloperMessage'
+                  function: '#/components/schemas/ChatCompletionRequestFunctionMessage'
+                  system: '#/components/schemas/ChatCompletionRequestSystemMessage'
+                  tool: '#/components/schemas/ChatCompletionRequestToolMessage'
+                  user: '#/components/schemas/ChatCompletionRequestUserMessage'
+            type: array
+          - type: 'null'
+          title: Messages
+          description: 'Conversation history (OpenAI: messages, Google: contents, Responses: input)'
+        metadata:
+          anyOf:
+          - $ref: '#/components/schemas/JSONObject'
+          - type: 'null'
+          description: 'Set of 16 key-value pairs that can be attached to an object. This can be useful for storing additional information about the object in a structured format, and querying for objects via API or the dashboard.  Keys are strings with a maximum length of 64 characters. Values are strings with a maximum length of 512 characters. '
+        modalities:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Modalities
+          description: 'Output types that you would like the model to generate. Most models are capable of generating text, which is the default:  `["text"]`  The `gpt-4o-audio-preview` model can also be used to [generate audio](/docs/guides/audio). To request that this model generate both text and audio responses, you can use:  `["text", "audio"]` '
+        model:
+          anyOf:
+          - $ref: '#/components/schemas/DedalusModelChoice'
+          - items:
+              $ref: '#/components/schemas/DedalusModelChoice'
+            type: array
+          title: Model
+          description: Model identifier. Accepts model ID strings, lists for routing, or DedalusModel objects with per-model settings.
+          examples:
+          - openai/gpt-5
+          - - openai/gpt-5
+            - anthropic/claude-3-sonnet
+        n:
+          anyOf:
+          - type: integer
+            maximum: 128
+            minimum: 1
+          - type: 'null'
+          title: N
+          description: How many chat completion choices to generate for each input message. Note that you will be charged based on the number of generated tokens across all of the choices. Keep `n` as `1` to minimize costs.
+          default: 1
+        parallel_tool_calls:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Parallel Tool Calls
+          description: Whether to enable parallel tool calls (Anthropic uses inverted polarity).
+          default: true
+        prediction:
+          anyOf:
+          - $ref: '#/components/schemas/PredictionContent'
+          - type: 'null'
+          description: 'Configuration for a [Predicted Output](/docs/guides/predicted-outputs), which can greatly improve response times when large parts of the model response are known ahead of time. This is most common when you are regenerating a file with only minor changes to most of the content. '
+        presence_penalty:
+          anyOf:
+          - type: number
+            maximum: 2
+            minimum: -2
+          - type: 'null'
+          title: Presence Penalty
+          description: 'Number between -2.0 and 2.0. Positive values penalize new tokens based on whether they appear in the text so far, increasing the model''s likelihood to talk about new topics. '
+          default: 0
+        prompt_cache_key:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Prompt Cache Key
+          description: 'Used by OpenAI to cache responses for similar requests to optimize your cache hit rates. Replaces the `user` field. [Learn more](/docs/guides/prompt-caching). '
+        prompt_cache_retention:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Prompt Cache Retention
+          description: 'The retention policy for the prompt cache. Set to `24h` to enable extended prompt caching, which keeps cached prefixes active for longer, up to a maximum of 24 hours. [Learn more](/docs/guides/prompt-caching#prompt-cache-retention). '
+        reasoning_effort:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Reasoning Effort
+          description: 'Constrains effort on reasoning for [reasoning models](https://platform.openai.com/docs/guides/reasoning). Currently supported values are `none`, `minimal`, `low`, `medium`, `high`, and `xhigh`. Reducing reasoning effort can result in faster responses and fewer tokens used on reasoning in a response.  - `gpt-5.1` defaults to `none`, which does not perform reasoning. The supported reasoning values for `gpt-5.1` are `none`, `low`, `medium`, and `high`. Tool calls are supported for all reasoning values in gpt-5.1. - All models before `gpt-5.1` default to `medium` reasoning effort, and do not support `none`. - The `gpt-5-pro` model defaults to (and only supports) `high` reasoning effort. - `xhigh` is supported for all models after `gpt-5.1-codex-max`. '
+          default: medium
+        response_format:
+          anyOf:
+          - oneOf:
+            - $ref: '#/components/schemas/ResponseFormatText'
+            - $ref: '#/components/schemas/ResponseFormatJsonSchema'
+            - $ref: '#/components/schemas/ResponseFormatJsonObject'
+            discriminator:
+              propertyName: type
+              mapping:
+                json_object: '#/components/schemas/ResponseFormatJsonObject'
+                json_schema: '#/components/schemas/ResponseFormatJsonSchema'
+                text: '#/components/schemas/ResponseFormatText'
+          - type: 'null'
+          title: Response Format
+          description: 'An object specifying the format that the model must output.  Setting to `{ "type": "json_schema", "json_schema": {...} }` enables Structured Outputs which ensures the model will match your supplied JSON schema. Learn more in the [Structured Outputs guide](/docs/guides/structured-outputs).  Setting to `{ "type": "json_object" }` enables the older JSON mode, which ensures the message the model generates is valid JSON. Using `json_schema` is preferred for models that support it. '
+        safety_identifier:
+          anyOf:
+          - type: string
+            maxLength: 64
+          - type: 'null'
+          title: Safety Identifier
+          description: 'A stable identifier used to help detect users of your application that may be violating OpenAI''s usage policies. The IDs should be a string that uniquely identifies each user, with a maximum length of 64 characters. We recommend hashing their username or email address, in order to avoid sending us any identifying information. [Learn more](/docs/guides/safety-best-practices#safety-identifiers). '
+        seed:
+          anyOf:
+          - type: integer
+            maximum: 9223372036854776000
+            minimum: 0
+          - type: 'null'
+          title: Seed
+          description: Random seed for deterministic output
+        service_tier:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Service Tier
+          description: Service tier for request processing
+          default: auto
+        stop:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: string
+          - type: 'null'
+          title: Stop
+          description: Sequences that stop generation
+        store:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Store
+          description: 'Whether or not to store the output of this chat completion request for use in our [model distillation](/docs/guides/distillation) or [evals](/docs/guides/evals) products.  Supports text and image inputs. Note: image inputs over 8MB will be dropped. '
+          default: false
+        stream:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Stream
+          description: Enable streaming response
+          default: false
+        stream_options:
+          anyOf:
+          - $ref: '#/components/schemas/JSONObject'
+          - type: 'null'
+          description: 'Options for streaming response. Only set this when you set `stream: true`. '
+        system_instruction:
+          anyOf:
+          - $ref: '#/components/schemas/JSONObject'
+          - type: string
+          - type: 'null'
+          title: System Instruction
+          description: System instruction/prompt
+        temperature:
+          anyOf:
+          - type: number
+            maximum: 1
+            minimum: 0
+          - type: 'null'
+          title: Temperature
+          description: Sampling temperature (0-2 for most providers)
+          default: 1
+        tool_choice:
+          anyOf:
+          - type: string
+          - oneOf:
+            - $ref: '#/components/schemas/ToolChoiceAuto'
+            - $ref: '#/components/schemas/ToolChoiceAny'
+            - $ref: '#/components/schemas/ToolChoiceTool'
+            - $ref: '#/components/schemas/ToolChoiceNone'
+            discriminator:
+              propertyName: type
+              mapping:
+                any: '#/components/schemas/ToolChoiceAny'
+                auto: '#/components/schemas/ToolChoiceAuto'
+                none: '#/components/schemas/ToolChoiceNone'
+                tool: '#/components/schemas/ToolChoiceTool'
+          - type: 'null'
+          title: Tool Choice
+          description: 'Controls which (if any) tool is called by the model. `none` means the model will not call any tool and instead generates a message. `auto` means the model can pick between generating a message or calling one or more tools. `required` means the model must call one or more tools. Specifying a particular tool via `{"type": "function", "function": {"name": "my_function"}}` forces the model to call that tool.  `none` is the default when no tools are present. `auto` is the default if tools are present. '
+          default: auto
+        tools:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/Tool'
+            type: array
+          - type: 'null'
+          title: Tools
+          description: Available tools/functions for the model
+        top_k:
+          anyOf:
+          - type: integer
+            minimum: 0
+          - type: 'null'
+          title: Top K
+          description: Top-k sampling parameter
+        top_logprobs:
+          anyOf:
+          - type: integer
+            maximum: 8
+            minimum: 0
+          - type: 'null'
+          title: Top Logprobs
+          description: 'An integer between 0 and 20 specifying the number of most likely tokens to return at each token position, each with an associated log probability. `logprobs` must be set to `true` if this parameter is used. '
+        top_p:
+          anyOf:
+          - type: number
+            maximum: 1
+            minimum: 0
+          - type: 'null'
+          title: Top P
+          description: Nucleus sampling threshold
+          default: 1
+        user:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: User
+          description: 'This field is being replaced by `safety_identifier` and `prompt_cache_key`. Use `prompt_cache_key` instead to maintain caching optimizations. A stable identifier for your end-users. Used to boost cache hit rates by better bucketing similar requests and  to help OpenAI detect and prevent abuse. [Learn more](/docs/guides/safety-best-practices#safety-identifiers). '
+        verbosity:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Verbosity
+          description: 'Constrains the verbosity of the model''s response. Lower values will result in more concise responses, while higher values will result in more verbose responses. Currently supported values are `low`, `medium`, and `high`. '
+          default: medium
+        web_search_options:
+          anyOf:
+          - $ref: '#/components/schemas/JSONObject'
+          - type: 'null'
+          description: 'This tool searches the web for relevant results to use in a response. Learn more about the [web search tool](/docs/guides/tools-web-search?api-mode=chat). '
+        cache_control:
+          anyOf:
+          - $ref: '#/components/schemas/CacheControlEphemeral'
+          - type: 'null'
+          description: Top-level cache control automatically applies a cache_control marker to the last cacheable block in the request.
+        cached_content:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Cached Content
+          description: 'Optional. The name of the content [cached](https://ai.google.dev/gemini-api/docs/caching) to use as context to serve the prediction. Format: `cachedContents/{cachedContent}`'
+        container:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Container
+          description: Container identifier for reuse across requests.
+        deferred:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Deferred
+          description: If set to `true`, the request returns a `request_id`. You can then get the deferred response by GET `/v1/chat/deferred-completion/{request_id}`.
+          default: false
+        generation_config:
+          anyOf:
+          - $ref: '#/components/schemas/JSONObject'
+          - type: 'null'
+          description: Generation parameters wrapper (Google-specific)
+        inference_geo:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Inference Geo
+          description: Specifies the geographic region for inference processing. If not specified, the workspace's `default_inference_geo` is used.
+        output_config:
+          anyOf:
+          - $ref: '#/components/schemas/JSONObject'
+          - type: 'null'
+        prompt_mode:
+          anyOf:
+          - type: string
+            const: reasoning
+          - type: 'null'
+          title: Prompt Mode
+          description: Allows toggling between the reasoning mode and no system prompt. When set to `reasoning` the system prompt for reasoning models will be used.
+        safe_prompt:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Safe Prompt
+          description: Whether to inject a safety prompt before all conversations.
+          default: false
+        safety_settings:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/SafetySetting'
+            type: array
+          - type: 'null'
+          title: Safety Settings
+          description: Safety/content filtering settings (Google-specific)
+        search_parameters:
+          anyOf:
+          - $ref: '#/components/schemas/JSONObject'
+          - type: 'null'
+          description: Set the parameters to be used for searched data. If not set, no data will be acquired by the model.
+        thinking:
+          anyOf:
+          - oneOf:
+            - $ref: '#/components/schemas/ThinkingConfigEnabled'
+            - $ref: '#/components/schemas/ThinkingConfigDisabled'
+            - $ref: '#/components/schemas/ThinkingConfigAdaptive'
+            discriminator:
+              propertyName: type
+              mapping:
+                adaptive: '#/components/schemas/ThinkingConfigAdaptive'
+                disabled: '#/components/schemas/ThinkingConfigDisabled'
+                enabled: '#/components/schemas/ThinkingConfigEnabled'
+          - type: 'null'
+          title: Thinking
+          description: Extended thinking configuration (Anthropic-specific)
+        tool_config:
+          anyOf:
+          - $ref: '#/components/schemas/JSONObject'
+          - type: 'null'
+          description: Tool calling configuration (Google-specific)
+        mcp_servers:
+          anyOf:
+          - type: string
+          - $ref: '#/components/schemas/MCPServerSpec'
+          - $ref: '#/components/schemas/MCPServers'
+          - type: 'null'
+          title: Mcp Servers
+          description: MCP server identifiers. Accepts marketplace slugs, URLs, or MCPServerSpec objects. MCP tools are executed server-side and billed separately.
+          examples:
+          - dedalus-labs/example-server
+          - - dedalus-labs/example-server-1
+            - dedalus-labs/example-server-2
+          - slug: dedalus-labs/example-server-1
+            version: v1.0.0
+          - url: https://mcp.dedaluslabs.ai/dedalus-labs/example-server-1
+          - url: https://mcp.dedaluslabs.ai/dedalus-labs/example-server-2/mcp
+        credentials:
+          anyOf:
+          - $ref: '#/components/schemas/Credential'
+          - $ref: '#/components/schemas/MCPCredentials'
+          - type: 'null'
+          title: Credentials
+          description: Credentials for MCP server authentication. Each credential is matched to servers by connection name.
+          examples:
+          - connection_name: external-service
+            values:
+              api_key: sk-...
+          - - connection_name: service-a
+              values:
+                api_key: sk-...
+            - connection_name: service-b
+              values:
+                token: tok_...
+        guardrails:
+          anyOf:
+          - items:
+              additionalProperties: true
+              type: object
+            type: array
+          - type: 'null'
+          title: Guardrails
+          description: Content filtering and safety policy configuration.
+        handoff_config:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Handoff Config
+          description: Configuration for multi-model handoffs.
+        model_attributes:
+          anyOf:
+          - additionalProperties:
+              additionalProperties:
+                type: number
+              type: object
+            type: object
+          - type: 'null'
+          title: Model Attributes
+          description: Model attributes for routing. Maps model IDs to attribute dictionaries with values in [0.0, 1.0].
+          examples:
+          - gpt-5:
+              accuracy: 0.95
+              speed: 0.6
+        agent_attributes:
+          anyOf:
+          - additionalProperties:
+              type: number
+            type: object
+          - type: 'null'
+          title: Agent Attributes
+          description: Agent attributes. Values in [0.0, 1.0].
+          examples:
+          - accuracy: 0.9
+            complexity: 0.8
+        max_turns:
+          anyOf:
+          - type: integer
+            maximum: 100
+            minimum: 1
+          - type: 'null'
+          title: Max Turns
+          description: Maximum conversation turns.
+          examples:
+          - 5
+          - 10
+        automatic_tool_execution:
+          type: boolean
+          title: Automatic Tool Execution
+          description: Execute tools server-side. If false, returns raw tool calls for manual handling.
+          default: true
+        correlation_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Correlation Id
+          description: Stable session ID for resuming a previous handoff. Returned by the server on handoff; echo it on the next request to resume.
+        deferred_calls:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/DeferredCallResponse'
+            type: array
+          - type: 'null'
+          title: Deferred Calls
+          description: Tier 2 stateless resumption. Deferred tool specs from a previous handoff response, sent back verbatim so the server can resume without Redis.
+        handoff_mode:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Handoff Mode
+          description: 'Handoff control. None or omitted: auto-detect. true: structured handoff (SDK). false: drop-in (LLM re-run for mixed turns).'
+      additionalProperties: true
+      type: object
+      required:
+      - model
+      title: ChatCompletionRequest
+      description: 'ChatCompletion request schema.
+
+
+        Supports OpenAI-compatible parameters, provider-specific extensions,
+
+        server-side execution, and agent orchestration features.'
+    ResponseFormatText:
+      properties:
+        type:
+          type: string
+          const: text
+          title: Type
+          description: The type of response format being defined. Always `text`.
+          x-order: 0
+      type: object
+      required:
+      - type
+      title: ResponseFormatText
+      description: 'Default response format. Used to generate text responses.
+
+
+        Fields:
+
+        - type (required): Literal["text"]'
+    DeferredCallResponse:
+      properties:
+        id:
+          type: string
+          title: Id
+          description: Unique identifier for this deferred call.
+        name:
+          type: string
+          title: Name
+          description: Name of the tool.
+        arguments:
+          $ref: '#/components/schemas/JSONObject'
+          description: Input arguments for the tool call.
+        venue:
+          type: string
+          title: Venue
+          description: Execution venue (server or client).
+          default: server
+        dependencies:
+          items:
+            type: string
+          type: array
+          title: Dependencies
+          description: IDs of calls this depends on.
+        blocked_by:
+          items:
+            type: string
+          type: array
+          title: Blocked By
+          description: IDs of pending client calls blocking this call.
+      type: object
+      required:
+      - id
+      - name
+      title: DeferredCallResponse
+      description: 'Server-side call blocked until pending client calls complete.
+
+
+        Carries full spec for stateless resumption on subsequent turns.'
+    ChatCompletionRequestMessageContentPartFile:
+      properties:
+        type:
+          type: string
+          const: file
+          title: Type
+          description: The type of the content part. Always `file`.
+          x-order: 0
+        file:
+          properties:
+            filename:
+              type: string
+              title: Filename
+              description: "The name of the file, used when passing the file to the model as a \nstring."
+              x-order: 0
+            file_data:
+              type: string
+              title: File Data
+              description: "The base64 encoded file data, used when passing the file to the model \nas a string."
+              x-order: 1
+            file_id:
+              type: string
+              title: File Id
+              description: The ID of an uploaded file to use as input.
+              x-order: 2
+          type: object
+          description: 'Schema for File.
+
+
+            Fields:
+
+            - filename (optional): str
+
+            - file_data (optional): str
+
+            - file_id (optional): str'
+      type: object
+      required:
+      - type
+      - file
+      title: ChatCompletionRequestMessageContentPartFile
+      description: 'Learn about [file inputs](/docs/guides/text) for text generation.
+
+
+        Fields:
+
+        - type (required): Literal["file"]
+
+        - file (required): File'
+    ThinkingConfigEnabled:
+      properties:
+        budget_tokens:
+          type: integer
+          minimum: 1024
+          title: Budget Tokens
+          description: 'Determines how many tokens Claude can use for its internal reasoning process. Larger budgets can enable more thorough analysis for complex problems, improving response quality.
+
+
+            Must be ≥1024 and less than `max_tokens`.
+
+
+            See [extended thinking](https://docs.claude.com/en/docs/build-with-claude/extended-thinking) for details.'
+          x-order: 0
+        type:
+          type: string
+          const: enabled
+          title: Type
+          x-order: 1
+      type: object
+      required:
+      - budget_tokens
+      - type
+      title: ThinkingConfigEnabled
+      description: 'Schema for ThinkingConfigEnabled.
+
+
+        Fields:
+
+        - budget_tokens (required): int
+
+        - type (required): Literal["enabled"]'
+    ChatCompletionFunctions:
+      properties:
+        description:
+          type: string
+          title: Description
+          description: A description of what the function does, used by the model to choose when and how to call the function.
+          x-order: 0
+        name:
+          type: string
+          title: Name
+          description: The name of the function to be called. Must be a-z, A-Z, 0-9, or contain underscores and dashes, with a maximum length of 64.
+          x-order: 1
+        parameters:
+          $ref: '#/components/schemas/FunctionParameters'
+          description: "The parameters the functions accepts, described as a JSON Schema object. See the [guide](/docs/guides/function-calling) for examples, and the [JSON Schema reference](https://json-schema.org/understanding-json-schema/) for documentation about the format. \n\nOmitting `parameters` defines a function with an empty parameter list."
+          x-order: 2
+      type: object
+      required:
+      - name
+      title: ChatCompletionFunctions
+      description: 'Schema for ChatCompletionFunctions.
+
+
+        Fields:
+
+        - description (optional): str
+
+        - name (required): str
+
+        - parameters (optional): FunctionParameters'
+    ModelSettings:
+      properties:
+        temperature:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Temperature
+        top_p:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Top P
+        frequency_penalty:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Frequency Penalty
+        presence_penalty:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Presence Penalty
+        stop:
+          anyOf:
+          - type: string
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Stop
+        seed:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Seed
+        logit_bias:
+          anyOf:
+          - additionalProperties:
+              type: integer
+            type: object
+          - type: 'null'
+          title: Logit Bias
+        logprobs:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Logprobs
+        top_logprobs:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Top Logprobs
+        n:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: N
+        user:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: User
+        response_format:
+          anyOf:
+          - $ref: '#/components/schemas/JSONObject'
+          - type: 'null'
+        stream:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Stream
+        stream_options:
+          anyOf:
+          - $ref: '#/components/schemas/JSONObject'
+          - type: 'null'
+        audio:
+          anyOf:
+          - $ref: '#/components/schemas/JSONObject'
+          - type: 'null'
+        service_tier:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Service Tier
+        prediction:
+          anyOf:
+          - $ref: '#/components/schemas/JSONObject'
+          - type: 'null'
+        tool_choice:
+          anyOf:
+          - $ref: '#/components/schemas/ToolChoice'
+          - type: 'null'
+        parallel_tool_calls:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Parallel Tool Calls
+        truncation:
+          anyOf:
+          - type: string
+            enum:
+            - auto
+            - disabled
+          - type: 'null'
+          title: Truncation
+        max_tokens:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Max Tokens
+        max_completion_tokens:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Max Completion Tokens
+        reasoning:
+          anyOf:
+          - $ref: '#/components/schemas/Reasoning'
+          - type: 'null'
+        reasoning_effort:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Reasoning Effort
+        metadata:
+          anyOf:
+          - additionalProperties:
+              type: string
+            type: object
+          - type: 'null'
+          title: Metadata
+        store:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Store
+        include_usage:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Include Usage
+        timeout:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Timeout
+        prompt_cache_key:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Prompt Cache Key
+        safety_identifier:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Safety Identifier
+        verbosity:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Verbosity
+        web_search_options:
+          anyOf:
+          - $ref: '#/components/schemas/JSONObject'
+          - type: 'null'
+        extra_query:
+          anyOf:
+          - $ref: '#/components/schemas/QueryParams'
+          - type: 'null'
+        extra_headers:
+          anyOf:
+          - $ref: '#/components/schemas/HeaderParams'
+          - type: 'null'
+        extra_args:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Extra Args
+        attributes:
+          additionalProperties: true
+          type: object
+          title: Attributes
+        voice:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Voice
+        modalities:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Modalities
+        input_audio_format:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Input Audio Format
+        output_audio_format:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Output Audio Format
+        input_audio_transcription:
+          anyOf:
+          - $ref: '#/components/schemas/JSONObject'
+          - type: 'null'
+        turn_detection:
+          anyOf:
+          - $ref: '#/components/schemas/JSONObject'
+          - type: 'null'
+        thinking:
+          anyOf:
+          - $ref: '#/components/schemas/JSONObject'
+          - type: 'null'
+        top_k:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Top K
+        generation_config:
+          anyOf:
+          - $ref: '#/components/schemas/JSONObject'
+          - type: 'null'
+        system_instruction:
+          anyOf:
+          - $ref: '#/components/schemas/JSONObject'
+          - type: 'null'
+        safety_settings:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/JSONObject'
+            type: array
+          - type: 'null'
+          title: Safety Settings
+        tool_config:
+          anyOf:
+          - $ref: '#/components/schemas/JSONObject'
+          - type: 'null'
+        search_parameters:
+          anyOf:
+          - $ref: '#/components/schemas/JSONObject'
+          - type: 'null'
+        deferred:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Deferred
+        structured_output:
+          anyOf:
+          - {}
+          - type: 'null'
+          title: Structured Output
+          x-stainless-any: true
+      type: object
+      title: ModelSettings
+    ChatCompletionRequestAudio:
+      properties:
+        voice:
+          anyOf:
+          - type: string
+          - type: string
+            enum:
+            - alloy
+            - ash
+            - ballad
+            - coral
+            - echo
+            - sage
+            - shimmer
+            - verse
+            - marin
+            - cedar
+          - $ref: '#/components/schemas/VoiceIdsOrCustomVoiceInline'
+          title: Voice
+          description: 'The voice the model uses to respond. Supported built-in voices are
+
+            `alloy`, `ash`, `ballad`, `coral`, `echo`, `fable`, `nova`, `onyx`,
+
+            `sage`, `shimmer`, `marin`, and `cedar`. You may also provide a
+
+            custom voice object with an `id`, for example `{ "id": "voice_1234" }`.'
+          x-order: 0
+        format:
+          type: string
+          enum:
+          - wav
+          - aac
+          - mp3
+          - flac
+          - opus
+          - pcm16
+          title: Format
+          description: 'Specifies the output audio format. Must be one of `wav`, `mp3`, `flac`,
+
+            `opus`, or `pcm16`.'
+          x-order: 1
+      type: object
+      required:
+      - voice
+      - format
+      title: ChatCompletionRequestAudio
+      description: 'Parameters for audio output. Required when audio output is requested with
+
+        `modalities: ["audio"]`. [Learn more](/docs/guides/audio).
+
+
+        Fields:
+
+        - voice (required): VoiceIdsOrCustomVoice
+
+        - format (required): Literal["wav", "aac", "mp3", "flac", "opus", "pcm16"]'
+      x-ddls-inline: true
+    ResponseFormatJsonObject:
+      properties:
+        type:
+          type: string
+          const: json_object
+          title: Type
+          description: The type of response format being defined. Always `json_object`.
+          x-order: 0
+      type: object
+      required:
+      - type
+      title: ResponseFormatJsonObject
+      description: 'JSON object response format. An older method of generating JSON responses.
+
+        Using `json_schema` is recommended for models that support it. Note that the
+
+        model will not generate JSON without a system or user message instructing it
+
+        to do so.
+
+
+        Fields:
+
+        - type (required): Literal["json_object"]'
+    Reasoning:
+      properties:
+        effort:
+          anyOf:
+          - type: string
+            enum:
+            - none
+            - minimal
+            - low
+            - medium
+            - high
+            - xhigh
+          - type: 'null'
+          title: Effort
+        generate_summary:
+          anyOf:
+          - type: string
+            enum:
+            - auto
+            - concise
+            - detailed
+          - type: 'null'
+          title: Generate Summary
+        summary:
+          anyOf:
+          - type: string
+            enum:
+            - auto
+            - concise
+            - detailed
+          - type: 'null'
+          title: Summary
+      additionalProperties: true
+      type: object
+      title: Reasoning
+      description: '**gpt-5 and o-series models only**
+
+
+        Configuration options for
+
+        [reasoning models](https://platform.openai.com/docs/guides/reasoning).'
+    Choice:
+      properties:
+        finish_reason:
+          anyOf:
+          - type: string
+            enum:
+            - stop
+            - length
+            - tool_calls
+            - content_filter
+            - function_call
+          - type: 'null'
+          title: Finish Reason
+          description: 'The reason the model stopped generating tokens. This will be `stop` if the model hit a natural stop point or a provided stop sequence,
+
+            `length` if the maximum number of tokens specified in the request was reached,
+
+            `content_filter` if content was omitted due to a flag from our content filters,
+
+            `tool_calls` if the model called a tool, or `function_call` (deprecated) if the model called a function.'
+          x-order: 0
+        index:
+          type: integer
+          title: Index
+          description: The index of the choice in the list of choices.
+          x-order: 1
+        message:
+          $ref: '#/components/schemas/ChatCompletionResponseMessage'
+          description: A chat completion message generated by the model.
+          x-order: 2
+        logprobs:
+          anyOf:
+          - $ref: '#/components/schemas/ChoiceLogprobs'
+          - type: 'null'
+          description: Log probability information for the choice.
+          x-order: 3
+      type: object
+      required:
+      - index
+      - message
+      title: Choice
+      description: 'A chat completion choice.
+
+
+        OpenAI-compatible choice object for non-streaming responses.
+
+        Part of the ChatCompletion response.'
+      x-ddls-inline: true
+    ChatCompletionRequestMessageContentPartImage:
+      properties:
+        type:
+          type: string
+          const: image_url
+          title: Type
+          description: The type of the content part.
+          x-order: 0
+        image_url:
+          properties:
+            url:
+              type: string
+              minLength: 1
+              format: uri
+              title: Url
+              description: Either a URL of the image or the base64 encoded image data.
+              x-order: 0
+            detail:
+              type: string
+              enum:
+              - auto
+              - low
+              - high
+              title: Detail
+              description: Specifies the detail level of the image. Learn more in the [Vision guide](/docs/guides/vision#low-or-high-fidelity-image-understanding).
+              default: auto
+              x-order: 1
+          type: object
+          required:
+          - url
+          description: 'Schema for ImageUrl.
+
+
+            Fields:
+
+            - url (required): AnyUrl
+
+            - detail (optional): Literal["auto", "low", "high"]'
+      type: object
+      required:
+      - type
+      - image_url
+      title: ChatCompletionRequestMessageContentPartImage
+      description: 'Learn about [image inputs](/docs/guides/vision).
+
+
+        Fields:
+
+        - type (required): Literal["image_url"]
+
+        - image_url (required): ImageUrl'
+    ChatCompletionRequestToolMessage:
+      properties:
+        role:
+          type: string
+          const: tool
+          title: Role
+          description: The role of the messages author, in this case `tool`.
+          x-order: 0
+        content:
+          anyOf:
+          - type: string
+          - items:
+              $ref: '#/components/schemas/ChatCompletionRequestMessageContentPartText'
+            type: array
+            minItems: 1
+            title: ChatCompletionRequestToolMessageContentArray
+          title: Content
+          description: The contents of the tool message.
+          x-order: 1
+        tool_call_id:
+          type: string
+          title: Tool Call Id
+          description: Tool call that this message is responding to.
+          x-order: 2
+      type: object
+      required:
+      - role
+      - content
+      - tool_call_id
+      title: ChatCompletionRequestToolMessage
+      description: 'Schema for ChatCompletionRequestToolMessage.
+
+
+        Fields:
+
+        - role (required): Literal["tool"]
+
+        - content (required): str | Annotated[list[ChatCompletionRequestToolMessageContentPart], MinLen(1), ArrayTitle("ChatCompletionRequestToolMessageContentArray")]
+
+        - tool_call_id (required): str'
+    ChatCompletionRequestMessageContentPartAudio:
+      properties:
+        type:
+          type: string
+          const: input_audio
+          title: Type
+          description: The type of the content part. Always `input_audio`.
+          x-order: 0
+        input_audio:
+          properties:
+            data:
+              type: string
+              title: Data
+              description: Base64 encoded audio data.
+              x-order: 0
+            format:
+              type: string
+              enum:
+              - wav
+              - mp3
+              title: Format
+              description: The format of the encoded audio data. Currently supports "wav" and "mp3".
+              x-order: 1
+          type: object
+          required:
+          - data
+          - format
+          description: 'Schema for InputAudio.
+
+
+            Fields:
+
+            - data (required): str
+
+            - format (required): Literal["wav", "mp3"]'
+      type: object
+      required:
+      - type
+      - input_audio
+      title: ChatCompletionRequestMessageContentPartAudio
+      description: 'Learn about [audio inputs](/docs/guides/audio).
+
+
+        Fields:
+
+        - type (required): Literal["input_audio"]
+
+        - input_audio (required): InputAudio'
+    FunctionParameters:
+      additionalProperties: true
+      type: object
+      title: FunctionParameters
+      description: 'The parameters the functions accepts, described as a JSON Schema object. See the [guide](/docs/guides/function-calling) for examples, and the [JSON Schema reference](https://json-schema.org/understanding-json-schema/) for documentation about the format.
+
+
+        Omitting `parameters` defines a function with an empty parameter list.'
+    ChatCompletionStreamResponse:
+      description: 'Represents a streamed chunk of a chat completion response returned
+
+        by the model, based on the provided input.
+
+        [Learn more](/docs/guides/streaming-responses).
+
+
+        Fields:
+
+        - id (required): str
+
+        - choices (required): list[ChatCompletionStreamResponseChoicesItem]
+
+        - created (required): int
+
+        - model (required): str
+
+        - service_tier (optional): ServiceTier
+
+        - system_fingerprint (optional): str
+
+        - object (required): Literal["chat.completion.chunk"]
+
+        - usage (optional): CompletionUsage'
+      properties:
+        id:
+          description: A unique identifier for the chat completion. Each chunk has the same ID.
+          title: Id
+          type: string
+          x-order: 0
+        choices:
+          description: 'A list of chat completion choices. Can contain more than one elements if `n` is greater than 1. Can also be empty for the
+
+            last chunk if you set `stream_options: {"include_usage": true}`.'
+          items:
+            $ref: '#/components/schemas/ChatCompletionStreamResponseChoicesItem'
+          title: Choices
+          type: array
+          x-order: 1
+        created:
+          description: The Unix timestamp (in seconds) of when the chat completion was created. Each chunk has the same timestamp.
+          title: Created
+          type: integer
+          x-order: 2
+        model:
+          description: The model to generate the completion.
+          title: Model
+          type: string
+          x-order: 3
+        service_tier:
+          anyOf:
+          - enum:
+            - auto
+            - default
+            - flex
+            - scale
+            - priority
+            type: string
+          - type: 'null'
+          default: null
+          description: "Specifies the processing type used for serving the request.\n  - If set to 'auto', then the request will be processed with the service tier configured in the Project settings. Unless otherwise configured, the Project will use 'default'.\n  - If set to 'default', then the request will be processed with the standard pricing and performance for the selected model.\n  - If set to '[flex](/docs/guides/flex-processing)' or '[priority](https://openai.com/api-priority-processing/)', then the request will be processed with the corresponding service tier.\n  - When not set, the default behavior is 'auto'.\n\n  When the `service_tier` parameter is set, the response body will include the `service_tier` value based on the processing mode actually used to serve the request. This response value may be different from the value set in the parameter."
+          title: Service Tier
+          x-order: 4
+        system_fingerprint:
+          default: null
+          description: 'This fingerprint represents the backend configuration that the model runs with.
+
+            Can be used in conjunction with the `seed` request parameter to understand when backend changes have been made that might impact determinism.'
+          title: System Fingerprint
+          type: string
+          x-order: 5
+        object:
+          const: chat.completion.chunk
+          description: The object type, which is always `chat.completion.chunk`.
+          title: Object
+          type: string
+          x-order: 6
+        usage:
+          anyOf:
+          - $ref: '#/components/schemas/CompletionUsage'
+          - type: 'null'
+          default: null
+          description: 'An optional field that will only be present when you set
+
+            `stream_options: {"include_usage": true}` in your request. When present, it
+
+            contains a null value **except for the last chunk** which contains the
+
+            token usage statistics for the entire request.
+
+
+            **NOTE:** If the stream is interrupted or cancelled, you may not
+
+            receive the final usage chunk which contains the total token usage for
+
+            the request.'
+          x-order: 7
+      required:
+      - id
+      - choices
+      - created
+      - model
+      - object
+      title: ChatCompletionStreamResponse
+      type: object
+    ToolChoiceAny:
+      properties:
+        disable_parallel_tool_use:
+          type: boolean
+          title: Disable Parallel Tool Use
+          description: 'Whether to disable parallel tool use.
+
+
+            Defaults to `false`. If set to `true`, the model will output exactly one tool use.'
+          x-order: 0
+        type:
+          type: string
+          const: any
+          title: Type
+          x-order: 1
+      type: object
+      required:
+      - type
+      title: ToolChoiceAny
+      description: 'The model will use any available tools.
+
+
+        Fields:
+
+        - disable_parallel_tool_use (optional): bool
+
+        - type (required): Literal["any"]'
+    QueryParams:
+      additionalProperties: true
+      type: object
+    MCPToolResult:
+      properties:
+        tool_name:
+          type: string
+          title: Tool Name
+          description: Name of the MCP tool that was executed.
+        server_name:
+          type: string
+          title: Server Name
+          description: Name of the MCP server that handled the tool.
+        arguments:
+          $ref: '#/components/schemas/JSONObject'
+          description: Input arguments passed to the tool.
+        result:
+          anyOf:
+          - $ref: '#/components/schemas/JSONValue'
+          - type: 'null'
+          description: Structured result from the tool (parsed from structuredContent or content).
+        is_error:
+          type: boolean
+          title: Is Error
+          description: Whether the tool execution resulted in an error.
+        duration_ms:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Duration (ms)
+          description: Execution time in milliseconds.
+      type: object
+      required:
+      - tool_name
+      - server_name
+      - arguments
+      - is_error
+      title: MCPToolResult
+      description: 'Result of a single MCP tool execution.
+
+
+        Provides visibility into MCP tool calls including the full input arguments
+
+        and structured output, enabling debugging and audit trails.'
+    CompletionTokensDetails:
+      properties:
+        accepted_prediction_tokens:
+          type: integer
+          title: Accepted Prediction Tokens
+          description: 'When using Predicted Outputs, the number of tokens in the
+
+            prediction that appeared in the completion.'
+          default: 0
+          x-order: 0
+        audio_tokens:
+          type: integer
+          title: Audio Tokens
+          description: Audio input tokens generated by the model.
+          default: 0
+          x-order: 1
+        reasoning_tokens:
+          type: integer
+          title: Reasoning Tokens
+          description: Tokens generated by the model for reasoning.
+          default: 0
+          x-order: 2
+        rejected_prediction_tokens:
+          type: integer
+          title: Rejected Prediction Tokens
+          description: 'When using Predicted Outputs, the number of tokens in the
+
+            prediction that did not appear in the completion. However, like
+
+            reasoning tokens, these tokens are still counted in the total
+
+            completion tokens for purposes of billing, output, and context window
+
+            limits.'
+          default: 0
+          x-order: 3
+      type: object
+      title: CompletionTokensDetails
+      description: 'Breakdown of tokens used in a completion.
+
+
+        Fields:
+
+        - accepted_prediction_tokens (optional): int
+
+        - audio_tokens (optional): int
+
+        - reasoning_tokens (optional): int
+
+        - rejected_prediction_tokens (optional): int'
+      x-ddls-inline: true
+    CacheControlEphemeral:
+      properties:
+        ttl:
+          type: string
+          enum:
+          - 5m
+          - 1h
+          title: Ttl
+          description: 'The time-to-live for the cache control breakpoint.
+
+
+            This may be one the following values:
+
+            - `5m`: 5 minutes
+
+            - `1h`: 1 hour
+
+
+            Defaults to `5m`.'
+          x-order: 0
+        type:
+          type: string
+          const: ephemeral
+          title: Type
+          x-order: 1
+      type: object
+      required:
+      - type
+      title: CacheControlEphemeral
+      description: 'Schema for CacheControlEphemeral.
+
+
+        Fields:
+
+        - ttl (optional): Literal["5m", "1h"]
+
+        - type (required): Literal["ephemeral"]'
+    PromptTokensDetails:
+      properties:
+        audio_tokens:
+          type: integer
+          title: Audio Tokens
+          description: Audio input tokens present in the prompt.
+          default: 0
+          x-order: 0
+        cached_tokens:
+          type: integer
+          title: Cached Tokens
+          description: Cached tokens present in the prompt.
+          default: 0
+          x-order: 1
+      type: object
+      title: PromptTokensDetails
+      description: 'Breakdown of tokens used in the prompt.
+
+
+        Fields:
+
+        - audio_tokens (optional): int
+
+        - cached_tokens (optional): int'
+      x-ddls-inline: true
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    ToolChoiceTool:
+      properties:
+        disable_parallel_tool_use:
+          type: boolean
+          title: Disable Parallel Tool Use
+          description: 'Whether to disable parallel tool use.
+
+
+            Defaults to `false`. If set to `true`, the model will output exactly one tool use.'
+          x-order: 0
+        name:
+          type: string
+          title: Name
+          description: The name of the tool to use.
+          x-order: 1
+        type:
+          type: string
+          const: tool
+          title: Type
+          x-order: 2
+      type: object
+      required:
+      - name
+      - type
+      title: ToolChoiceTool
+      description: 'The model will use the specified tool with `tool_choice.name`.
+
+
+        Fields:
+
+        - disable_parallel_tool_use (optional): bool
+
+        - name (required): str
+
+        - type (required): Literal["tool"]'
+    ChatCompletionRequestAssistantMessage:
+      properties:
+        content:
+          anyOf:
+          - type: string
+          - items:
+              oneOf:
+              - $ref: '#/components/schemas/ChatCompletionRequestMessageContentPartText'
+              - $ref: '#/components/schemas/ChatCompletionRequestMessageContentPartRefusal'
+              discriminator:
+                propertyName: type
+                mapping:
+                  refusal: '#/components/schemas/ChatCompletionRequestMessageContentPartRefusal'
+                  text: '#/components/schemas/ChatCompletionRequestMessageContentPartText'
+            type: array
+            minItems: 1
+            title: ChatCompletionRequestAssistantMessageContentArray
+          - type: 'null'
+          title: Content
+          description: The contents of the assistant message. Required unless `tool_calls` or `function_call` is specified.
+          x-order: 0
+        refusal:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Refusal
+          description: The refusal message by the assistant.
+          x-order: 1
+        role:
+          type: string
+          const: assistant
+          title: Role
+          description: The role of the messages author, in this case `assistant`.
+          x-order: 2
+        name:
+          type: string
+          title: Name
+          description: An optional name for the participant. Provides the model information to differentiate between participants of the same role.
+          x-order: 3
+        audio:
+          anyOf:
+          - $ref: '#/components/schemas/Audio'
+          - type: 'null'
+          description: 'Data about a previous audio response from the model.
+
+            [Learn more](/docs/guides/audio).'
+          x-order: 4
+        tool_calls:
+          items:
+            oneOf:
+            - $ref: '#/components/schemas/ChatCompletionMessageToolCall'
+            - $ref: '#/components/schemas/ChatCompletionMessageCustomToolCall'
+            discriminator:
+              propertyName: type
+              mapping:
+                custom: '#/components/schemas/ChatCompletionMessageCustomToolCall'
+                function: '#/components/schemas/ChatCompletionMessageToolCall'
+          type: array
+          title: Tool Calls
+          description: The tool calls generated by the model, such as function calls.
+          x-order: 5
+        function_call:
+          anyOf:
+          - $ref: '#/components/schemas/FunctionCall'
+          - type: 'null'
+          description: Deprecated and replaced by `tool_calls`. The name and arguments of a function that should be called, as generated by the model.
+          x-order: 6
+      type: object
+      required:
+      - role
+      title: ChatCompletionRequestAssistantMessage
+      description: 'Messages sent by the model in response to user messages.
+
+
+        Fields:
+
+        - content (optional): str | Annotated[list[ChatCompletionRequestAssistantMessageContentPart], MinLen(1), ArrayTitle("ChatCompletionRequestAssistantMessageContentArray")] | None
+
+        - refusal (optional): str | None
+
+        - role (required): Literal["assistant"]
+
+        - name (optional): str
+
+        - audio (optional): Audio | None
+
+        - tool_calls (optional): ChatCompletionMessageToolCalls
+
+        - function_call (optional): FunctionCall | None'
+    ToolChoice:
+      anyOf:
+      - type: string
+        enum:
+        - auto
+        - required
+        - none
+      - type: string
+      - additionalProperties: true
+        type: object
+      - $ref: '#/components/schemas/MCPToolChoice'
+      - type: 'null'
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    ToolChoiceNone:
+      properties:
+        type:
+          type: string
+          const: none
+          title: Type
+          x-order: 0
+      type: object
+      required:
+      - type
+      title: ToolChoiceNone
+      description: 'The model will not be allowed to use tools.
+
+
+        Fields:
+
+        - type (required): Literal["none"]'
+    ToolChoiceAuto:
+      properties:
+        disable_parallel_tool_use:
+          type: boolean
+          title: Disable Parallel Tool Use
+          description: 'Whether to disable parallel tool use.
+
+
+            Defaults to `false`. If set to `true`, the model will output at most one tool use.'
+          x-order: 0
+        type:
+          type: string
+          const: auto
+          title: Type
+          x-order: 1
+      type: object
+      required:
+      - type
+      title: ToolChoiceAuto
+      description: 'The model will automatically decide whether to use tools.
+
+
+        Fields:
+
+        - disable_parallel_tool_use (optional): bool
+
+        - type (required): Literal["auto"]'
+    MCPToolChoice:
+      properties:
+        server_label:
+          type: string
+          title: Server Label
+        name:
+          type: string
+          title: Name
+      type: object
+      required:
+      - server_label
+      - name
+      title: MCPToolChoice
+    ChatCompletionMessageToolCall:
+      properties:
+        id:
+          type: string
+          title: Id
+          description: The ID of the tool call.
+          x-order: 0
+        type:
+          type: string
+          const: function
+          title: Type
+          description: The type of the tool. Currently, only `function` is supported.
+          x-order: 1
+        function:
+          properties:
+            name:
+              type: string
+              title: Name
+              description: The name of the function to call.
+              x-order: 0
+            arguments:
+              type: string
+              title: Arguments
+              description: The arguments to call the function with, as generated by the model in JSON format. Note that the model does not always generate valid JSON, and may hallucinate parameters not defined by your function schema. Validate the arguments in your code before calling your function.
+              x-order: 1
+          type: object
+          required:
+          - name
+          - arguments
+          description: 'The function that the model called.
+
+
+            Fields:
+
+            - name (required): str
+
+            - arguments (required): str'
+        thought_signature:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Thought Signature
+          description: Opaque signature for thought continuity in multi-turn tool use (Google-specific, base64 encoded)
+      type: object
+      required:
+      - id
+      - type
+      - function
+      title: ChatCompletionMessageToolCall
+      description: 'A call to a function tool created by the model.
+
+
+        Fields:
+
+        - id (required): str
+
+        - type (required): Literal["function"]
+
+        - function (required): ChatCompletionMessageToolCallFunction
+
+        - thought_signature (optional): str'
+    ResponseFormatJsonSchema:
+      properties:
+        type:
+          type: string
+          const: json_schema
+          title: Type
+          description: The type of response format being defined. Always `json_schema`.
+          x-order: 0
+        json_schema:
+          $ref: '#/components/schemas/JSONSchema'
+          description: Structured Outputs configuration options, including a JSON Schema.
+          x-order: 1
+      type: object
+      required:
+      - type
+      - json_schema
+      title: ResponseFormatJsonSchema
+      description: 'JSON Schema response format. Used to generate structured JSON responses.
+
+        Learn more about [Structured Outputs](/docs/guides/structured-outputs).
+
+
+        Fields:
+
+        - type (required): Literal["json_schema"]
+
+        - json_schema (required): JSONSchema'
+    Tool:
+      properties:
+        type:
+          type: string
+          const: function
+          title: Type
+          default: function
+          x-order: 0
+        function:
+          $ref: '#/components/schemas/Function'
+          x-order: 1
+      type: object
+      required:
+      - function
+      title: Tool
+      description: 'Schema for Tool.
+
+
+        Fields:
+
+        - type (optional): ToolTypes
+
+        - function (required): Function'
+    Function:
+      properties:
+        name:
+          type: string
+          title: Name
+          description: The name of the function to call.
+          x-order: 0
+      type: object
+      required:
+      - name
+      title: Function
+      description: 'Schema for Function.
+
+
+        Fields:
+
+        - name (required): str'
+      x-ddls-inline: true
+    HeaderParams:
+      additionalProperties:
+        type: string
+      type: object
+    ChatCompletionMessageToolCallChunk:
+      description: 'Schema for ChatCompletionMessageToolCallChunk.
+
+
+        Fields:
+
+        - index (required): int
+
+        - id (optional): str
+
+        - type (optional): Literal["function"]
+
+        - function (optional): ChatCompletionMessageToolCallChunkFunction'
+      properties:
+        index:
+          title: Index
+          type: integer
+          x-order: 0
+        id:
+          default: null
+          description: The ID of the tool call.
+          title: Id
+          type: string
+          x-order: 1
+        type:
+          const: function
+          default: function
+          description: The type of the tool. Currently, only `function` is supported.
+          title: Type
+          type: string
+          x-order: 2
+        function:
+          description: 'Schema for ChatCompletionMessageToolCallChunkFunction.
+
+
+            Fields:
+
+            - name (optional): str
+
+            - arguments (optional): str'
+          properties:
+            name:
+              default: null
+              description: The name of the function to call.
+              title: Name
+              type: string
+              x-order: 0
+            arguments:
+              default: null
+              description: The arguments to call the function with, as generated by the model in JSON format. Note that the model does not always generate valid JSON, and may hallucinate parameters not defined by your function schema. Validate the arguments in your code before calling your function.
+              title: Arguments
+              type: string
+              x-order: 1
+          type: object
+      required:
+      - index
+      title: ChatCompletionMessageToolCallChunk
+      type: object
+    ChoiceLogprobs:
+      properties:
+        content:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/ChatCompletionTokenLogprob'
+            type: array
+          - type: 'null'
+          title: Content
+          description: A list of message content tokens with log probability information.
+          x-order: 0
+        refusal:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/ChatCompletionTokenLogprob'
+            type: array
+          - type: 'null'
+          title: Refusal
+          description: A list of message refusal tokens with log probability information.
+          x-order: 1
+      type: object
+      title: ChoiceLogprobs
+      description: Log probability information for the choice.
+      x-ddls-inline: true
+    MCPServers:
+      items:
+        anyOf:
+        - type: string
+        - $ref: '#/components/schemas/MCPServerSpec'
+      type: array
+      title: MCPServers
+      description: List of MCP server inputs (slugs or structured specs).
+      x-stainless-variantName: MCPServers
+  securitySchemes:
+    Bearer:
+      type: http
+      scheme: bearer

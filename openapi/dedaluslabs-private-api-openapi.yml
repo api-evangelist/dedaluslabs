@@ -1,0 +1,58 @@
+openapi: 3.1.0
+info:
+  title: Dedalus Audio private API
+  description: 'MCP gateway for AI agents. Mix-and-match any model with any tool from our marketplace.
+
+
+    ## Authentication
+
+    Use Bearer token or X-API-Key header authentication:
+
+    ```
+
+    Authorization: Bearer your-api-key-here
+
+    ```
+
+    ```
+
+    x-api-key: your-api-key-here
+
+    ```
+
+
+    ## Available Endpoints
+
+    - **GET /v1/models**: list available models
+
+    - **POST /v1/chat/completions**: Chat completions with MCP tools
+
+    - **GET /health**: Service health check'
+  version: 0.0.1
+servers:
+- url: https://api.dedaluslabs.ai
+  description: Official Dedalus API
+tags:
+- name: private
+paths:
+  /favicon.ico:
+    get:
+      tags:
+      - private
+      summary: Favicon
+      description: Browser favicon endpoint. Automatically excluded from SDK generation.
+      operationId: favicon_favicon_ico_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '204':
+          description: No Content
+      deprecated: true
+components:
+  securitySchemes:
+    Bearer:
+      type: http
+      scheme: bearer
