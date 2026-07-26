@@ -1,0 +1,27 @@
+generated: '2026-07-18'
+method: probed
+source: live DNS/TLS/HTTP probes of apis.yml + OpenAPI hosts
+hosts:
+- host: dedaluslabs.ai
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Oct  5 11:47:08 2026 GMT
+  hsts: true
+  hsts_max_age: 63072000
+- host: api.dedaluslabs.ai
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Sep 12 20:01:40 2026 GMT
+  hsts: null
+- host: dcs.dedaluslabs.ai
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Sep 14 22:37:56 2026 GMT
+  hsts: false
+domains:
+- domain: dedaluslabs.ai
+  dnssec: true
+  caa: []
+  spf: true
+  dmarc: true
+  dmarc_policy: none

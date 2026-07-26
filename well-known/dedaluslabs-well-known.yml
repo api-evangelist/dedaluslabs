@@ -1,0 +1,30 @@
+generated: '2026-07-18'
+method: searched
+hosts:
+- host: https://dedaluslabs.ai
+  documents:
+  - path: /.well-known/security.txt
+    status: 200
+    file: dedaluslabs-security.txt
+- host: https://api.dedaluslabs.ai
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+- host: https://dcs.dedaluslabs.ai
+  documents:
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /openapi.json
+    status: 404
+- host: https://docs.dedaluslabs.ai
+  documents:
+  - path: /llms.txt
+    status: 200
+    note: saved verbatim to llms/dedaluslabs-llms.txt
+  - path: /openapi.json
+    status: 200
+    note: Dedalus Agents API spec (saved to openapi/dedaluslabs-agents-openapi-original.json)

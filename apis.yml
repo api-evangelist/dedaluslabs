@@ -1,26 +1,292 @@
 aid: dedaluslabs
-name: Dedaluslabs
-description: Dedaluslabs is a company surfaced as a portfolio company of kindred-ventures and added to
-  the API Evangelist network as a stub for enrichment. This profile is a lead awaiting the enrichment
-  pipeline.
+name: Dedalus Labs
+description: >-
+  Dedalus Labs builds infrastructure for AI agents. It runs two production APIs: the Dedalus
+  Agents API, an OpenAI-compatible MCP gateway that lets you mix and match any model from any
+  provider with tools drawn from the Dedalus MCP marketplace (chat completions, embeddings,
+  audio, images, and OCR through one endpoint); and Dedalus Cloud Services (Dedalus Machines),
+  persistent Linux VMs for agents that start in under a second, preserve their filesystem and
+  memory across sleep/wake, and bill per second with no idle tax. Both APIs authenticate with a
+  Dedalus API key (Bearer or x-api-key), support idempotent mutations, and ship official SDKs in
+  TypeScript, Python, and Go plus a CLI and Terraform provider. Dedalus is a portfolio company of
+  Kindred Ventures.
 url: https://raw.githubusercontent.com/api-evangelist/dedaluslabs/refs/heads/main/apis.yml
 x-type: company
 x-source: vc-portfolio
 x-backed-by:
 - kindred-ventures
-x-tier: stub
-x-tier-reason: portfolio-lead
+x-tier: profiled
+x-tier-reason: enriched-from-live-apis
+accessModel:
+  pricing: unknown
+  onboarding: self-serve
+  trial: false
+  try_now: false
+  public: false
+  label: Self-serve signup
+  confidence: medium
+  source:
+  - authentication
+  generated: '2026-07-22'
+  method: derived
 specificationVersion: '0.20'
 created: '2026-07-17'
-modified: '2026-07-17'
+modified: '2026-07-18'
+image: https://avatars.githubusercontent.com/u/201873775?v=4
 tags:
 - Company
-apis: []
+- AI
+- Agents
+- MCP
+- Model Context Protocol
+- LLM
+- Inference
+- Gateway
+- Compute
+- Sandbox
+- Developer Tools
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
 - FN: APIs.json
   email: info@apis.io
+apis:
+- aid: dedaluslabs:dedaluslabs-audio-api
+  name: Dedalus Labs Audio API
+  description: The Audio API from Dedalus Labs — 3 operation(s) for audio.
+  humanURL: https://docs.dedaluslabs.ai/api-reference/api
+  baseURL: https://api.dedaluslabs.ai
+  tags:
+  - Audio
+  properties:
+  - type: OpenAPI
+    url: openapi/dedaluslabs-audio-api-openapi.yml
+- aid: dedaluslabs:dedaluslabs-chat-api
+  name: Dedalus Labs Chat API
+  description: The Chat API from Dedalus Labs — 1 operation(s) for chat.
+  humanURL: https://docs.dedaluslabs.ai/api-reference/api
+  baseURL: https://api.dedaluslabs.ai
+  tags:
+  - Chat
+  properties:
+  - type: OpenAPI
+    url: openapi/dedaluslabs-chat-api-openapi.yml
+- aid: dedaluslabs:dedaluslabs-dedalus-api-api
+  name: Dedalus Labs Dedalus API API
+  description: The Dedalus API API from Dedalus Labs — 1 operation(s) for dedalus api.
+  humanURL: https://docs.dedaluslabs.ai/api-reference/api
+  baseURL: https://api.dedaluslabs.ai
+  tags:
+  - Dedalus API
+  properties:
+  - type: OpenAPI
+    url: openapi/dedaluslabs-dedalus-api-api-openapi.yml
+- aid: dedaluslabs:dedaluslabs-health-api
+  name: Dedalus Labs Health API
+  description: The Health API from Dedalus Labs — 1 operation(s) for health.
+  humanURL: https://docs.dedaluslabs.ai/api-reference/api
+  baseURL: https://api.dedaluslabs.ai
+  tags:
+  - Health
+  properties:
+  - type: OpenAPI
+    url: openapi/dedaluslabs-health-api-openapi.yml
+- aid: dedaluslabs:dedaluslabs-images-api
+  name: Dedalus Labs Images API
+  description: The Images API from Dedalus Labs — 3 operation(s) for images.
+  humanURL: https://docs.dedaluslabs.ai/api-reference/api
+  baseURL: https://api.dedaluslabs.ai
+  tags:
+  - Images
+  properties:
+  - type: OpenAPI
+    url: openapi/dedaluslabs-images-api-openapi.yml
+- aid: dedaluslabs:dedaluslabs-machine-artifacts-api
+  name: Dedalus Labs Machine Artifacts API
+  description: The Machine Artifacts API from Dedalus Labs — 2 operation(s) for machine artifacts.
+  humanURL: https://docs.dedaluslabs.ai/api-reference/api
+  baseURL: https://api.dedaluslabs.ai
+  tags:
+  - Machine Artifacts
+  properties:
+  - type: OpenAPI
+    url: openapi/dedaluslabs-machine-artifacts-api-openapi.yml
+- aid: dedaluslabs:dedaluslabs-machine-executions-api
+  name: Dedalus Labs Machine Executions API
+  description: The Machine Executions API from Dedalus Labs — 4 operation(s) for machine executions.
+  humanURL: https://docs.dedaluslabs.ai/api-reference/api
+  baseURL: https://api.dedaluslabs.ai
+  tags:
+  - Machine Executions
+  properties:
+  - type: OpenAPI
+    url: openapi/dedaluslabs-machine-executions-api-openapi.yml
+- aid: dedaluslabs:dedaluslabs-machine-lifecycle-api
+  name: Dedalus Labs Machine Lifecycle API
+  description: The Machine Lifecycle API from Dedalus Labs — 18 operation(s) for machine lifecycle.
+  humanURL: https://docs.dedaluslabs.ai/api-reference/api
+  baseURL: https://api.dedaluslabs.ai
+  tags:
+  - Machine Lifecycle
+  properties:
+  - type: OpenAPI
+    url: openapi/dedaluslabs-machine-lifecycle-api-openapi.yml
+- aid: dedaluslabs:dedaluslabs-machine-previews-api
+  name: Dedalus Labs Machine Previews API
+  description: The Machine Previews API from Dedalus Labs — 2 operation(s) for machine previews.
+  humanURL: https://docs.dedaluslabs.ai/api-reference/api
+  baseURL: https://api.dedaluslabs.ai
+  tags:
+  - Machine Previews
+  properties:
+  - type: OpenAPI
+    url: openapi/dedaluslabs-machine-previews-api-openapi.yml
+- aid: dedaluslabs:dedaluslabs-machine-ssh-api
+  name: Dedalus Labs Machine SSH API
+  description: The Machine SSH API from Dedalus Labs — 2 operation(s) for machine ssh.
+  humanURL: https://docs.dedaluslabs.ai/api-reference/api
+  baseURL: https://api.dedaluslabs.ai
+  tags:
+  - Machine SSH
+  properties:
+  - type: OpenAPI
+    url: openapi/dedaluslabs-machine-ssh-api-openapi.yml
+- aid: dedaluslabs:dedaluslabs-machine-terminals-api
+  name: Dedalus Labs Machine Terminals API
+  description: The Machine Terminals API from Dedalus Labs — 3 operation(s) for machine terminals.
+  humanURL: https://docs.dedaluslabs.ai/api-reference/api
+  baseURL: https://api.dedaluslabs.ai
+  tags:
+  - Machine Terminals
+  properties:
+  - type: OpenAPI
+    url: openapi/dedaluslabs-machine-terminals-api-openapi.yml
+- aid: dedaluslabs:dedaluslabs-marketplace-api
+  name: Dedalus Labs Marketplace API
+  description: The Marketplace API from Dedalus Labs — 6 operation(s) for marketplace.
+  humanURL: https://docs.dedaluslabs.ai/api-reference/api
+  baseURL: https://api.dedaluslabs.ai
+  tags:
+  - Marketplace
+  properties:
+  - type: OpenAPI
+    url: openapi/dedaluslabs-marketplace-api-openapi.yml
+- aid: dedaluslabs:dedaluslabs-ocr-api
+  name: Dedalus Labs OCR API
+  description: The OCR API from Dedalus Labs — 1 operation(s) for ocr.
+  humanURL: https://docs.dedaluslabs.ai/api-reference/api
+  baseURL: https://api.dedaluslabs.ai
+  tags:
+  - OCR
+  properties:
+  - type: OpenAPI
+    url: openapi/dedaluslabs-ocr-api-openapi.yml
+- aid: dedaluslabs:dedaluslabs-private-api
+  name: Dedalus Labs private API
+  description: The private API from Dedalus Labs — 1 operation(s) for private.
+  humanURL: https://docs.dedaluslabs.ai/api-reference/api
+  baseURL: https://api.dedaluslabs.ai
+  tags:
+  - private
+  properties:
+  - type: OpenAPI
+    url: openapi/dedaluslabs-private-api-openapi.yml
+- aid: dedaluslabs:dedaluslabs-v1-api
+  name: Dedalus Labs V1 API
+  description: The V1 API from Dedalus Labs — 12 operation(s) for v1.
+  humanURL: https://docs.dedaluslabs.ai/api-reference/api
+  baseURL: https://api.dedaluslabs.ai
+  tags:
+  - V1
+  properties:
+  - type: OpenAPI
+    url: openapi/dedaluslabs-v1-api-openapi.yml
+- aid: dedaluslabs:dedaluslabs-webhooks-api
+  name: Dedalus Labs Webhooks API
+  description: The Webhooks API from Dedalus Labs — 1 operation(s) for webhooks.
+  humanURL: https://docs.dedaluslabs.ai/api-reference/api
+  baseURL: https://api.dedaluslabs.ai
+  tags:
+  - Webhooks
+  properties:
+  - type: OpenAPI
+    url: openapi/dedaluslabs-webhooks-api-openapi.yml
 common:
 - type: Website
   url: https://dedaluslabs.ai/
+- type: DeveloperPortal
+  url: https://docs.dedaluslabs.ai
+- type: Documentation
+  url: https://docs.dedaluslabs.ai
+- type: APIReference
+  url: https://docs.dedaluslabs.ai/api-reference
+- type: GettingStarted
+  url: https://docs.dedaluslabs.ai/dcs/dm/quickstart
+- type: Support
+  url: https://docs.dedaluslabs.ai/community/support
+- type: Blog
+  url: https://dedaluslabs.ai/blog
+- type: GitHubOrganization
+  url: https://github.com/dedalus-labs
+- type: Pricing
+  url: https://dedaluslabs.ai/pricing
+- type: SignUp
+  url: https://dedaluslabs.ai/dashboard
+- type: TermsOfService
+  url: https://dedaluslabs.ai/terms
+- type: PrivacyPolicy
+  url: https://dedaluslabs.ai/privacy
+- type: StatusPage
+  url: https://status.dedaluslabs.ai
+- type: ChangeLog
+  url: changelog/dedaluslabs-changelog.yml
+- type: Deprecation
+  url: https://docs.dedaluslabs.ai/changelog
+- type: Lifecycle
+  url: lifecycle/dedaluslabs-lifecycle.yml
+- type: Authentication
+  url: authentication/dedaluslabs-authentication.yml
+- type: Packages
+  url: packages/dedaluslabs-packages.yml
+- type: SDKs
+  url: packages/dedaluslabs-packages.yml
+- type: CLI
+  url: cli/dedaluslabs-cli.yml
+- type: MCPServer
+  url: mcp/dedaluslabs-mcp.yml
+- type: LLMsTxt
+  url: llms/dedaluslabs-llms.txt
+- type: WellKnown
+  url: well-known/dedaluslabs-well-known.yml
+- type: SecurityTxt
+  url: well-known/dedaluslabs-security.txt
+- type: Conformance
+  url: conformance/dedaluslabs-conformance.yml
+- type: ErrorCatalog
+  url: errors/dedaluslabs-problem-types.yml
+- type: Conventions
+  url: conventions/dedaluslabs-conventions.yml
+- type: Idempotency
+  url: conventions/dedaluslabs-conventions.yml
+- type: DataModel
+  url: data-model/dedaluslabs-data-model.yml
+- type: Webhooks
+  url: asyncapi/dedaluslabs-events.yml
+- type: AgentSkill
+  url: skills/_index.yml
+- type: Arazzo
+  name: Create a Dedalus Machine, run a command, and sleep it
+  url: arazzo/dedaluslabs-machine-run-and-sleep.yml
+- type: AgenticAccess
+  url: agentic-access/dedaluslabs-agentic-access.yml
+- type: Security
+  url: security/dedaluslabs-vulnerability-disclosure.yml
+- type: VulnerabilityDisclosure
+  url: security/dedaluslabs-vulnerability-disclosure.yml
+- type: DomainSecurity
+  url: security/dedaluslabs-domain-security.yml
+x-enrichment:
+  date: '2026-07-19'
+  status: backfilled
+  pass: local-v1
+  note: backfilled from .gitignore signal + verified work evidence

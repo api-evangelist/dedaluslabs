@@ -1,0 +1,11 @@
+generated: '2026-07-18'
+method: generated
+skills:
+- file: dedaluslabs-chat-with-mcp-tools.md
+  name: Run a chat completion with MCP tools (Dedalus Agents API)
+  api: openapi/dedaluslabs-agents-openapi-original.json
+  operations: [list_models_v1_models_get, create_chat_completion_v1_chat_completions_post]
+- file: dedaluslabs-run-command-on-machine.md
+  name: Create a Dedalus Machine and run a command
+  api: openapi/dedaluslabs-machines-openapi-original.yml
+  operations: [createMachine, createMachineExecution, getMachineExecutionOutput, sleepMachine, deleteMachine]

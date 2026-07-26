@@ -1,0 +1,21 @@
+generated: '2026-07-18'
+method: searched
+source: https://docs.dedaluslabs.ai/dcs/dm/quickstart, https://github.com/dedalus-labs/dedalus-cli, https://github.com/dedalus-labs/homebrew-tap
+name: dedalus
+language: go
+repository: https://github.com/dedalus-labs/dedalus-cli
+description: Official CLI for the Dedalus platform — create and manage Dedalus Machines and platform resources.
+install:
+- method: curl
+  command: curl -fsSL https://www.dedaluslabs.ai/install/dedalus | bash
+- method: homebrew
+  command: brew install dedalus-labs/tap/dedalus
+  tap: https://github.com/dedalus-labs/homebrew-tap
+auth:
+  note: Uses a Dedalus API key created in the dashboard (https://dedaluslabs.ai/dashboard/api-keys).
+surface:
+  note: >-
+    Primary flow in the docs is Machines lifecycle — create a Dedalus Machine, run executions,
+    open SSH/terminal sessions, sleep/wake, and delete. Backed by the Machines/DCS API.
+related_clients:
+- dedalus-agents-cli (Go) — CLI for the Dedalus Agents API

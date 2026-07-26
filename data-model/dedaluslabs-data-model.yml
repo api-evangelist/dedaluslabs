@@ -1,0 +1,47 @@
+generated: '2026-07-18'
+method: derived
+source: openapi/dedaluslabs-machines-openapi-original.yml, openapi/dedaluslabs-agents-openapi-original.json
+entities:
+- name: Machine
+  api: machines
+  id_param: machine_id
+  description: A persistent Linux VM. Root entity of the Machines/DCS API.
+- name: Execution
+  api: machines
+  id_param: execution_id
+  description: A non-interactive shell command run on a machine.
+- name: ExecutionEvent
+  api: machines
+  description: An event emitted during an execution (streamed / listable).
+- name: Terminal
+  api: machines
+  id_param: terminal_id
+  description: An interactive PTY session on a machine, streamed over WebSocket.
+- name: SSHSession
+  api: machines
+  id_param: session_id
+  description: A short-lived SSH session to a machine.
+- name: Preview
+  api: machines
+  id_param: preview_id
+  description: A public HTTPS port/preview exposed on a machine.
+- name: Artifact
+  api: machines
+  id_param: artifact_id
+  description: A file/artifact stored on or produced by a machine.
+- name: Model
+  api: agents
+  id_param: model_id
+  description: An inference model reachable through the OpenAI-compatible gateway.
+- name: ChatCompletion
+  api: agents
+  description: A chat completion (optionally invoking MCP marketplace tools).
+relationships:
+- {from: Machine, type: has_many, to: Execution, via: machine_id}
+- {from: Machine, type: has_many, to: Terminal, via: machine_id}
+- {from: Machine, type: has_many, to: SSHSession, via: machine_id}
+- {from: Machine, type: has_many, to: Preview, via: machine_id}
+- {from: Machine, type: has_many, to: Artifact, via: machine_id}
+- {from: Execution, type: belongs_to, to: Machine, via: machine_id}
+- {from: Execution, type: has_many, to: ExecutionEvent, via: execution_id}
+- {from: Execution, type: has_one, to: ExecutionOutput, via: execution_id}

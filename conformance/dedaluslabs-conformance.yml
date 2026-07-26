@@ -1,0 +1,38 @@
+generated: '2026-07-18'
+method: derived
+source: openapi/dedaluslabs-agents-openapi-original.json, openapi/dedaluslabs-machines-openapi-original.yml, docs
+standards:
+- id: openai-chat-completions-compat
+  conforms: true
+  evidence: Agents API exposes OpenAI-compatible /v1/chat/completions, /v1/embeddings, /v1/models, /v1/responses, /v1/audio/*, /v1/images/*.
+- id: mcp
+  conforms: true
+  evidence: Product is an MCP gateway/marketplace; publishes an official MCP server and dozens of MCP servers; agents call MCP tools.
+- id: oauth2
+  conforms: false
+  evidence: No oauth2 securityScheme; auth is bearer API key / x-api-key.
+- id: bearer-token-auth
+  conforms: true
+  evidence: HTTP bearer securityScheme on both APIs.
+- id: api-key-auth
+  conforms: true
+  evidence: x-api-key apiKey securityScheme on the Machines (DCS) API.
+- id: rfc9457-problem-details
+  conforms: partial
+  evidence: Machines API ErrorModel is problem-details-shaped (type/title/status/detail/instance); Agents API uses FastAPI 422 validation envelope.
+- id: idempotency
+  conforms: true
+  evidence: Machines API accepts an Idempotency-Key header on mutating requests.
+- id: cursor-pagination
+  conforms: true
+  evidence: Machines list endpoints use cursor + limit parameters.
+- id: server-sent-events
+  conforms: true
+  evidence: Machines watchMachineStatus and execution events stream over SSE.
+- id: websocket-streaming
+  conforms: true
+  evidence: Machines terminal streams use WebSocket (connectMachineTerminal).
+- id: fhir-r4
+  conforms: false
+- id: scim2
+  conforms: false

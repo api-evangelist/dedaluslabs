@@ -1,0 +1,17 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for Dedalus Agents API
+  version: 1.0.0
+extends: openapi/dedaluslabs-agents-openapi-original.json
+actions:
+- target: $.info
+  update:
+    x-apievangelist-network: https://apis.io/provider/dedaluslabs
+    x-apievangelist-category: [ai, llm, mcp, gateway, inference]
+    x-apievangelist-auth: [bearer, api-key]
+    x-apievangelist-openai-compatible: true
+- target: $.info
+  description: >-
+    OpenAI-compatible unified inference gateway. One endpoint reaches any model from any
+    provider, with tools drawn from the Dedalus MCP marketplace. Enhancement metadata added
+    by the API Evangelist enrichment pipeline; the original contract is unchanged.

@@ -1,0 +1,7 @@
+generated: '2026-07-18'
+method: derived
+workflows:
+- file: dedaluslabs-machine-run-and-sleep.yml
+  workflowId: machineRunAndSleep
+  title: Create a Dedalus Machine, run a command, and sleep it
+  summary: Provision a persistent Linux VM, execute a command, read the output, then sleep it to pause billing.

@@ -1,0 +1,42 @@
+generated: '2026-07-18'
+method: derived
+source: openapi/dedaluslabs-machines-openapi-original.yml, openapi/dedaluslabs-agents-openapi-original.json
+format: rfc9457
+envelope:
+  machines:
+    schema: ErrorModel
+    fields: [type, title, status, detail, instance, errors]
+    detail_items: {schema: ErrorDetail, fields: [location, message, value]}
+    media_type: application/json
+    note: RFC 9457 problem-details-shaped (type/title/status/detail/instance + errors[]).
+  agents:
+    schema: HTTPValidationError
+    fields: [detail]
+    detail_items: {schema: ValidationError, fields: [loc, msg, type]}
+    media_type: application/json
+    note: FastAPI-style 422 validation error envelope (not RFC 9457).
+problems:
+- status: 401
+  title: Authentication required
+  api: machines
+  remediation: Provide a valid Dedalus API key via Authorization Bearer or x-api-key header.
+- status: 403
+  title: Forbidden
+  api: machines
+  remediation: The key is valid but lacks access to the requested machine or operation.
+- status: 409
+  title: Conflict
+  api: machines
+  remediation: Machine/resource is in a conflicting state (e.g. wake/sleep race) or an Idempotency-Key was reused with a different body.
+- status: 429
+  title: Rate limited
+  api: machines
+  remediation: Back off and retry; respect rate-limit signaling.
+- status: 503
+  title: Dependency unavailable
+  api: machines
+  remediation: A downstream dependency is temporarily unavailable; retry with backoff.
+- status: 422
+  title: Validation Error
+  api: agents
+  remediation: Request body failed schema validation; inspect detail[].loc / detail[].msg.

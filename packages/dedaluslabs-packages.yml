@@ -1,0 +1,84 @@
+generated: '2026-07-18'
+method: searched
+source: npm, PyPI, pkg.go.dev, github.com/dedalus-labs
+notes: >-
+  Dedalus ships two parallel official SDK families generated with Stainless: the
+  Dedalus Agents API family (api.dedaluslabs.ai — chat/completions gateway) and the
+  Dedalus platform / Cloud Services (Machines) family (dcs.dedaluslabs.ai). Packages
+  confirmed live on a public registry are marked official:true; SDK repositories that
+  exist in the GitHub org but were not confirmed on a registry are listed under
+  sdk_repositories for completeness.
+packages:
+- language: typescript
+  registry: npm
+  name: dedalus-labs
+  url: https://www.npmjs.com/package/dedalus-labs
+  install: npm install dedalus-labs
+  official: true
+  api: agents
+  description: Official TypeScript library for the Dedalus (Agents) API
+- language: typescript
+  registry: npm
+  name: dedalus-labs-mcp
+  url: https://www.npmjs.com/package/dedalus-labs-mcp
+  install: npm install dedalus-labs-mcp
+  official: true
+  api: agents
+  description: Official MCP server package for the Dedalus API
+- language: typescript
+  registry: npm
+  name: dedalus
+  url: https://www.npmjs.com/package/dedalus
+  install: npm install dedalus
+  official: true
+  api: platform
+  repository: https://github.com/dedalus-labs/dedalus-typescript
+  description: Official TypeScript library for the Dedalus platform (Cloud Services)
+- language: python
+  registry: pypi
+  name: dedalus-labs
+  url: https://pypi.org/project/dedalus-labs/
+  install: pip install dedalus-labs
+  official: true
+  api: agents
+  repository: https://github.com/dedalus-labs/dedalus-sdk-python
+  description: Official Python library for the Dedalus (Agents) API
+- language: python
+  registry: pypi
+  name: dedalus-mcp
+  url: https://pypi.org/project/dedalus-mcp/
+  install: pip install dedalus-mcp
+  official: true
+  description: Dedalus MCP framework for building MCP servers
+- language: go
+  registry: pkg.go.dev
+  name: github.com/dedalus-labs/dedalus-go
+  url: https://pkg.go.dev/github.com/dedalus-labs/dedalus-go
+  install: go get github.com/dedalus-labs/dedalus-go
+  official: true
+  api: platform
+  description: Official Go SDK for the Dedalus platform
+sdk_repositories:
+  agents:
+  - {language: python, repo: https://github.com/dedalus-labs/dedalus-agents-python}
+  - {language: typescript, repo: https://github.com/dedalus-labs/dedalus-agents-typescript}
+  - {language: go, repo: https://github.com/dedalus-labs/dedalus-agents-go}
+  - {language: java, repo: https://github.com/dedalus-labs/dedalus-agents-java}
+  - {language: kotlin, repo: https://github.com/dedalus-labs/dedalus-agents-kotlin}
+  - {language: ruby, repo: https://github.com/dedalus-labs/dedalus-agents-ruby}
+  - {language: php, repo: https://github.com/dedalus-labs/dedalus-agents-php}
+  - {language: csharp, repo: https://github.com/dedalus-labs/dedalus-agents-csharp}
+  - {language: sql, repo: https://github.com/dedalus-labs/dedalus-agents-sql}
+  - {language: cli, repo: https://github.com/dedalus-labs/dedalus-agents-cli}
+  platform:
+  - {language: python, repo: https://github.com/dedalus-labs/dedalus-python}
+  - {language: typescript, repo: https://github.com/dedalus-labs/dedalus-typescript}
+  - {language: go, repo: https://github.com/dedalus-labs/dedalus-go}
+  - {language: java, repo: https://github.com/dedalus-labs/dedalus-java}
+  - {language: kotlin, repo: https://github.com/dedalus-labs/dedalus-kotlin}
+  - {language: ruby, repo: https://github.com/dedalus-labs/dedalus-ruby}
+  - {language: php, repo: https://github.com/dedalus-labs/dedalus-php}
+  - {language: csharp, repo: https://github.com/dedalus-labs/dedalus-csharp}
+  - {language: sql, repo: https://github.com/dedalus-labs/dedalus-sql}
+  - {language: cli, repo: https://github.com/dedalus-labs/dedalus-cli}
+  - {language: terraform, repo: https://github.com/dedalus-labs/terraform-provider-dedalus}

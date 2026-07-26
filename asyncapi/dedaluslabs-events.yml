@@ -1,0 +1,28 @@
+generated: '2026-07-18'
+method: searched
+source: openapi/dedaluslabs-machines-openapi-original.yml, https://docs.dedaluslabs.ai/api-reference/dcs, https://docs.dedaluslabs.ai/api-reference/api
+spec_type: Webhooks
+notes: >-
+  Dedalus does not publish a standalone AsyncAPI document. Its real event surface is (1) the
+  Machines/DCS streaming endpoints (SSE + WebSocket) and (2) an inbound Stripe Connect webhook
+  on the Agents API marketplace. Captured here as an event/webhook catalog rather than a
+  fabricated AsyncAPI.
+streams:
+- name: watchMachineStatus
+  transport: sse
+  path: GET /v1/machines/{machine_id}/status/stream
+  event: status (full LifecycleResponse payload); stream closes on reaching desired state.
+- name: listMachineExecutionEvents
+  transport: sse
+  path: GET /v1/machines/{machine_id}/executions/{execution_id}/events
+  event: execution lifecycle/output events.
+- name: connectMachineTerminal
+  transport: websocket
+  path: GET /v1/machines/{machine_id}/terminals/{terminal_id}/stream
+  event: TerminalServerEvent / TerminalClientEvent (input/output base64, resize width/height).
+webhooks:
+- name: stripe-connect
+  direction: inbound
+  path: POST /v1/webhooks/stripe/connect
+  api: agents
+  description: Receives Stripe Connect webhook events for marketplace creator payouts/onboarding.

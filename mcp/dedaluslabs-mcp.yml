@@ -1,0 +1,31 @@
+generated: '2026-07-18'
+method: searched
+status: published
+source: https://www.npmjs.com/package/dedalus-labs-mcp
+notes: >-
+  Dedalus is itself an MCP company: the Agents API is an "MCP gateway" that mixes any
+  model with any tool from the Dedalus MCP marketplace, and Dedalus publishes an official
+  MCP server for its own API plus dozens of MCP servers (github-mcp, gmail-mcp, linear-mcp,
+  brave-search, exa, turbopuffer-mcp, etc.) in the github.com/dedalus-labs org and the
+  Dedalus marketplace at https://dedaluslabs.ai/marketplace.
+servers:
+- name: dedalus-labs-mcp
+  description: Official MCP server for the Dedalus API
+  transport: stdio
+  package: dedalus-labs-mcp
+  install: npm install dedalus-labs-mcp
+  registry: https://www.npmjs.com/package/dedalus-labs-mcp
+- name: dedalus-mcp (framework)
+  description: Python framework for building MCP servers, used across the Dedalus marketplace servers
+  transport: streamable-http
+  package: dedalus-mcp
+  install: pip install dedalus-mcp
+  registry: https://pypi.org/project/dedalus-mcp/
+marketplace:
+  url: https://dedaluslabs.ai/marketplace
+  description: >-
+    Hosted MCP server marketplace. Callable from the Agents API chat/completions endpoint
+    by referencing marketplace tools; individual servers are open-sourced in the
+    github.com/dedalus-labs org (examples: brave-search-mcp, ticketmaster-mcp, playwright-mcp,
+    open-meteo-mcp, github-mcp, gmail-mcp, gcal-mcp, linear-mcp, supabase-mcp, x-mcp,
+    parallel-ai-mcp, supermemory-mcp, yahoo-finance-mcp, turbopuffer-mcp, exa).

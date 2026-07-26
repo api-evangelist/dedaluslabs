@@ -1,0 +1,19 @@
+generated: '2026-07-18'
+method: searched
+source: https://docs.dedaluslabs.ai/changelog, https://status.dedaluslabs.ai, docs
+versioning:
+  scheme: uri-path
+  current: v1
+  notes: >-
+    Machines/DCS API paths are versioned /v1/*. The Agents API spec reports info.version 0.0.1
+    but serves stable /v1/* paths (chat/completions, embeddings, models, etc.).
+deprecation:
+  policy: >-
+    Non-compliant MCP servers deprecation announced in the changelog (effective 2026-01-12):
+    MCP servers must support authentication; affected users notified by email with migration
+    guidance in the server-guidelines guide.
+  docs: https://docs.dedaluslabs.ai/changelog
+  sunset_header: false
+status_page: https://status.dedaluslabs.ai
+changelog: https://docs.dedaluslabs.ai/changelog
+deprecated_operations: []

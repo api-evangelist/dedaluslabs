@@ -1,0 +1,37 @@
+generated: '2026-07-18'
+method: searched
+source: openapi/dedaluslabs-machines-openapi-original.yml, https://docs.dedaluslabs.ai/api-reference/dcs, docs
+authentication:
+  style: bearer-or-apikey
+  header: [Authorization Bearer <DEDALUS_API_KEY>, x-api-key <DEDALUS_API_KEY>]
+  see: authentication/dedaluslabs-authentication.yml
+idempotency:
+  supported: true
+  header: Idempotency-Key
+  scope: mutating requests (POST/PATCH/DELETE) on the Machines/DCS API
+  note: >-
+    Include an Idempotency-Key header on mutating Machines requests to make retries safe;
+    reusing a key with a different body yields 409 Conflict.
+pagination:
+  style: cursor
+  params: [cursor, limit]
+  applies_to: Machines list endpoints (listMachines, listMachineExecutions, listMachineArtifacts, etc.)
+versioning:
+  style: uri-path
+  current: v1
+  see: lifecycle/dedaluslabs-lifecycle.yml
+error_envelope:
+  machines: {schema: ErrorModel, shape: rfc9457-like, fields: [type, title, status, detail, instance, errors]}
+  agents: {schema: HTTPValidationError, shape: fastapi-422}
+  see: errors/dedaluslabs-problem-types.yml
+streaming:
+  sse:
+  - watchMachineStatus (status/stream)
+  - listMachineExecutionEvents
+  websocket:
+  - connectMachineTerminal (terminals/{id}/stream)
+  note: Machine lifecycle status and execution events stream over SSE; interactive terminals stream over WebSocket.
+rate_limiting:
+  signal: 429 Rate limited response on the Machines API
+openai_compatibility:
+  note: The Agents API is OpenAI-compatible; existing OpenAI SDKs can target api.dedaluslabs.ai by changing base URL and key.

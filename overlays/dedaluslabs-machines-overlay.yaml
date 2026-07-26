@@ -1,0 +1,18 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for Dedalus Cloud Services (Machines) API
+  version: 1.0.0
+extends: openapi/dedaluslabs-machines-openapi-original.yml
+actions:
+- target: $.info
+  update:
+    x-apievangelist-network: https://apis.io/provider/dedaluslabs
+    x-apievangelist-category: [compute, sandbox, agent-infrastructure, vm, container]
+    x-apievangelist-auth: [bearer, api-key]
+    x-apievangelist-idempotency-header: Idempotency-Key
+    x-apievangelist-pagination: {style: cursor, params: [cursor, limit]}
+- target: $.info
+  description: >-
+    Persistent Linux VMs (Dedalus Machines) for AI agents — sub-second start, memory and
+    filesystem preserved across sleep/wake, per-second billing with no idle tax. Enhancement
+    metadata added by the API Evangelist enrichment pipeline; the original contract is unchanged.

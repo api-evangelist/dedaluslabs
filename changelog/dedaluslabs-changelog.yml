@@ -1,0 +1,28 @@
+generated: '2026-07-18'
+method: searched
+source: https://docs.dedaluslabs.ai/changelog
+scheme: dated
+entries:
+- date: '2026-01-08'
+  products: [Dedalus API, Dedalus Cloud]
+  additions:
+  - Opus 4.5 streaming support
+  - Gemini model generation tool-calling functions
+  - Expanded Grok model support
+  - Expanded DeepSeek model support
+  breaking:
+  - Non-compliant MCP servers deprecation notice — starting 2026-01-12 some MCP servers deprecated; servers must support authentication to store credentials securely.
+- date: '2025-12-01'
+  products: [dedalus-labs (Python), dedalus-labs (TypeScript)]
+  highlights: Structured Outputs and TypeScript SDK launch
+  additions:
+  - Python structured outputs via chat.completions.parse() (Pydantic)
+  - TypeScript SDK launched — dedalus-labs and dedalus-labs-mcp packages on npm with Zod schemas
+- date: '2025-11-12'
+  products: [dedalus-labs (Python)]
+  highlights: Streaming Structured Outputs
+  additions:
+  - Streaming support for structured outputs (partial results parsed into Pydantic models)
+  - stream_helper for incremental structured data
+  - Response format standardization across all providers
+  - Python 3.14 support; improved Pydantic v1 compatibility
