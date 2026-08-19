@@ -1,0 +1,110 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Dedalus Audio Machine Artifacts API",
+    "version": "0.0.1"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Machine Artifacts",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List artifacts",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.dedaluslabs.ai/v1/machines/:machine_id/artifacts",
+            "headers": [
+              {
+                "name": "X-Dedalus-Org-Id",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "machine_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "List artifacts"
+        },
+        {
+          "info": {
+            "name": "Get artifact",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.dedaluslabs.ai/v1/machines/:machine_id/artifacts/:artifact_id",
+            "headers": [
+              {
+                "name": "X-Dedalus-Org-Id",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "machine_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "artifact_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get artifact"
+        },
+        {
+          "info": {
+            "name": "Delete artifact",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.dedaluslabs.ai/v1/machines/:machine_id/artifacts/:artifact_id",
+            "headers": [
+              {
+                "name": "X-Dedalus-Org-Id",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "machine_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "artifact_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Delete artifact"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

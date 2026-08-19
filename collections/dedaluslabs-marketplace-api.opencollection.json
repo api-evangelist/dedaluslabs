@@ -1,0 +1,88 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Dedalus Audio Marketplace API",
+    "version": "0.0.1"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Marketplace",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Start Onboarding",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.dedaluslabs.ai/marketplace/connect/onboard",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create Stripe Express account and return onboarding link.\n\nArgs:\n    body: Contains return and refresh URLs.\n    request: FastAPI request for auth extraction.\n\nReturns:\n    OnboardResponse with onboarding URL or error."
+        },
+        {
+          "info": {
+            "name": "Get Status",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.dedaluslabs.ai/marketplace/connect/status"
+          },
+          "docs": "Return Stripe Connect onboarding status.\n\nArgs:\n    request: FastAPI request. Pass ?sync=true for fresh Stripe data.\n\nReturns:\n    ConnectStatusResponse with onboarding status."
+        },
+        {
+          "info": {
+            "name": "Get Dashboard",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.dedaluslabs.ai/marketplace/connect/dashboard"
+          },
+          "docs": "Get Stripe Express dashboard login link.\n\nArgs:\n    request: FastAPI request for auth extraction.\n\nReturns:\n    DashboardResponse with dashboard URL or error."
+        },
+        {
+          "info": {
+            "name": "Get Payout Balance",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.dedaluslabs.ai/marketplace/payouts/balance"
+          },
+          "docs": "Get seller's current balance and payout eligibility.\n\nReturns balance info and whether the seller can request a payout.\nActive, unexpired Pro sellers have no minimum; everyone else needs $20."
+        },
+        {
+          "info": {
+            "name": "Request Payout",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.dedaluslabs.ai/marketplace/payouts/request"
+          },
+          "docs": "Request an on-demand payout of matured earnings.\n\nAll sellers can request payouts subject to tier-based thresholds:\n- Active, unexpired Pro sellers: No minimum.\n- Everyone else: Minimum $20 required.\n\nThe payout is executed immediately via Stripe Transfer."
+        },
+        {
+          "info": {
+            "name": "Get Stripe Balance",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.dedaluslabs.ai/marketplace/stripe-balance"
+          },
+          "docs": "Get the actual balance from Stripe for the connected account.\n\nThis fetches the real-time balance from Stripe, useful for comparing\nwith the app's internal ledger or for debugging."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

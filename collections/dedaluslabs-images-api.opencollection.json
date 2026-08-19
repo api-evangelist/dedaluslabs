@@ -1,0 +1,75 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Dedalus Audio Images API",
+    "version": "0.0.1"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Images",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create Image",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.dedaluslabs.ai/v1/images/generations",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Generate images from text prompts.\n\nPure image generation models only (DALL-E, GPT Image).\nFor multimodal models like gemini-2.5-flash-image, use /v1/chat/completions."
+        },
+        {
+          "info": {
+            "name": "Edit Image",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.dedaluslabs.ai/v1/images/edits",
+            "body": {
+              "type": "multipart-form",
+              "data": []
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Edit images using inpainting.\n\nSupports dall-e-2 and gpt-image-1. Upload an image and optionally a mask\nto indicate which areas to regenerate based on the prompt."
+        },
+        {
+          "info": {
+            "name": "Create Variation",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.dedaluslabs.ai/v1/images/variations",
+            "body": {
+              "type": "multipart-form",
+              "data": []
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Create variations of an image.\n\nDALL·E 2 only. Upload an image to generate variations."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

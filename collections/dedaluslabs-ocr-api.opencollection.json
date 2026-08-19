@@ -1,0 +1,37 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Dedalus Audio OCR API",
+    "version": "0.0.1"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "OCR",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Process Ocr",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.dedaluslabs.ai/v1/ocr",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Process a document through Mistral OCR.\n\nExtracts text from PDFs and images, returning markdown-formatted content."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

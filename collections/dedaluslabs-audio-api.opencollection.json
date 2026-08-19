@@ -1,0 +1,75 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Dedalus Audio API",
+    "version": "0.0.1"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Audio",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create Speech",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.dedaluslabs.ai/v1/audio/speech",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Generate speech audio from text.\n\nGenerates audio from the input text using text-to-speech models. Supports multiple\nvoices and output formats including mp3, opus, aac, flac, wav, and pcm.\n\nReturns streaming audio data that can be saved to a file or streamed directly to users."
+        },
+        {
+          "info": {
+            "name": "Create Transcription",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.dedaluslabs.ai/v1/audio/transcriptions",
+            "body": {
+              "type": "multipart-form",
+              "data": []
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Transcribe audio into text.\n\nTranscribes audio files using OpenAI's Whisper model. Supports multiple audio formats\nincluding mp3, mp4, mpeg, mpga, m4a, wav, and webm. Maximum file size is 25 MB.\n\nArgs:\n    file: Audio file to transcribe (required)\n    model: Model ID to use (e.g., \"openai/whisper-1\")\n    language: ISO-639-1 language code (e.g., \"en\", \"es\") - improves accuracy\n    prompt: Optional text to guide the model's style\n    response_format: Format of the output (json, text, srt, verbose_"
+        },
+        {
+          "info": {
+            "name": "Create Translation",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.dedaluslabs.ai/v1/audio/translations",
+            "body": {
+              "type": "multipart-form",
+              "data": []
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Translate audio into English.\n\nTranslates audio files in any supported language to English text using OpenAI's\nWhisper model. Supports the same audio formats as transcription. Maximum file size\nis 25 MB.\n\nArgs:\n    file: Audio file to translate (required)\n    model: Model ID to use (e.g., \"openai/whisper-1\")\n    prompt: Optional text to guide the model's style\n    response_format: Format of the output (json, text, srt, verbose_json, vtt)\n    temperature: Sampling temperature between 0 and 1\n\nRet"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,173 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Dedalus Audio Machine Terminals API",
+    "version": "0.0.1"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Machine Terminals",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List terminals",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.dedaluslabs.ai/v1/machines/:machine_id/terminals",
+            "headers": [
+              {
+                "name": "X-Dedalus-Org-Id",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "machine_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "List terminals"
+        },
+        {
+          "info": {
+            "name": "Create terminal",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.dedaluslabs.ai/v1/machines/:machine_id/terminals",
+            "headers": [
+              {
+                "name": "X-Dedalus-Org-Id",
+                "value": ""
+              },
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "machine_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create terminal"
+        },
+        {
+          "info": {
+            "name": "Get terminal",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.dedaluslabs.ai/v1/machines/:machine_id/terminals/:terminal_id",
+            "headers": [
+              {
+                "name": "X-Dedalus-Org-Id",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "machine_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "terminal_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get terminal"
+        },
+        {
+          "info": {
+            "name": "Delete terminal",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.dedaluslabs.ai/v1/machines/:machine_id/terminals/:terminal_id",
+            "headers": [
+              {
+                "name": "X-Dedalus-Org-Id",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "machine_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "terminal_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Delete terminal"
+        },
+        {
+          "info": {
+            "name": "Connect to terminal WebSocket stream",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.dedaluslabs.ai/v1/machines/:machine_id/terminals/:terminal_id/stream",
+            "headers": [
+              {
+                "name": "X-Dedalus-Org-Id",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "machine_id",
+                "value": "",
+                "type": "path",
+                "description": "Machine identifier."
+              },
+              {
+                "name": "terminal_id",
+                "value": "",
+                "type": "path",
+                "description": "Terminal identifier."
+              }
+            ]
+          },
+          "docs": "Upgrades to a WebSocket connection for interactive terminal I/O. Clients send JSON `TerminalClientEvent` messages and receive JSON `TerminalServerEvent` messages. Terminal byte streams are base64-encoded inside `input` and `output` events; `resize` events use integer `width` and `height` fields."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

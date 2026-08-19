@@ -1,0 +1,29 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Dedalus Audio Webhooks API",
+    "version": "0.0.1"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Webhooks",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Handle Stripe Connect Webhook",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.dedaluslabs.ai/v1/webhooks/stripe/connect"
+          },
+          "docs": "Verify, enqueue, and trigger async processing."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

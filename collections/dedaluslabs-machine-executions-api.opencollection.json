@@ -1,0 +1,210 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Dedalus Audio Machine Executions API",
+    "version": "0.0.1"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Machine Executions",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List executions",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.dedaluslabs.ai/v1/machines/:machine_id/executions",
+            "headers": [
+              {
+                "name": "X-Dedalus-Org-Id",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "machine_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "List executions"
+        },
+        {
+          "info": {
+            "name": "Create execution",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.dedaluslabs.ai/v1/machines/:machine_id/executions",
+            "headers": [
+              {
+                "name": "X-Dedalus-Org-Id",
+                "value": ""
+              },
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "machine_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create execution"
+        },
+        {
+          "info": {
+            "name": "Get execution",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.dedaluslabs.ai/v1/machines/:machine_id/executions/:execution_id",
+            "headers": [
+              {
+                "name": "X-Dedalus-Org-Id",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "machine_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "execution_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get execution"
+        },
+        {
+          "info": {
+            "name": "Delete execution",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.dedaluslabs.ai/v1/machines/:machine_id/executions/:execution_id",
+            "headers": [
+              {
+                "name": "X-Dedalus-Org-Id",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "machine_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "execution_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Delete execution"
+        },
+        {
+          "info": {
+            "name": "List execution events",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.dedaluslabs.ai/v1/machines/:machine_id/executions/:execution_id/events",
+            "headers": [
+              {
+                "name": "X-Dedalus-Org-Id",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "machine_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "execution_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "List execution events"
+        },
+        {
+          "info": {
+            "name": "Get execution output",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.dedaluslabs.ai/v1/machines/:machine_id/executions/:execution_id/output",
+            "headers": [
+              {
+                "name": "X-Dedalus-Org-Id",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "machine_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "execution_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get execution output"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

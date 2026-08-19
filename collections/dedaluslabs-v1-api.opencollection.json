@@ -1,0 +1,245 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Dedalus Audio V1 API",
+    "version": "0.0.1"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "V1",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Models",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.dedaluslabs.ai/v1/models",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "List available models.\n\nRetrieve the complete list of models available to your organization, including\nmodels from OpenAI, Anthropic, Google, xAI, Mistral, Fireworks, and DeepSeek.\n\nReturns:\n    ListModelsResponse: List of available models across all supported providers"
+        },
+        {
+          "info": {
+            "name": "Retrieve Model",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.dedaluslabs.ai/v1/models/:model_id",
+            "params": [
+              {
+                "name": "model_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Retrieve a model.\n\nRetrieve detailed information about a specific model, including its capabilities,\nprovider, and supported features.\n\nArgs:\n    model_id: The ID of the model to retrieve (e.g., 'openai/gpt-4', 'anthropic/claude-3-5-sonnet-20241022')\n    user: Authenticated user obtained from API key validation\n\nReturns:\n    Model: Information about the requested model\n\nRaises:\n    HTTPException:\n        - 401 if authentication fails\n        - 404 if model not found or not accessible with curren"
+        },
+        {
+          "info": {
+            "name": "Create Chat Completion",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.dedaluslabs.ai/v1/chat/completions",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Create a chat completion.\n\nGenerates a model response for the given conversation and configuration.\nSupports OpenAI-compatible parameters and provider-specific extensions.\n\nHeaders:\n  - Authorization: bearer key for the calling account.\n  - X-Provider / X-Provider-Key: optional headers for using your own provider API key.\n\nBehavior:\n  - If multiple models are supplied, the first one is used, and the agent may hand off to another model.\n  - Tools may be invoked on the server or signaled for the c"
+        },
+        {
+          "info": {
+            "name": "Create Embeddings",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.dedaluslabs.ai/v1/embeddings",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Create embeddings using the configured provider."
+        },
+        {
+          "info": {
+            "name": "Create Response",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.dedaluslabs.ai/v1/responses",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Create a response using the OpenAI Responses API.\n\nThis endpoint routes directly to OpenAI's Responses API.\nOnly OpenAI models are supported."
+        },
+        {
+          "info": {
+            "name": "Create Speech",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.dedaluslabs.ai/v1/audio/speech",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Generate speech audio from text.\n\nGenerates audio from the input text using text-to-speech models. Supports multiple\nvoices and output formats including mp3, opus, aac, flac, wav, and pcm.\n\nReturns streaming audio data that can be saved to a file or streamed directly to users."
+        },
+        {
+          "info": {
+            "name": "Create Transcription",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.dedaluslabs.ai/v1/audio/transcriptions",
+            "body": {
+              "type": "multipart-form",
+              "data": []
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Transcribe audio into text.\n\nTranscribes audio files using OpenAI's Whisper model. Supports multiple audio formats\nincluding mp3, mp4, mpeg, mpga, m4a, wav, and webm. Maximum file size is 25 MB.\n\nArgs:\n    file: Audio file to transcribe (required)\n    model: Model ID to use (e.g., \"openai/whisper-1\")\n    language: ISO-639-1 language code (e.g., \"en\", \"es\") - improves accuracy\n    prompt: Optional text to guide the model's style\n    response_format: Format of the output (json, text, srt, verbose_"
+        },
+        {
+          "info": {
+            "name": "Create Translation",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.dedaluslabs.ai/v1/audio/translations",
+            "body": {
+              "type": "multipart-form",
+              "data": []
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Translate audio into English.\n\nTranslates audio files in any supported language to English text using OpenAI's\nWhisper model. Supports the same audio formats as transcription. Maximum file size\nis 25 MB.\n\nArgs:\n    file: Audio file to translate (required)\n    model: Model ID to use (e.g., \"openai/whisper-1\")\n    prompt: Optional text to guide the model's style\n    response_format: Format of the output (json, text, srt, verbose_json, vtt)\n    temperature: Sampling temperature between 0 and 1\n\nRet"
+        },
+        {
+          "info": {
+            "name": "Create Image",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.dedaluslabs.ai/v1/images/generations",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Generate images from text prompts.\n\nPure image generation models only (DALL-E, GPT Image).\nFor multimodal models like gemini-2.5-flash-image, use /v1/chat/completions."
+        },
+        {
+          "info": {
+            "name": "Edit Image",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.dedaluslabs.ai/v1/images/edits",
+            "body": {
+              "type": "multipart-form",
+              "data": []
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Edit images using inpainting.\n\nSupports dall-e-2 and gpt-image-1. Upload an image and optionally a mask\nto indicate which areas to regenerate based on the prompt."
+        },
+        {
+          "info": {
+            "name": "Create Variation",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.dedaluslabs.ai/v1/images/variations",
+            "body": {
+              "type": "multipart-form",
+              "data": []
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Create variations of an image.\n\nDALL·E 2 only. Upload an image to generate variations."
+        },
+        {
+          "info": {
+            "name": "Process Ocr",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.dedaluslabs.ai/v1/ocr",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Process a document through Mistral OCR.\n\nExtracts text from PDFs and images, returning markdown-formatted content."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,944 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Dedalus Audio Machine Lifecycle API",
+    "version": "0.0.1"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Machine Lifecycle",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List machines",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.dedaluslabs.ai/v1/machines",
+            "headers": [
+              {
+                "name": "X-Dedalus-Org-Id",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "List machines"
+        },
+        {
+          "info": {
+            "name": "Create machine",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.dedaluslabs.ai/v1/machines",
+            "headers": [
+              {
+                "name": "X-Dedalus-Org-Id",
+                "value": ""
+              },
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create machine"
+        },
+        {
+          "info": {
+            "name": "Get machine",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.dedaluslabs.ai/v1/machines/:machine_id",
+            "headers": [
+              {
+                "name": "X-Dedalus-Org-Id",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "machine_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get machine"
+        },
+        {
+          "info": {
+            "name": "Update machine",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.dedaluslabs.ai/v1/machines/:machine_id",
+            "headers": [
+              {
+                "name": "X-Dedalus-Org-Id",
+                "value": ""
+              },
+              {
+                "name": "If-Match",
+                "value": ""
+              },
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "machine_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update machine"
+        },
+        {
+          "info": {
+            "name": "Destroy machine",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.dedaluslabs.ai/v1/machines/:machine_id",
+            "headers": [
+              {
+                "name": "X-Dedalus-Org-Id",
+                "value": ""
+              },
+              {
+                "name": "If-Match",
+                "value": ""
+              },
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "machine_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Destroy machine"
+        },
+        {
+          "info": {
+            "name": "List artifacts",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.dedaluslabs.ai/v1/machines/:machine_id/artifacts",
+            "headers": [
+              {
+                "name": "X-Dedalus-Org-Id",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "machine_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "List artifacts"
+        },
+        {
+          "info": {
+            "name": "Get artifact",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.dedaluslabs.ai/v1/machines/:machine_id/artifacts/:artifact_id",
+            "headers": [
+              {
+                "name": "X-Dedalus-Org-Id",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "machine_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "artifact_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get artifact"
+        },
+        {
+          "info": {
+            "name": "Delete artifact",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.dedaluslabs.ai/v1/machines/:machine_id/artifacts/:artifact_id",
+            "headers": [
+              {
+                "name": "X-Dedalus-Org-Id",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "machine_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "artifact_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Delete artifact"
+        },
+        {
+          "info": {
+            "name": "List executions",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.dedaluslabs.ai/v1/machines/:machine_id/executions",
+            "headers": [
+              {
+                "name": "X-Dedalus-Org-Id",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "machine_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "List executions"
+        },
+        {
+          "info": {
+            "name": "Create execution",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.dedaluslabs.ai/v1/machines/:machine_id/executions",
+            "headers": [
+              {
+                "name": "X-Dedalus-Org-Id",
+                "value": ""
+              },
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "machine_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create execution"
+        },
+        {
+          "info": {
+            "name": "Get execution",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.dedaluslabs.ai/v1/machines/:machine_id/executions/:execution_id",
+            "headers": [
+              {
+                "name": "X-Dedalus-Org-Id",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "machine_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "execution_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get execution"
+        },
+        {
+          "info": {
+            "name": "Delete execution",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.dedaluslabs.ai/v1/machines/:machine_id/executions/:execution_id",
+            "headers": [
+              {
+                "name": "X-Dedalus-Org-Id",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "machine_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "execution_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Delete execution"
+        },
+        {
+          "info": {
+            "name": "List execution events",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.dedaluslabs.ai/v1/machines/:machine_id/executions/:execution_id/events",
+            "headers": [
+              {
+                "name": "X-Dedalus-Org-Id",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "machine_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "execution_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "List execution events"
+        },
+        {
+          "info": {
+            "name": "Get execution output",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.dedaluslabs.ai/v1/machines/:machine_id/executions/:execution_id/output",
+            "headers": [
+              {
+                "name": "X-Dedalus-Org-Id",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "machine_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "execution_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get execution output"
+        },
+        {
+          "info": {
+            "name": "List previews",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.dedaluslabs.ai/v1/machines/:machine_id/previews",
+            "headers": [
+              {
+                "name": "X-Dedalus-Org-Id",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "machine_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "List previews"
+        },
+        {
+          "info": {
+            "name": "Create preview",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.dedaluslabs.ai/v1/machines/:machine_id/previews",
+            "headers": [
+              {
+                "name": "X-Dedalus-Org-Id",
+                "value": ""
+              },
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "machine_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create preview"
+        },
+        {
+          "info": {
+            "name": "Get preview",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.dedaluslabs.ai/v1/machines/:machine_id/previews/:preview_id",
+            "headers": [
+              {
+                "name": "X-Dedalus-Org-Id",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "machine_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "preview_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get preview"
+        },
+        {
+          "info": {
+            "name": "Delete preview",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.dedaluslabs.ai/v1/machines/:machine_id/previews/:preview_id",
+            "headers": [
+              {
+                "name": "X-Dedalus-Org-Id",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "machine_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "preview_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Delete preview"
+        },
+        {
+          "info": {
+            "name": "Sleep a running machine",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.dedaluslabs.ai/v1/machines/:machine_id/sleep",
+            "headers": [
+              {
+                "name": "X-Dedalus-Org-Id",
+                "value": ""
+              },
+              {
+                "name": "If-Match",
+                "value": ""
+              },
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "machine_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Sleep a running machine"
+        },
+        {
+          "info": {
+            "name": "List SSH sessions",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.dedaluslabs.ai/v1/machines/:machine_id/ssh",
+            "headers": [
+              {
+                "name": "X-Dedalus-Org-Id",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "machine_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "List SSH sessions"
+        },
+        {
+          "info": {
+            "name": "Create SSH session",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.dedaluslabs.ai/v1/machines/:machine_id/ssh",
+            "headers": [
+              {
+                "name": "X-Dedalus-Org-Id",
+                "value": ""
+              },
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "machine_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create SSH session"
+        },
+        {
+          "info": {
+            "name": "Get SSH session",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.dedaluslabs.ai/v1/machines/:machine_id/ssh/:session_id",
+            "headers": [
+              {
+                "name": "X-Dedalus-Org-Id",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "machine_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "session_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get SSH session"
+        },
+        {
+          "info": {
+            "name": "Delete SSH session",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.dedaluslabs.ai/v1/machines/:machine_id/ssh/:session_id",
+            "headers": [
+              {
+                "name": "X-Dedalus-Org-Id",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "machine_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "session_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Delete SSH session"
+        },
+        {
+          "info": {
+            "name": "Watch machine lifecycle status",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.dedaluslabs.ai/v1/machines/:machine_id/status/stream",
+            "headers": [
+              {
+                "name": "X-Dedalus-Org-Id",
+                "value": ""
+              },
+              {
+                "name": "Last-Event-ID",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "machine_id",
+                "value": "",
+                "type": "path",
+                "description": "Machine identifier."
+              }
+            ]
+          },
+          "docs": "Streams machine lifecycle updates over Server-Sent Events. Each `status` event contains a full `LifecycleResponse` payload. The stream closes after the machine reaches its current desired state."
+        },
+        {
+          "info": {
+            "name": "List terminals",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.dedaluslabs.ai/v1/machines/:machine_id/terminals",
+            "headers": [
+              {
+                "name": "X-Dedalus-Org-Id",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "machine_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "List terminals"
+        },
+        {
+          "info": {
+            "name": "Create terminal",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.dedaluslabs.ai/v1/machines/:machine_id/terminals",
+            "headers": [
+              {
+                "name": "X-Dedalus-Org-Id",
+                "value": ""
+              },
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "machine_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create terminal"
+        },
+        {
+          "info": {
+            "name": "Get terminal",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.dedaluslabs.ai/v1/machines/:machine_id/terminals/:terminal_id",
+            "headers": [
+              {
+                "name": "X-Dedalus-Org-Id",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "machine_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "terminal_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get terminal"
+        },
+        {
+          "info": {
+            "name": "Delete terminal",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.dedaluslabs.ai/v1/machines/:machine_id/terminals/:terminal_id",
+            "headers": [
+              {
+                "name": "X-Dedalus-Org-Id",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "machine_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "terminal_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Delete terminal"
+        },
+        {
+          "info": {
+            "name": "Connect to terminal WebSocket stream",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.dedaluslabs.ai/v1/machines/:machine_id/terminals/:terminal_id/stream",
+            "headers": [
+              {
+                "name": "X-Dedalus-Org-Id",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "machine_id",
+                "value": "",
+                "type": "path",
+                "description": "Machine identifier."
+              },
+              {
+                "name": "terminal_id",
+                "value": "",
+                "type": "path",
+                "description": "Terminal identifier."
+              }
+            ]
+          },
+          "docs": "Upgrades to a WebSocket connection for interactive terminal I/O. Clients send JSON `TerminalClientEvent` messages and receive JSON `TerminalServerEvent` messages. Terminal byte streams are base64-encoded inside `input` and `output` events; `resize` events use integer `width` and `height` fields."
+        },
+        {
+          "info": {
+            "name": "Wake a sleeping machine",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.dedaluslabs.ai/v1/machines/:machine_id/wake",
+            "headers": [
+              {
+                "name": "X-Dedalus-Org-Id",
+                "value": ""
+              },
+              {
+                "name": "If-Match",
+                "value": ""
+              },
+              {
+                "name": "Idempotency-Key",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "machine_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Wake a sleeping machine"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
