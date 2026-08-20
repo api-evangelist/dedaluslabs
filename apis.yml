@@ -35,6 +35,17 @@ modified: '2026-07-18'
 image: https://avatars.githubusercontent.com/u/201873775?v=4
 tags:
 - Company
+- Artificial Intelligence
+- Agents
+- MCP
+- LLM
+- Inference
+- Gateway
+- Compute
+- Sandbox
+- Developer Tools
+tags_raw:
+- Company
 - AI
 - Agents
 - MCP
@@ -97,6 +108,8 @@ apis:
   humanURL: https://docs.dedaluslabs.ai/api-reference/api
   baseURL: https://api.dedaluslabs.ai
   tags:
+  - Image
+  tags_raw:
   - Images
   properties:
   - type: OpenAPI
@@ -187,6 +200,8 @@ apis:
   humanURL: https://docs.dedaluslabs.ai/api-reference/api
   baseURL: https://api.dedaluslabs.ai
   tags:
+  - Private
+  tags_raw:
   - private
   properties:
   - type: OpenAPI
@@ -197,6 +212,8 @@ apis:
   humanURL: https://docs.dedaluslabs.ai/api-reference/api
   baseURL: https://api.dedaluslabs.ai
   tags:
+  - v1
+  tags_raw:
   - V1
   properties:
   - type: OpenAPI
@@ -207,6 +224,8 @@ apis:
   humanURL: https://docs.dedaluslabs.ai/api-reference/api
   baseURL: https://api.dedaluslabs.ai
   tags:
+  - Webhook
+  tags_raw:
   - Webhooks
   properties:
   - type: OpenAPI
