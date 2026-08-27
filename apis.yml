@@ -62,26 +62,6 @@ maintainers:
 - FN: APIs.json
   email: info@apis.io
 apis:
-- aid: dedaluslabs:dedaluslabs-audio-api
-  name: Dedalus Labs Audio API
-  description: The Audio API from Dedalus Labs — 3 operation(s) for audio.
-  humanURL: https://docs.dedaluslabs.ai/api-reference/api
-  baseURL: https://api.dedaluslabs.ai
-  tags:
-  - Audio
-  properties:
-  - type: OpenAPI
-    url: openapi/dedaluslabs-audio-api-openapi.yml
-- aid: dedaluslabs:dedaluslabs-chat-api
-  name: Dedalus Labs Chat API
-  description: The Chat API from Dedalus Labs — 1 operation(s) for chat.
-  humanURL: https://docs.dedaluslabs.ai/api-reference/api
-  baseURL: https://api.dedaluslabs.ai
-  tags:
-  - Chat
-  properties:
-  - type: OpenAPI
-    url: openapi/dedaluslabs-chat-api-openapi.yml
 - aid: dedaluslabs:dedaluslabs-dedalus-api-api
   name: Dedalus Labs Dedalus API API
   description: The Dedalus API API from Dedalus Labs — 1 operation(s) for dedalus api.
@@ -102,38 +82,6 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/dedaluslabs-health-api-openapi.yml
-- aid: dedaluslabs:dedaluslabs-images-api
-  name: Dedalus Labs Images API
-  description: The Images API from Dedalus Labs — 3 operation(s) for images.
-  humanURL: https://docs.dedaluslabs.ai/api-reference/api
-  baseURL: https://api.dedaluslabs.ai
-  tags:
-  - Image
-  tags_raw:
-  - Images
-  properties:
-  - type: OpenAPI
-    url: openapi/dedaluslabs-images-api-openapi.yml
-- aid: dedaluslabs:dedaluslabs-machine-artifacts-api
-  name: Dedalus Labs Machine Artifacts API
-  description: The Machine Artifacts API from Dedalus Labs — 2 operation(s) for machine artifacts.
-  humanURL: https://docs.dedaluslabs.ai/api-reference/api
-  baseURL: https://api.dedaluslabs.ai
-  tags:
-  - Machine Artifacts
-  properties:
-  - type: OpenAPI
-    url: openapi/dedaluslabs-machine-artifacts-api-openapi.yml
-- aid: dedaluslabs:dedaluslabs-machine-executions-api
-  name: Dedalus Labs Machine Executions API
-  description: The Machine Executions API from Dedalus Labs — 4 operation(s) for machine executions.
-  humanURL: https://docs.dedaluslabs.ai/api-reference/api
-  baseURL: https://api.dedaluslabs.ai
-  tags:
-  - Machine Executions
-  properties:
-  - type: OpenAPI
-    url: openapi/dedaluslabs-machine-executions-api-openapi.yml
 - aid: dedaluslabs:dedaluslabs-machine-lifecycle-api
   name: Dedalus Labs Machine Lifecycle API
   description: The Machine Lifecycle API from Dedalus Labs — 18 operation(s) for machine lifecycle.
@@ -144,36 +92,6 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/dedaluslabs-machine-lifecycle-api-openapi.yml
-- aid: dedaluslabs:dedaluslabs-machine-previews-api
-  name: Dedalus Labs Machine Previews API
-  description: The Machine Previews API from Dedalus Labs — 2 operation(s) for machine previews.
-  humanURL: https://docs.dedaluslabs.ai/api-reference/api
-  baseURL: https://api.dedaluslabs.ai
-  tags:
-  - Machine Previews
-  properties:
-  - type: OpenAPI
-    url: openapi/dedaluslabs-machine-previews-api-openapi.yml
-- aid: dedaluslabs:dedaluslabs-machine-ssh-api
-  name: Dedalus Labs Machine SSH API
-  description: The Machine SSH API from Dedalus Labs — 2 operation(s) for machine ssh.
-  humanURL: https://docs.dedaluslabs.ai/api-reference/api
-  baseURL: https://api.dedaluslabs.ai
-  tags:
-  - Machine SSH
-  properties:
-  - type: OpenAPI
-    url: openapi/dedaluslabs-machine-ssh-api-openapi.yml
-- aid: dedaluslabs:dedaluslabs-machine-terminals-api
-  name: Dedalus Labs Machine Terminals API
-  description: The Machine Terminals API from Dedalus Labs — 3 operation(s) for machine terminals.
-  humanURL: https://docs.dedaluslabs.ai/api-reference/api
-  baseURL: https://api.dedaluslabs.ai
-  tags:
-  - Machine Terminals
-  properties:
-  - type: OpenAPI
-    url: openapi/dedaluslabs-machine-terminals-api-openapi.yml
 - aid: dedaluslabs:dedaluslabs-marketplace-api
   name: Dedalus Labs Marketplace API
   description: The Marketplace API from Dedalus Labs — 6 operation(s) for marketplace.
@@ -184,16 +102,6 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/dedaluslabs-marketplace-api-openapi.yml
-- aid: dedaluslabs:dedaluslabs-ocr-api
-  name: Dedalus Labs OCR API
-  description: The OCR API from Dedalus Labs — 1 operation(s) for ocr.
-  humanURL: https://docs.dedaluslabs.ai/api-reference/api
-  baseURL: https://api.dedaluslabs.ai
-  tags:
-  - OCR
-  properties:
-  - type: OpenAPI
-    url: openapi/dedaluslabs-ocr-api-openapi.yml
 - aid: dedaluslabs:dedaluslabs-private-api
   name: Dedalus Labs private API
   description: The private API from Dedalus Labs — 1 operation(s) for private.
