@@ -4,8 +4,8 @@ info:
   version: 1.0.0
   summary: Provision a persistent Linux VM, execute a command, read the output, then sleep it to pause billing.
 sourceDescriptions:
-- name: machines
-  url: ../openapi/dedaluslabs-machines-openapi-original.yml
+- name: machineLifecycleApi
+  url: ../openapi/dedaluslabs-machine-lifecycle-api-openapi.yml
   type: openapi
 workflows:
 - workflowId: machineRunAndSleep
