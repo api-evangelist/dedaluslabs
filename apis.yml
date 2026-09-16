@@ -1,15 +1,13 @@
 aid: dedaluslabs
 name: Dedalus Labs
-description: >-
-  Dedalus Labs builds infrastructure for AI agents. It runs two production APIs: the Dedalus
-  Agents API, an OpenAI-compatible MCP gateway that lets you mix and match any model from any
-  provider with tools drawn from the Dedalus MCP marketplace (chat completions, embeddings,
-  audio, images, and OCR through one endpoint); and Dedalus Cloud Services (Dedalus Machines),
-  persistent Linux VMs for agents that start in under a second, preserve their filesystem and
-  memory across sleep/wake, and bill per second with no idle tax. Both APIs authenticate with a
-  Dedalus API key (Bearer or x-api-key), support idempotent mutations, and ship official SDKs in
-  TypeScript, Python, and Go plus a CLI and Terraform provider. Dedalus is a portfolio company of
-  Kindred Ventures.
+description: 'Dedalus Labs builds infrastructure for AI agents. It runs two production APIs: the Dedalus
+  Agents API, an OpenAI-compatible MCP gateway that lets you mix and match any model from any provider
+  with tools drawn from the Dedalus MCP marketplace (chat completions, embeddings, audio, images, and
+  OCR through one endpoint); and Dedalus Cloud Services (Dedalus Machines), persistent Linux VMs for agents
+  that start in under a second, preserve their filesystem and memory across sleep/wake, and bill per second
+  with no idle tax. Both APIs authenticate with a Dedalus API key (Bearer or x-api-key), support idempotent
+  mutations, and ship official SDKs in TypeScript, Python, and Go plus a CLI and Terraform provider. Dedalus
+  is a portfolio company of Kindred Ventures.'
 url: https://raw.githubusercontent.com/api-evangelist/dedaluslabs/refs/heads/main/apis.yml
 x-type: company
 x-source: vc-portfolio
@@ -44,7 +42,7 @@ accessModel:
   method: derived
 specificationVersion: '0.23'
 created: '2026-07-17'
-modified: '2026-07-18'
+modified: '2026-09-16'
 image: https://avatars.githubusercontent.com/u/201873775?v=4
 tags:
 - Company
@@ -76,7 +74,7 @@ maintainers:
   email: info@apis.io
 apis:
 - aid: dedaluslabs:dedaluslabs-dedalus-api-api
-  name: Dedalus Labs Dedalus API API
+  name: Dedalus Labs Dedalus API
   description: The Dedalus API API from Dedalus Labs — 1 operation(s) for dedalus api.
   humanURL: https://docs.dedaluslabs.ai/api-reference/api
   baseURL: https://api.dedaluslabs.ai
