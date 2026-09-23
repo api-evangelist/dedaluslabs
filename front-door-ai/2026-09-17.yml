@@ -1,0 +1,27 @@
+# Front Door AI Index — dedaluslabs — 2026-09-17
+# AI vocabulary counted on the provider's root page. Generated; do not edit.
+# `score` is null unless ownership is `own` — see front_door_ai.py.
+front_door_ai:
+  slug: dedaluslabs
+  lexicon_version: '1.0'
+  probed_at: '2026-09-17'
+  host: dedaluslabs.ai
+  final_host: www.dedaluslabs.ai
+  ownership: own
+  owner: dedaluslabs
+  shares_host_with: null
+  inherited_from: null
+  verdict: scored
+  score: 6
+  host_score: 6
+  density: 20.27
+  words: 296
+  tiers:
+    agentic: 2
+    core: 4
+    model: 0
+  ambiguous: 3
+  top_terms:
+    AI: 4
+    agent: 3
+    AI agent: 2
