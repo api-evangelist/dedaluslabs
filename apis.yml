@@ -44,6 +44,9 @@ specificationVersion: '0.23'
 created: '2026-07-17'
 modified: '2026-09-16'
 image: https://avatars.githubusercontent.com/u/201873775?v=4
+x-docs-platform: scalar
+x-docs-platform-confidence: high
+x-docs-platform-checked: 2026-09-25
 tags:
 - Company
 - Artificial Intelligence
@@ -114,7 +117,7 @@ apis:
   - type: OpenAPI
     url: openapi/dedaluslabs-marketplace-api-openapi.yml
 - aid: dedaluslabs:dedaluslabs-private-api
-  name: Dedalus Labs private API
+  name: Dedalus Labs Private API
   description: The private API from Dedalus Labs — 1 operation(s) for private.
   humanURL: https://docs.dedaluslabs.ai/api-reference/api
   baseURL: https://api.dedaluslabs.ai
@@ -125,18 +128,6 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/dedaluslabs-private-api-openapi.yml
-- aid: dedaluslabs:dedaluslabs-v1-api
-  name: Dedalus Labs V1 API
-  description: The V1 API from Dedalus Labs — 12 operation(s) for v1.
-  humanURL: https://docs.dedaluslabs.ai/api-reference/api
-  baseURL: https://api.dedaluslabs.ai
-  tags:
-  - v1
-  tags_raw:
-  - V1
-  properties:
-  - type: OpenAPI
-    url: openapi/dedaluslabs-v1-api-openapi.yml
 - aid: dedaluslabs:dedaluslabs-webhooks-api
   name: Dedalus Labs Webhooks API
   description: The Webhooks API from Dedalus Labs — 1 operation(s) for webhooks.
@@ -149,6 +140,76 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/dedaluslabs-webhooks-api-openapi.yml
+- aid: dedaluslabs:dedaluslabs-audio-api
+  name: Dedalus Labs Audio API
+  description: The Audio API from Dedalus Labs — 3 operation(s) for audio.
+  humanURL: https://docs.dedaluslabs.ai/api-reference/api
+  baseURL: https://api.dedaluslabs.ai
+  tags:
+  - Audio
+  properties:
+  - type: OpenAPI
+    url: openapi/dedaluslabs-audio-api-openapi.yml
+- aid: dedaluslabs:dedaluslabs-chat-api
+  name: Dedalus Labs Chat API
+  description: The Chat API from Dedalus Labs — 1 operation(s) for chat.
+  humanURL: https://docs.dedaluslabs.ai/api-reference/api
+  baseURL: https://api.dedaluslabs.ai
+  tags:
+  - Chat
+  properties:
+  - type: OpenAPI
+    url: openapi/dedaluslabs-chat-api-openapi.yml
+- aid: dedaluslabs:dedaluslabs-embeddings-api
+  name: Dedalus Labs Embeddings API
+  description: The Embeddings API from Dedalus Labs — 1 operation(s) for embeddings.
+  humanURL: https://docs.dedaluslabs.ai/api-reference/api
+  baseURL: https://api.dedaluslabs.ai
+  tags:
+  - Embeddings
+  properties:
+  - type: OpenAPI
+    url: openapi/dedaluslabs-embeddings-api-openapi.yml
+- aid: dedaluslabs:dedaluslabs-images-api
+  name: Dedalus Labs Images API
+  description: The Images API from Dedalus Labs — 3 operation(s) for images.
+  humanURL: https://docs.dedaluslabs.ai/api-reference/api
+  baseURL: https://api.dedaluslabs.ai
+  tags:
+  - Images
+  properties:
+  - type: OpenAPI
+    url: openapi/dedaluslabs-images-api-openapi.yml
+- aid: dedaluslabs:dedaluslabs-models-api
+  name: Dedalus Labs Models API
+  description: The Models API from Dedalus Labs — 2 operation(s) for models.
+  humanURL: https://docs.dedaluslabs.ai/api-reference/api
+  baseURL: https://api.dedaluslabs.ai
+  tags:
+  - Models
+  properties:
+  - type: OpenAPI
+    url: openapi/dedaluslabs-models-api-openapi.yml
+- aid: dedaluslabs:dedaluslabs-ocr-api
+  name: Dedalus Labs OCR API
+  description: The OCR API from Dedalus Labs — 1 operation(s) for ocr.
+  humanURL: https://docs.dedaluslabs.ai/api-reference/api
+  baseURL: https://api.dedaluslabs.ai
+  tags:
+  - OCR
+  properties:
+  - type: OpenAPI
+    url: openapi/dedaluslabs-ocr-api-openapi.yml
+- aid: dedaluslabs:dedaluslabs-responses-api
+  name: Dedalus Labs Responses API
+  description: The Responses API from Dedalus Labs — 1 operation(s) for responses.
+  humanURL: https://docs.dedaluslabs.ai/api-reference/api
+  baseURL: https://api.dedaluslabs.ai
+  tags:
+  - Responses
+  properties:
+  - type: OpenAPI
+    url: openapi/dedaluslabs-responses-api-openapi.yml
 common:
 - type: Overlay
   url: overlays/dedaluslabs-agents-overlay.yaml

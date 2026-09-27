@@ -185,6 +185,104 @@ paths:
                 $ref: '#/components/schemas/StripeBalanceResponse'
 components:
   schemas:
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    PayoutRequestResponse:
+      properties:
+        success:
+          type: boolean
+          title: Success
+        payout_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Payout Id
+        amount_milli_cents:
+          type: integer
+          title: Amount Milli Cents
+          default: 0
+        amount_cents:
+          type: integer
+          title: Amount Cents
+          default: 0
+        error:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Error
+      type: object
+      required:
+      - success
+      title: PayoutRequestResponse
+      description: Response from payout request.
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    PayoutFailureResponse:
+      properties:
+        stripe_payout_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Stripe Payout Id
+        failure_code:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Failure Code
+        failure_message:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Failure Message
+        amount_cents:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Amount Cents
+        currency:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Currency
+        occurred_at:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Occurred At
+      type: object
+      title: PayoutFailureResponse
+      description: Latest Stripe payout failure metadata for the seller.
     OnboardResponse:
       properties:
         success:
@@ -210,29 +308,6 @@ components:
       - success
       title: OnboardResponse
       description: Response with Stripe onboarding link.
-    StripeBalanceResponse:
-      properties:
-        available_cents:
-          type: integer
-          title: Available Cents
-          description: Available balance in cents
-        pending_cents:
-          type: integer
-          title: Pending Cents
-          description: Pending balance in cents
-        stripe_connect_account_id:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Stripe Connect Account Id
-          description: Stripe account ID
-      type: object
-      required:
-      - available_cents
-      - pending_cents
-      - stripe_connect_account_id
-      title: StripeBalanceResponse
-      description: Balance from Stripe connected account.
     OnboardRequest:
       properties:
         return_url:
@@ -307,78 +382,6 @@ components:
       - can_request_payout
       title: PayoutBalanceResponse
       description: Seller payout balance and eligibility.
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    PayoutFailureResponse:
-      properties:
-        stripe_payout_id:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Stripe Payout Id
-        failure_code:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Failure Code
-        failure_message:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Failure Message
-        amount_cents:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Amount Cents
-        currency:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Currency
-        occurred_at:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Occurred At
-      type: object
-      title: PayoutFailureResponse
-      description: Latest Stripe payout failure metadata for the seller.
-    PayoutRequestResponse:
-      properties:
-        success:
-          type: boolean
-          title: Success
-        payout_id:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Payout Id
-        amount_milli_cents:
-          type: integer
-          title: Amount Milli Cents
-          default: 0
-        amount_cents:
-          type: integer
-          title: Amount Cents
-          default: 0
-        error:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Error
-      type: object
-      required:
-      - success
-      title: PayoutRequestResponse
-      description: Response from payout request.
     ConnectStatusResponse:
       properties:
         stripe_connect_account_id:
@@ -419,32 +422,29 @@ components:
       - is_onboarded
       title: ConnectStatusResponse
       description: Stripe Connect onboarding status.
-    ValidationError:
+    StripeBalanceResponse:
       properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-        input:
-          title: Input
-        ctx:
-          type: object
-          title: Context
+        available_cents:
+          type: integer
+          title: Available Cents
+          description: Available balance in cents
+        pending_cents:
+          type: integer
+          title: Pending Cents
+          description: Pending balance in cents
+        stripe_connect_account_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Stripe Connect Account Id
+          description: Stripe account ID
       type: object
       required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
+      - available_cents
+      - pending_cents
+      - stripe_connect_account_id
+      title: StripeBalanceResponse
+      description: Balance from Stripe connected account.
     DashboardResponse:
       properties:
         success:

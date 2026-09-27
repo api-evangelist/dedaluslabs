@@ -1,0 +1,1301 @@
+openapi: 3.2.0
+info:
+  title: Dedalus Responses API
+  description: 'MCP gateway for AI agents. Mix-and-match any model with any tool from our marketplace.
+
+
+    ## Authentication
+
+    Use Bearer token or X-API-Key header authentication:
+
+    ```
+
+    Authorization: Bearer your-api-key-here
+
+    ```
+
+    ```
+
+    x-api-key: your-api-key-here
+
+    ```
+
+
+    ## Available Endpoints
+
+    - **GET /v1/models**: list available models
+
+    - **POST /v1/chat/completions**: Chat completions with MCP tools
+
+    - **GET /health**: Service health check'
+  version: 0.0.1
+servers:
+- url: https://api.dedaluslabs.ai
+  description: Official Dedalus API
+tags:
+- name: Responses
+paths:
+  /v1/responses:
+    post:
+      tags:
+      - Responses
+      summary: Create Response
+      description: 'Create a response using the OpenAI Responses API.
+
+
+        This endpoint routes directly to OpenAI''s Responses API.
+
+        Only OpenAI models are supported.'
+      operationId: create_response_v1_responses_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResponsesRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponsesResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - Bearer: []
+      x-codeSamples:
+      - lang: python
+        label: Python
+        source: 'client = Dedalus()
+
+
+          result = client.responses.create(**params)'
+components:
+  schemas:
+    MCPServerSpec:
+      properties:
+        slug:
+          anyOf:
+          - type: string
+            pattern: ^[a-zA-Z0-9_-]+/[a-zA-Z0-9_-]+$
+          - type: 'null'
+          title: Slug
+          description: Marketplace identifier.
+        url:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Url
+          description: Direct URL to MCP server endpoint (Pro users).
+        name:
+          type: string
+          title: Name
+          description: Server instance name for credential matching.
+        version:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Version
+          description: Version constraint for slug-based servers.
+        credentials:
+          anyOf:
+          - additionalProperties:
+              type: string
+            type: object
+          - type: 'null'
+          title: Credentials
+          description: Encrypted credential blobs keyed by connection name. Values are base64url ciphertext produced by the SDK (client-side encryption with the AS public key).
+      additionalProperties: false
+      type: object
+      required:
+      - name
+      title: MCPServerSpec
+      description: 'Structured MCP server specification.
+
+
+        Slug-based: {"slug": "dedalus-labs/brave-search", "name": "github-integration", "version": "v1.0.0"}
+
+        URL-based:  {"url": "https://mcp.dedaluslabs.ai/acme/my-server/mcp", "name": "custom-server"}'
+    MCPCredentials:
+      items:
+        $ref: '#/components/schemas/Credential'
+      type: array
+      title: MCPCredentials
+      description: List of credentials for MCP server authentication.
+      x-stainless-variantName: MCPCredentials
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    HeaderParams:
+      additionalProperties:
+        type: string
+      type: object
+    Credential:
+      properties:
+        connection_name:
+          type: string
+          title: Connection Name
+          description: Connection name. Must match a connection in MCPServer.connections.
+        values:
+          additionalProperties:
+            anyOf:
+            - type: string
+            - type: integer
+            - type: boolean
+          type: object
+          title: Values
+          description: Credential values. Keys are credential field names, values are the secrets.
+      additionalProperties: false
+      type: object
+      required:
+      - connection_name
+      - values
+      title: Credential
+      description: 'Credential for MCP server authentication.
+
+
+        Passed at endpoint level (e.g., chat.completions.create) and matched
+
+        to MCP servers by connection name. Wire format matches dedalus_mcp.Credential.to_dict().'
+    MCPServers:
+      items:
+        anyOf:
+        - type: string
+        - $ref: '#/components/schemas/MCPServerSpec'
+      type: array
+      title: MCPServers
+      description: List of MCP server inputs (slugs or structured specs).
+      x-stainless-variantName: MCPServers
+    ResponsePromptParam:
+      properties:
+        id:
+          type: string
+          title: Id
+          description: Identifier of the stored prompt.
+        version:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Version
+          description: Optional version identifier of the stored prompt.
+        variables:
+          anyOf:
+          - $ref: '#/components/schemas/JSONObject'
+          - type: 'null'
+          description: Variables to substitute into the stored prompt template.
+      type: object
+      required:
+      - id
+      title: ResponsePromptParam
+      description: Stored prompt template reference (BYOK).
+    DedalusModelChoice:
+      anyOf:
+      - $ref: '#/components/schemas/ModelId'
+      - $ref: '#/components/schemas/DedalusModel'
+      title: DedalusModelChoice
+      description: Dedalus model choice - either a string ID or DedalusModel configuration object.
+    ResponseConversationParam:
+      properties:
+        id:
+          type: string
+          title: Id
+          description: Identifier of the existing conversation.
+      type: object
+      required:
+      - id
+      title: ResponseConversationParam
+      description: Conversation reference for continuing a Responses session.
+    ModelSettings:
+      properties:
+        temperature:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Temperature
+        top_p:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Top P
+        frequency_penalty:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Frequency Penalty
+        presence_penalty:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Presence Penalty
+        stop:
+          anyOf:
+          - type: string
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Stop
+        seed:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Seed
+        logit_bias:
+          anyOf:
+          - additionalProperties:
+              type: integer
+            type: object
+          - type: 'null'
+          title: Logit Bias
+        logprobs:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Logprobs
+        top_logprobs:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Top Logprobs
+        n:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: N
+        user:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: User
+        response_format:
+          anyOf:
+          - $ref: '#/components/schemas/JSONObject'
+          - type: 'null'
+        stream:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Stream
+        stream_options:
+          anyOf:
+          - $ref: '#/components/schemas/JSONObject'
+          - type: 'null'
+        audio:
+          anyOf:
+          - $ref: '#/components/schemas/JSONObject'
+          - type: 'null'
+        service_tier:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Service Tier
+        prediction:
+          anyOf:
+          - $ref: '#/components/schemas/JSONObject'
+          - type: 'null'
+        tool_choice:
+          anyOf:
+          - $ref: '#/components/schemas/ToolChoice'
+          - type: 'null'
+        parallel_tool_calls:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Parallel Tool Calls
+        truncation:
+          anyOf:
+          - type: string
+            enum:
+            - auto
+            - disabled
+          - type: 'null'
+          title: Truncation
+        max_tokens:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Max Tokens
+        max_completion_tokens:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Max Completion Tokens
+        reasoning:
+          anyOf:
+          - $ref: '#/components/schemas/Reasoning'
+          - type: 'null'
+        reasoning_effort:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Reasoning Effort
+        metadata:
+          anyOf:
+          - additionalProperties:
+              type: string
+            type: object
+          - type: 'null'
+          title: Metadata
+        store:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Store
+        include_usage:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Include Usage
+        timeout:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Timeout
+        prompt_cache_key:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Prompt Cache Key
+        safety_identifier:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Safety Identifier
+        verbosity:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Verbosity
+        web_search_options:
+          anyOf:
+          - $ref: '#/components/schemas/JSONObject'
+          - type: 'null'
+        extra_query:
+          anyOf:
+          - $ref: '#/components/schemas/QueryParams'
+          - type: 'null'
+        extra_headers:
+          anyOf:
+          - $ref: '#/components/schemas/HeaderParams'
+          - type: 'null'
+        extra_args:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Extra Args
+        attributes:
+          additionalProperties: true
+          type: object
+          title: Attributes
+        voice:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Voice
+        modalities:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Modalities
+        input_audio_format:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Input Audio Format
+        output_audio_format:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Output Audio Format
+        input_audio_transcription:
+          anyOf:
+          - $ref: '#/components/schemas/JSONObject'
+          - type: 'null'
+        turn_detection:
+          anyOf:
+          - $ref: '#/components/schemas/JSONObject'
+          - type: 'null'
+        thinking:
+          anyOf:
+          - $ref: '#/components/schemas/JSONObject'
+          - type: 'null'
+        top_k:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Top K
+        generation_config:
+          anyOf:
+          - $ref: '#/components/schemas/JSONObject'
+          - type: 'null'
+        system_instruction:
+          anyOf:
+          - $ref: '#/components/schemas/JSONObject'
+          - type: 'null'
+        safety_settings:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/JSONObject'
+            type: array
+          - type: 'null'
+          title: Safety Settings
+        tool_config:
+          anyOf:
+          - $ref: '#/components/schemas/JSONObject'
+          - type: 'null'
+        search_parameters:
+          anyOf:
+          - $ref: '#/components/schemas/JSONObject'
+          - type: 'null'
+        deferred:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Deferred
+        structured_output:
+          anyOf:
+          - {}
+          - type: 'null'
+          title: Structured Output
+          x-stainless-any: true
+      type: object
+      title: ModelSettings
+    MCPToolChoice:
+      properties:
+        server_label:
+          type: string
+          title: Server Label
+        name:
+          type: string
+          title: Name
+      type: object
+      required:
+      - server_label
+      - name
+      title: MCPToolChoice
+    JSONObject:
+      additionalProperties:
+        $ref: '#/components/schemas/JSONValue'
+      type: object
+    ResponsesResponse:
+      properties:
+        id:
+          type: string
+          title: Id
+          description: Unique identifier for this Response
+        object:
+          type: string
+          const: response
+          title: Object
+          description: The object type, always 'response'
+          default: response
+        created_at:
+          type: number
+          title: Created At
+          description: Unix timestamp (in seconds) when this Response was created
+        completed_at:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Completed At
+          description: Unix timestamp (in seconds) when the response was completed
+        model:
+          type: string
+          title: Model
+          description: The model used for this response
+        status:
+          type: string
+          enum:
+          - completed
+          - failed
+          - in_progress
+          - cancelled
+          - queued
+          - incomplete
+          title: Status
+          description: The status of the response generation
+        output:
+          items:
+            $ref: '#/components/schemas/JSONObject'
+          type: array
+          title: Output
+          description: Array of content items generated by the model
+        error:
+          anyOf:
+          - $ref: '#/components/schemas/JSONObject'
+          - type: 'null'
+          description: Error details if status is 'failed'
+        incomplete_details:
+          anyOf:
+          - additionalProperties:
+              type: string
+            type: object
+          - type: 'null'
+          title: Incomplete Details
+          description: Details about why the response is incomplete (e.g., max_output_tokens, content_filter)
+        instructions:
+          anyOf:
+          - type: string
+          - items:
+              $ref: '#/components/schemas/JSONObject'
+            type: array
+          - type: 'null'
+          title: Instructions
+          description: System/developer instructions used
+        previous_response_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Previous Response Id
+          description: Previous response ID referenced, if any
+        tools:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/JSONObject'
+            type: array
+          - type: 'null'
+          title: Tools
+          description: Tools that were available to the model
+        tool_choice:
+          anyOf:
+          - type: string
+          - $ref: '#/components/schemas/JSONObject'
+          - type: 'null'
+          title: Tool Choice
+          description: Tool choice configuration used
+        truncation:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Truncation
+          description: Truncation strategy applied when context exceeded limits
+        parallel_tool_calls:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Parallel Tool Calls
+          description: Whether parallel tool calls were enabled
+        text:
+          anyOf:
+          - $ref: '#/components/schemas/JSONObject'
+          - type: 'null'
+          description: Text configuration used for this response
+        temperature:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Temperature
+          description: Temperature parameter used
+        top_p:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Top P
+          description: Top-p parameter used
+        presence_penalty:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Presence Penalty
+          description: Presence penalty used for this response
+        frequency_penalty:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Frequency Penalty
+          description: Frequency penalty used for this response
+        top_logprobs:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Top Logprobs
+          description: Number of logprob tokens returned per position
+        reasoning:
+          anyOf:
+          - $ref: '#/components/schemas/JSONObject'
+          - type: 'null'
+          description: Reasoning configuration and outputs
+        usage:
+          anyOf:
+          - $ref: '#/components/schemas/JSONObject'
+          - type: 'null'
+          description: Token usage statistics for the response
+        max_output_tokens:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Max Output Tokens
+          description: Maximum output tokens allowed for this response
+        max_tool_calls:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Max Tool Calls
+          description: Maximum tool calls allowed for this response
+        store:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Store
+          description: Whether the response was stored for later retrieval
+        background:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Background
+          description: Whether the request was run in the background
+        service_tier:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Service Tier
+          description: Service tier used for this response
+        safety_identifier:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Safety Identifier
+          description: Safety identifier used for this response
+        prompt_cache_key:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Prompt Cache Key
+          description: Prompt cache key used for this response
+        output_text:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Output Text
+          description: Aggregated text output from all output_text items (SDK-only convenience property)
+        metadata:
+          anyOf:
+          - additionalProperties:
+              type: string
+            type: object
+          - type: 'null'
+          title: Metadata
+          description: Key-value pairs attached to this response (requires BYOK)
+        conversation:
+          anyOf:
+          - $ref: '#/components/schemas/JSONObject'
+          - type: 'null'
+          description: Conversation this response belongs to (requires BYOK)
+        tools_executed:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Tools Executed
+          description: List of tool names that were executed server-side (e.g., MCP tools).
+        mcp_server_errors:
+          anyOf:
+          - additionalProperties:
+              $ref: '#/components/schemas/MCPServerError'
+            type: object
+          - type: 'null'
+          title: Mcp Server Errors
+          description: MCP server failures keyed by server name.
+        mcp_tool_results:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/MCPToolResult'
+            type: array
+          - type: 'null'
+          title: Mcp Tool Results
+          description: Results of MCP tool executions including inputs, outputs, and timing.
+      type: object
+      required:
+      - id
+      - created_at
+      - model
+      - status
+      - output
+      title: ResponsesResponse
+      description: Responses API response with Dedalus extensions.
+    MCPToolResult:
+      properties:
+        tool_name:
+          type: string
+          title: Tool Name
+          description: Name of the MCP tool that was executed.
+        server_name:
+          type: string
+          title: Server Name
+          description: Name of the MCP server that handled the tool.
+        arguments:
+          $ref: '#/components/schemas/JSONObject'
+          description: Input arguments passed to the tool.
+        result:
+          anyOf:
+          - $ref: '#/components/schemas/JSONValue'
+          - type: 'null'
+          description: Structured result from the tool (parsed from structuredContent or content).
+        is_error:
+          type: boolean
+          title: Is Error
+          description: Whether the tool execution resulted in an error.
+        duration_ms:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Duration (ms)
+          description: Execution time in milliseconds.
+      type: object
+      required:
+      - tool_name
+      - server_name
+      - arguments
+      - is_error
+      title: MCPToolResult
+      description: 'Result of a single MCP tool execution.
+
+
+        Provides visibility into MCP tool calls including the full input arguments
+
+        and structured output, enabling debugging and audit trails.'
+    DedalusModel:
+      properties:
+        model:
+          type: string
+          title: Model
+          description: Model identifier with provider prefix (e.g., 'openai/gpt-5', 'anthropic/claude-3-5-sonnet').
+        settings:
+          anyOf:
+          - $ref: '#/components/schemas/ModelSettings'
+          - type: 'null'
+          description: Optional default generation settings (e.g., temperature, max_tokens) applied when this model is selected.
+      additionalProperties: false
+      type: object
+      required:
+      - model
+      title: DedalusModel
+      description: 'Structured model selection entry used in request payloads.
+
+
+        Supports OpenAI-style semantics (string model id) while enabling
+
+        optional per-model default settings for Dedalus multi-model routing.'
+    MCPServerError:
+      properties:
+        message:
+          type: string
+          title: Message
+          description: Human-readable error message.
+        code:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Code
+          description: Machine-readable error code.
+        recommendation:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Recommendation
+          description: Suggested action for the user.
+      type: object
+      required:
+      - message
+      title: MCPServerError
+      description: Error details for a single MCP server failure.
+    QueryParams:
+      additionalProperties: true
+      type: object
+    ResponsesRequest:
+      properties:
+        input:
+          anyOf:
+          - type: string
+          - items:
+              $ref: '#/components/schemas/JSONObject'
+            type: array
+          - type: 'null'
+          title: Input
+          description: 'Text, image, or file inputs to the model, used to generate a response.
+
+
+            Learn more:
+
+            - [Text inputs and outputs](https://platform.openai.com/docs/guides/text)
+
+            - [Image inputs](https://platform.openai.com/docs/guides/images)
+
+            - [File inputs](https://platform.openai.com/docs/guides/pdf-files)
+
+            - [Conversation state](https://platform.openai.com/docs/guides/conversation-state)
+
+            - [Function calling](https://platform.openai.com/docs/guides/function-calling)'
+          examples:
+          - What is the capital of France?
+          - - content: What is the capital of France?
+              role: user
+        model:
+          anyOf:
+          - $ref: '#/components/schemas/DedalusModelChoice'
+          - $ref: '#/components/schemas/Models'
+          - type: 'null'
+          title: Model
+          description: 'Model ID used to generate the response, like `gpt-4o` or `o3`. OpenAI
+
+            offers a wide range of models with different capabilities, performance
+
+            characteristics, and price points. Refer to the [model guide](https://platform.openai.com/docs/models)
+
+            to browse and compare available models.'
+          examples:
+          - openai/gpt-4o
+          - openai/o3-mini
+        instructions:
+          anyOf:
+          - type: string
+          - items:
+              $ref: '#/components/schemas/JSONObject'
+            type: array
+          - type: 'null'
+          title: Instructions
+          description: 'A system (or developer) message inserted into the model''s context.
+
+
+            When using along with `previous_response_id`, the instructions from a previous
+
+            response will not be carried over to the next response. This makes it simple
+
+            to swap out system (or developer) messages in new responses.'
+          examples:
+          - You are a helpful assistant.
+        text:
+          anyOf:
+          - $ref: '#/components/schemas/JSONObject'
+          - type: 'null'
+          description: 'Configuration options for a text response from the model. Can be plain
+
+            text or structured JSON data. Learn more:
+
+            - [Text inputs and outputs](https://platform.openai.com/docs/guides/text)
+
+            - [Structured Outputs](https://platform.openai.com/docs/guides/structured-outputs)'
+          examples:
+          - type: text
+          - json_schema:
+              name: response
+              schema: {}
+            type: json_schema
+        temperature:
+          anyOf:
+          - type: number
+            maximum: 2
+            minimum: 0
+          - type: 'null'
+          title: Temperature
+          description: 'What sampling temperature to use, between 0 and 2. Higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused and deterministic.
+
+            We generally recommend altering this or `top_p` but not both.'
+          examples:
+          - 0
+          - 0.7
+          - 1
+        top_p:
+          anyOf:
+          - type: number
+            maximum: 1
+            minimum: 0
+          - type: 'null'
+          title: Top P
+          description: 'An alternative to sampling with temperature, called nucleus sampling,
+
+            where the model considers the results of the tokens with top_p probability
+
+            mass. So 0.1 means only the tokens comprising the top 10% probability mass
+
+            are considered.
+
+
+            We generally recommend altering this or `temperature` but not both.'
+          examples:
+          - 0.1
+          - 0.9
+          - 1
+        max_output_tokens:
+          anyOf:
+          - type: integer
+            minimum: 1
+          - type: 'null'
+          title: Max Output Tokens
+          description: An upper bound for the number of tokens that can be generated for a response, including visible output tokens and [reasoning tokens](https://platform.openai.com/docs/guides/reasoning).
+          examples:
+          - 1000
+          - 4000
+        presence_penalty:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Presence Penalty
+          description: Penalizes new tokens based on whether they appear in the text so far.
+        frequency_penalty:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Frequency Penalty
+          description: Penalizes new tokens based on their frequency in the text so far.
+        tools:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/JSONObject'
+            type: array
+          - type: 'null'
+          title: Tools
+          description: "An array of tools the model may call while generating a response. You\ncan specify which tool to use by setting the `tool_choice` parameter.\n\nWe support the following categories of tools:\n- **Built-in tools**: Tools that are provided by OpenAI that extend the\n  model's capabilities, like [web search](https://platform.openai.com/docs/guides/tools-web-search)\n  or [file search](https://platform.openai.com/docs/guides/tools-file-search). Learn more about\n  [built-in tools](https://platform.openai.com/docs/guides/tools).\n- **MCP Tools**: Integrations with third-party systems via custom MCP servers\n  or predefined connectors such as Google Drive and SharePoint. Learn more about\n  [MCP Tools](https://platform.openai.com/docs/guides/tools-connectors-mcp).\n- **Function calls (custom tools)**: Functions that are defined by you,\n  enabling the model to call your own code with strongly typed arguments\n  and outputs. Learn more about\n  [function calling](https://platform.openai.com/docs/guides/function-calling). You can also use\n  custom tools to call your own code."
+          examples:
+          - - function:
+                description: Get current weather
+                name: get_weather
+                parameters:
+                  properties:
+                    location:
+                      type: string
+                  type: object
+              type: function
+        tool_choice:
+          anyOf:
+          - type: string
+          - $ref: '#/components/schemas/JSONObject'
+          - type: 'null'
+          title: Tool Choice
+          description: 'How the model should select which tool (or tools) to use when generating
+
+            a response. See the `tools` parameter to see how to specify which tools
+
+            the model can call.'
+          examples:
+          - auto
+          - none
+          - required
+          - function:
+              name: get_weather
+            type: function
+        parallel_tool_calls:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Parallel Tool Calls
+          description: Whether to allow the model to run tool calls in parallel.
+          examples:
+          - true
+          - false
+        max_tool_calls:
+          anyOf:
+          - type: integer
+            minimum: 1
+          - type: 'null'
+          title: Max Tool Calls
+          description: The maximum number of total calls to built-in tools that can be processed in a response. This maximum number applies across all built-in tool calls, not per individual tool. Any further attempts to call a tool by the model will be ignored.
+          examples:
+          - 10
+          - 50
+        stream:
+          type: boolean
+          title: Stream
+          description: 'If set to true, the model response data will be streamed to the client
+
+            as it is generated using [server-sent events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events#Event_stream_format).
+
+            See the [Streaming section below](https://platform.openai.com/docs/api-reference/responses-streaming)
+
+            for more information.'
+          default: false
+          examples:
+          - true
+          - false
+        stream_options:
+          anyOf:
+          - $ref: '#/components/schemas/JSONObject'
+          - type: 'null'
+          description: 'Options for streaming response. Only set this when you set `stream: true`.'
+          examples:
+          - include_usage: true
+        background:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Background
+          description: 'Whether to run the model response in the background.
+
+            [Learn more](https://platform.openai.com/docs/guides/background).'
+          examples:
+          - true
+          - false
+        include:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Include
+          description: "Specify additional output data to include in the model response. Currently\nsupported values are:\n- `web_search_call.action.sources`: Include the sources of the web search tool call.\n- `code_interpreter_call.outputs`: Includes the outputs of python code execution\n  in code interpreter tool call items.\n- `computer_call_output.output.image_url`: Include image urls from the computer call output.\n- `file_search_call.results`: Include the search results of\n  the file search tool call.\n- `message.input_image.image_url`: Include image urls from the input message.\n- `message.output_text.logprobs`: Include logprobs with assistant messages.\n- `reasoning.encrypted_content`: Includes an encrypted version of reasoning\n  tokens in reasoning item outputs. This enables reasoning items to be used in\n  multi-turn conversations when using the Responses API statelessly (like\n  when the `store` parameter is set to `false`, or when an organization is\n  enrolled in the zero data retention program)."
+          examples:
+          - - message.output_text.logprobs
+          - - file_search_call.results
+            - web_search_call.action.sources
+        truncation:
+          anyOf:
+          - type: string
+            enum:
+            - auto
+            - disabled
+          - type: 'null'
+          title: Truncation
+          description: "The truncation strategy to use for the model response.\n- `auto`: If the input to this Response exceeds\n  the model's context window size, the model will truncate the\n  response to fit the context window by dropping items from the beginning of the conversation.\n- `disabled` (default): If the input size will exceed the context window\n  size for a model, the request will fail with a 400 error."
+          examples:
+          - auto
+          - disabled
+        conversation:
+          anyOf:
+          - type: string
+          - $ref: '#/components/schemas/ResponseConversationParam'
+          - type: 'null'
+          title: Conversation
+          description: Conversation that this response belongs to. Items from this conversation are prepended to the input items, and output items from this response are automatically added after completion.
+        previous_response_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Previous Response Id
+          description: Unique ID of the previous response to continue from when creating multi-turn conversations. Cannot be used together with `conversation`.
+        reasoning:
+          anyOf:
+          - $ref: '#/components/schemas/JSONObject'
+          - type: 'null'
+          description: '**gpt-5 and o-series models only**
+
+
+            Configuration options for
+
+            [reasoning models](https://platform.openai.com/docs/guides/reasoning).'
+        top_logprobs:
+          anyOf:
+          - type: integer
+            maximum: 20
+            minimum: 0
+          - type: 'null'
+          title: Top Logprobs
+          description: 'An integer between 0 and 20 specifying the number of most likely tokens to
+
+            return at each token position, each with an associated log probability.'
+          examples:
+          - 5
+          - 10
+        service_tier:
+          anyOf:
+          - type: string
+            enum:
+            - auto
+            - default
+          - type: 'null'
+          title: Service Tier
+          description: "Specifies the processing type used for serving the request.\n  - If set to 'auto', then the request will be processed with the service tier configured in the Project settings. Unless otherwise configured, the Project will use 'default'.\n  - If set to 'default', then the request will be processed with the standard pricing and performance for the selected model.\n  - If set to '[flex](https://platform.openai.com/docs/guides/flex-processing)' or '[priority](https://openai.com/api-priority-processing/)', then the request will be processed with the corresponding service tier.\n  - When not set, the default behavior is 'auto'.\n\n  When the `service_tier` parameter is set, the response body will include the `service_tier` value based on the processing mode actually used to serve the request. This response value may be different from the value set in the parameter."
+          examples:
+          - auto
+          - default
+        prompt_cache_key:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Prompt Cache Key
+          description: Used by OpenAI to cache responses for similar requests to optimize your cache hit rates. Replaces the `user` field. [Learn more](https://platform.openai.com/docs/guides/prompt-caching).
+        safety_identifier:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Safety Identifier
+          description: 'A stable identifier used to help detect users of your application that may be violating OpenAI''s usage policies.
+
+            The IDs should be a string that uniquely identifies each user. We recommend hashing their username or email address, in order to avoid sending us any identifying information. [Learn more](https://platform.openai.com/docs/guides/safety-best-practices#safety-identifiers).'
+        user:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: User
+          description: 'This field is being replaced by `safety_identifier` and `prompt_cache_key`. Use `prompt_cache_key` instead to maintain caching optimizations.
+
+            A stable identifier for your end-users.
+
+            Used to boost cache hit rates by better bucketing similar requests and  to help OpenAI detect and prevent abuse. [Learn more](https://platform.openai.com/docs/guides/safety-best-practices#safety-identifiers).'
+        metadata:
+          anyOf:
+          - additionalProperties:
+              type: string
+            type: object
+          - type: 'null'
+          title: Metadata
+          description: Set of up to 16 key-value string pairs that can be attached to the response for structured metadata and later querying via the API or dashboard.
+        store:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Store
+          description: Whether to store the generated response for later retrieval via the Responses API.
+        prompt:
+          anyOf:
+          - $ref: '#/components/schemas/ResponsePromptParam'
+          - type: 'null'
+          description: Reference to a stored prompt template, including optional version information and substitution variables.
+        mcp_servers:
+          anyOf:
+          - type: string
+          - $ref: '#/components/schemas/MCPServerSpec'
+          - $ref: '#/components/schemas/MCPServers'
+          - type: 'null'
+          title: Mcp Servers
+          description: MCP server identifiers. Accepts marketplace slugs, URLs, or MCPServerSpec objects. MCP tools are executed server-side and billed separately.
+          examples:
+          - dedalus-labs/example-server
+          - - dedalus-labs/example-server-1
+            - dedalus-labs/example-server-2
+          - slug: dedalus-labs/example-server-1
+            version: v1.0.0
+          - url: https://mcp.dedaluslabs.ai/dedalus-labs/example-server-1
+          - url: https://mcp.dedaluslabs.ai/dedalus-labs/example-server-2/mcp
+        credentials:
+          anyOf:
+          - $ref: '#/components/schemas/Credential'
+          - $ref: '#/components/schemas/MCPCredentials'
+          - type: 'null'
+          title: Credentials
+          description: Credentials for MCP server authentication. Each credential is matched to servers by connection name.
+          examples:
+          - connection_name: external-service
+            values:
+              api_key: sk-...
+          - - connection_name: service-a
+              values:
+                api_key: sk-...
+            - connection_name: service-b
+              values:
+                token: tok_...
+      type: object
+      title: ResponsesRequest
+      description: Responses request schema with Dedalus extensions.
+    Reasoning:
+      properties:
+        effort:
+          anyOf:
+          - type: string
+            enum:
+            - none
+            - minimal
+            - low
+            - medium
+            - high
+            - xhigh
+          - type: 'null'
+          title: Effort
+        generate_summary:
+          anyOf:
+          - type: string
+            enum:
+            - auto
+            - concise
+            - detailed
+          - type: 'null'
+          title: Generate Summary
+        summary:
+          anyOf:
+          - type: string
+            enum:
+            - auto
+            - concise
+            - detailed
+          - type: 'null'
+          title: Summary
+      additionalProperties: true
+      type: object
+      title: Reasoning
+      description: '**gpt-5 and o-series models only**
+
+
+        Configuration options for
+
+        [reasoning models](https://platform.openai.com/docs/guides/reasoning).'
+    JSONValue:
+      anyOf:
+      - type: string
+      - type: integer
+      - type: number
+      - type: boolean
+      - additionalProperties:
+          $ref: '#/components/schemas/JSONValue'
+        type: object
+      - items:
+          $ref: '#/components/schemas/JSONValue'
+        type: array
+      - type: 'null'
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    ToolChoice:
+      anyOf:
+      - type: string
+        enum:
+        - auto
+        - required
+        - none
+      - type: string
+      - additionalProperties: true
+        type: object
+      - $ref: '#/components/schemas/MCPToolChoice'
+      - type: 'null'
+    Models:
+      items:
+        $ref: '#/components/schemas/DedalusModelChoice'
+      type: array
+      title: Models
+      description: List of models for multi-model routing.
+      x-stainless-variantName: Models
+    ModelId:
+      type: string
+      title: ModelId
+      description: Model identifier string (e.g., 'openai/gpt-5', 'anthropic/claude-3-5-sonnet').
+      x-stainless-variantName: ModelId
+  securitySchemes:
+    Bearer:
+      type: http
+      scheme: bearer
