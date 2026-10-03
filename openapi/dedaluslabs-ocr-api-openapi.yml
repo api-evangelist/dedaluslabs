@@ -75,6 +75,21 @@ paths:
           result = client.ocr.process(**params)'
 components:
   schemas:
+    OCRDocument:
+      properties:
+        type:
+          type: string
+          title: Type
+          default: document_url
+        document_url:
+          type: string
+          title: Document Url
+          description: Data URI with base64-encoded document
+      type: object
+      required:
+      - document_url
+      title: OCRDocument
+      description: Document input for OCR.
     ValidationError:
       properties:
         loc:
@@ -101,30 +116,6 @@ components:
       - msg
       - type
       title: ValidationError
-    OCRDocument:
-      properties:
-        type:
-          type: string
-          title: Type
-          default: document_url
-        document_url:
-          type: string
-          title: Document Url
-          description: Data URI with base64-encoded document
-      type: object
-      required:
-      - document_url
-      title: OCRDocument
-      description: Document input for OCR.
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
     OCRPage:
       properties:
         index:
@@ -139,6 +130,15 @@ components:
       - markdown
       title: OCRPage
       description: Single page OCR result.
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
     OCRRequest:
       properties:
         model:

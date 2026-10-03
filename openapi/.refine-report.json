@@ -19,9 +19,7 @@
     "dedaluslabs-private-api-openapi.yml",
     "dedaluslabs-machine-lifecycle-api-openapi.yml"
   ],
-  "archived": [
-    "deleted 1 superseded output(s) from the previous generation"
-  ],
+  "archived": [],
   "errors": [],
   "warnings": [],
   "notes": [
@@ -52,16 +50,21 @@
     "dedaluslabs-machines-openapi-original.yml: declared missing tag: Machine SSH",
     "dedaluslabs-machines-openapi-original.yml: declared missing tag: Machine Terminals",
     "dedaluslabs-machines-openapi-original.yml: multi-axis tagging (6 tags, 1 first tags, 1.73x duplication over 30 operations) \u2014 split on first tag, 22 operations narrowed",
-    "superseded outputs removed: dedaluslabs-v1-api-openapi.yml",
-    "apis.yml register: written (+7 apis, 13 total)"
+    "apis.yml register: already-registered"
   ],
   "skipped": [
+    "dedaluslabs-audio-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "dedaluslabs-chat-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "dedaluslabs-dedalus-api-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "dedaluslabs-embeddings-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "dedaluslabs-health-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "dedaluslabs-images-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "dedaluslabs-machine-lifecycle-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "dedaluslabs-marketplace-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "dedaluslabs-models-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "dedaluslabs-ocr-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "dedaluslabs-private-api-openapi.yml: previously refined output, superseded by openapi/_original/",
-    "dedaluslabs-v1-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "dedaluslabs-responses-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "dedaluslabs-webhooks-api-openapi.yml: previously refined output, superseded by openapi/_original/"
   ]
 }

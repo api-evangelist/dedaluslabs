@@ -201,18 +201,6 @@ paths:
           result, err := client.Models.Get(ctx, modelID string)'
 components:
   schemas:
-    Endpoint:
-      type: string
-      enum:
-      - /v1/chat/completions
-      - /v1/responses
-      - /v1/embeddings
-      - /v1/images/generations
-      - /v1/audio/speech
-      - /v1/audio/transcriptions
-      - /v1/moderations
-      title: Endpoint
-      description: API endpoints we expose.
     ValidationError:
       properties:
         loc:
@@ -239,15 +227,181 @@ components:
       - msg
       - type
       title: ValidationError
-    ModelStatus:
+    ListModelsResponse:
+      properties:
+        object:
+          type: string
+          const: list
+          title: Object
+          description: Response object type
+          default: list
+        data:
+          items:
+            $ref: '#/components/schemas/Model'
+          type: array
+          title: Data
+          description: List of available models
+      type: object
+      required:
+      - data
+      title: ListModelsResponse
+      description: Response for /v1/models endpoint.
+    UpstreamAPI:
       type: string
       enum:
-      - enabled
-      - disabled
-      - preview
-      - deprecated
-      title: ModelStatus
-      description: Model availability status.
+      - openai/chat/completions
+      - openai/responses
+      - openai/embeddings
+      - openai/images
+      - openai/audio/speech
+      - openai/audio/transcriptions
+      - anthropic/messages
+      - google/generateContent
+      - google/embedContent
+      - xai/chat/completions
+      - openai-compatible
+      title: UpstreamAPI
+      description: Upstream provider API types.
+    Endpoint:
+      type: string
+      enum:
+      - /v1/chat/completions
+      - /v1/responses
+      - /v1/embeddings
+      - /v1/images/generations
+      - /v1/audio/speech
+      - /v1/audio/transcriptions
+      - /v1/moderations
+      title: Endpoint
+      description: API endpoints we expose.
+    Provider:
+      type: string
+      enum:
+      - openai
+      - anthropic
+      - google
+      - xai
+      - deepseek
+      - mistral
+      - groq
+      - fireworks
+      - cohere
+      - together
+      - cerebras
+      - perplexity
+      - moonshot
+      title: Provider
+      description: Supported LLM providers.
+    Model:
+      properties:
+        id:
+          type: string
+          title: Id
+          description: Unique model identifier with provider prefix (e.g., 'openai/gpt-4')
+        provider:
+          $ref: '#/components/schemas/Provider'
+          description: Provider that hosts this model
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+          description: When the model was released (RFC 3339)
+        display_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Display Name
+          description: Human-readable model name
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+          description: Model description
+        version:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Version
+          description: Model version identifier
+        capabilities:
+          anyOf:
+          - $ref: '#/components/schemas/ModelCapabilities'
+          - type: 'null'
+          description: Normalized model capabilities
+        defaults:
+          anyOf:
+          - $ref: '#/components/schemas/ModelDefaults'
+          - type: 'null'
+          description: Provider-declared default parameters
+        provider_info:
+          anyOf:
+          - $ref: '#/components/schemas/ModelProviderInfo'
+          - type: 'null'
+          description: Typed provider-specific metadata
+        provider_declared_generation_methods:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Provider Declared Generation Methods
+          description: Provider-specific generation method names (None = not declared)
+      type: object
+      required:
+      - id
+      - provider
+      - created_at
+      title: Model
+      description: 'Unified model metadata across all providers.
+
+
+        Combines provider-specific schemas into a single, consistent format.
+
+        Fields that aren''t available from a provider are set to None.'
+    ModelDefaults:
+      properties:
+        temperature:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Temperature
+          description: Default temperature setting
+        top_p:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Top P
+          description: Default top_p setting
+        top_k:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Top K
+          description: Default top_k setting
+        max_output_tokens:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Max Output Tokens
+          description: Default maximum output tokens
+      type: object
+      title: ModelDefaults
+      description: Provider-declared default parameters for model generation.
+    ModelProviderRoute:
+      properties:
+        endpoint:
+          $ref: '#/components/schemas/Endpoint'
+          description: Dedalus endpoint path
+        upstream_api:
+          $ref: '#/components/schemas/UpstreamAPI'
+          description: Provider API used for this endpoint
+      type: object
+      required:
+      - endpoint
+      - upstream_api
+      title: ModelProviderRoute
+      description: One endpoint -> upstream routing entry exposed by `/v1/models`.
     ModelCapabilities:
       properties:
         text:
@@ -322,38 +476,6 @@ components:
           title: Detail
       type: object
       title: HTTPValidationError
-    ModelProviderRoute:
-      properties:
-        endpoint:
-          $ref: '#/components/schemas/Endpoint'
-          description: Dedalus endpoint path
-        upstream_api:
-          $ref: '#/components/schemas/UpstreamAPI'
-          description: Provider API used for this endpoint
-      type: object
-      required:
-      - endpoint
-      - upstream_api
-      title: ModelProviderRoute
-      description: One endpoint -> upstream routing entry exposed by `/v1/models`.
-    Provider:
-      type: string
-      enum:
-      - openai
-      - anthropic
-      - google
-      - xai
-      - deepseek
-      - mistral
-      - groq
-      - fireworks
-      - cohere
-      - together
-      - cerebras
-      - perplexity
-      - moonshot
-      title: Provider
-      description: Supported LLM providers.
     ModelProviderInfo:
       properties:
         routing:
@@ -371,137 +493,15 @@ components:
       - status
       title: ModelProviderInfo
       description: Typed provider metadata surfaced to SDKs.
-    ListModelsResponse:
-      properties:
-        object:
-          type: string
-          const: list
-          title: Object
-          description: Response object type
-          default: list
-        data:
-          items:
-            $ref: '#/components/schemas/Model'
-          type: array
-          title: Data
-          description: List of available models
-      type: object
-      required:
-      - data
-      title: ListModelsResponse
-      description: Response for /v1/models endpoint.
-    ModelDefaults:
-      properties:
-        temperature:
-          anyOf:
-          - type: number
-          - type: 'null'
-          title: Temperature
-          description: Default temperature setting
-        top_p:
-          anyOf:
-          - type: number
-          - type: 'null'
-          title: Top P
-          description: Default top_p setting
-        top_k:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Top K
-          description: Default top_k setting
-        max_output_tokens:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Max Output Tokens
-          description: Default maximum output tokens
-      type: object
-      title: ModelDefaults
-      description: Provider-declared default parameters for model generation.
-    UpstreamAPI:
+    ModelStatus:
       type: string
       enum:
-      - openai/chat/completions
-      - openai/responses
-      - openai/embeddings
-      - openai/images
-      - openai/audio/speech
-      - openai/audio/transcriptions
-      - anthropic/messages
-      - google/generateContent
-      - google/embedContent
-      - xai/chat/completions
-      - openai-compatible
-      title: UpstreamAPI
-      description: Upstream provider API types.
-    Model:
-      properties:
-        id:
-          type: string
-          title: Id
-          description: Unique model identifier with provider prefix (e.g., 'openai/gpt-4')
-        provider:
-          $ref: '#/components/schemas/Provider'
-          description: Provider that hosts this model
-        created_at:
-          type: string
-          format: date-time
-          title: Created At
-          description: When the model was released (RFC 3339)
-        display_name:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Display Name
-          description: Human-readable model name
-        description:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Description
-          description: Model description
-        version:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Version
-          description: Model version identifier
-        capabilities:
-          anyOf:
-          - $ref: '#/components/schemas/ModelCapabilities'
-          - type: 'null'
-          description: Normalized model capabilities
-        defaults:
-          anyOf:
-          - $ref: '#/components/schemas/ModelDefaults'
-          - type: 'null'
-          description: Provider-declared default parameters
-        provider_info:
-          anyOf:
-          - $ref: '#/components/schemas/ModelProviderInfo'
-          - type: 'null'
-          description: Typed provider-specific metadata
-        provider_declared_generation_methods:
-          anyOf:
-          - items:
-              type: string
-            type: array
-          - type: 'null'
-          title: Provider Declared Generation Methods
-          description: Provider-specific generation method names (None = not declared)
-      type: object
-      required:
-      - id
-      - provider
-      - created_at
-      title: Model
-      description: 'Unified model metadata across all providers.
-
-
-        Combines provider-specific schemas into a single, consistent format.
-
-        Fields that aren''t available from a provider are set to None.'
+      - enabled
+      - disabled
+      - preview
+      - deprecated
+      title: ModelStatus
+      description: Model availability status.
   securitySchemes:
     Bearer:
       type: http
