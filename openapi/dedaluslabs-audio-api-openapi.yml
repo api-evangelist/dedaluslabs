@@ -243,32 +243,55 @@ paths:
           result, err := client.Audio.Translations.New(ctx, body githubcomdedaluslabsdedalussdkgo.AudioTranslationNewParams)'
 components:
   schemas:
-    ValidationError:
+    VoiceIdsOrCustomVoiceInline:
       properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
+        id:
           type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-        input:
-          title: Input
-        ctx:
-          type: object
-          title: Context
+          title: Id
+          description: The custom voice ID, e.g. `voice_1234`.
+          x-order: 0
       type: object
       required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
+      - id
+      title: VoiceIdsOrCustomVoiceInline
+      description: 'Custom voice reference.
+
+
+        Fields:
+
+        - id (required): str'
+      x-ddls-inline: true
+    CreateTranscriptionResponseJson:
+      properties:
+        text:
+          type: string
+          title: Text
+          description: The transcribed text.
+          x-order: 0
+        logprobs:
+          items:
+            $ref: '#/components/schemas/LogprobsItem'
+          type: array
+          title: Logprobs
+          description: The log probabilities of the tokens in the transcription. Only returned with the models `gpt-4o-transcribe` and `gpt-4o-mini-transcribe` if `logprobs` is added to the `include` array.
+          x-order: 1
+        usage:
+          oneOf:
+          - $ref: '#/components/schemas/TranscriptTextUsageTokens'
+          - $ref: '#/components/schemas/TranscriptTextUsageDuration'
+          title: Usage
+          description: Token usage statistics for the request.
+          discriminator:
+            propertyName: type
+            mapping:
+              duration: '#/components/schemas/TranscriptTextUsageDuration'
+              tokens: '#/components/schemas/TranscriptTextUsageTokens'
+          x-order: 2
+      type: object
+      required:
+      - text
+      title: CreateTranscriptionResponseJson
+      description: "Represents a transcription response returned by model, based on the provided input.\n\nFields:\n  - text (required): str\n  - logprobs (optional): list[LogprobsItem]\n  - usage (optional): Usage"
     Body_create_transcription_v1_audio_transcriptions_post:
       properties:
         file:
@@ -303,41 +326,25 @@ components:
       - file
       - model
       title: Body_create_transcription_v1_audio_transcriptions_post
-    TranscriptTextUsageTokens:
+    TranscriptTextUsageDuration:
       properties:
         type:
           type: string
-          const: tokens
+          const: duration
           title: Type
-          description: The type of the usage object. Always `tokens` for this variant.
+          description: The type of the usage object. Always `duration` for this variant.
           x-order: 0
-        input_tokens:
-          type: integer
-          title: Input Tokens
-          description: Number of input tokens billed for this request.
+        seconds:
+          type: number
+          title: Seconds
+          description: Duration of the input audio in seconds.
           x-order: 1
-        input_token_details:
-          $ref: '#/components/schemas/InputTokenDetails'
-          description: Details about the input tokens billed for this request.
-          x-order: 2
-        output_tokens:
-          type: integer
-          title: Output Tokens
-          description: Number of output tokens generated.
-          x-order: 3
-        total_tokens:
-          type: integer
-          title: Total Tokens
-          description: Total number of tokens used (input + output).
-          x-order: 4
       type: object
       required:
       - type
-      - input_tokens
-      - output_tokens
-      - total_tokens
-      title: TranscriptTextUsageTokens
-      description: "Usage statistics for models billed by token usage.\n\nFields:\n  - type (required): Literal['tokens']\n  - input_tokens (required): int\n  - input_token_details (optional): InputTokenDetails\n  - output_tokens (required): int\n  - total_tokens (required): int"
+      - seconds
+      title: TranscriptTextUsageDuration
+      description: "Usage statistics for models billed by audio input duration.\n\nFields:\n  - type (required): Literal['duration']\n  - seconds (required): float"
     TranscriptionSegment:
       properties:
         id:
@@ -427,35 +434,15 @@ components:
         - compression_ratio (required): float
 
         - no_speech_prob (required): float'
-    LogprobsItem:
+    HTTPValidationError:
       properties:
-        token:
-          type: string
-          title: Token
-          description: The token in the transcription.
-          x-order: 0
-        logprob:
-          type: number
-          title: Logprob
-          description: The log probability of the token.
-          x-order: 1
-        bytes:
+        detail:
           items:
-            type: number
+            $ref: '#/components/schemas/ValidationError'
           type: array
-          title: Bytes
-          description: The bytes of the token.
-          x-order: 2
+          title: Detail
       type: object
-      title: LogprobsItem
-      description: 'Fields:  # noqa: D415.
-
-
-        - token (optional): str
-
-        - logprob (optional): float
-
-        - bytes (optional): list[float]'
+      title: HTTPValidationError
     CreateTranscriptionResponseVerboseJson:
       properties:
         language:
@@ -498,6 +485,140 @@ components:
       - text
       title: CreateTranscriptionResponseVerboseJson
       description: "Represents a verbose json transcription response returned by model, based on the provided input.\n\nFields:\n  - language (required): str\n  - duration (required): float\n  - text (required): str\n  - words (optional): list[TranscriptionWord]\n  - segments (optional): list[TranscriptionSegment]\n  - usage (optional): TranscriptTextUsageDuration"
+    InputTokenDetails:
+      properties:
+        text_tokens:
+          type: integer
+          title: Text Tokens
+          description: Number of text tokens billed for this request.
+          x-order: 0
+        audio_tokens:
+          type: integer
+          title: Audio Tokens
+          description: Number of audio tokens billed for this request.
+          x-order: 1
+      type: object
+      title: InputTokenDetails
+      description: "Details about the input tokens billed for this request.\n\nFields:\n  - text_tokens (optional): int\n  - audio_tokens (optional): int"
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    TranscriptTextUsageTokens:
+      properties:
+        type:
+          type: string
+          const: tokens
+          title: Type
+          description: The type of the usage object. Always `tokens` for this variant.
+          x-order: 0
+        input_tokens:
+          type: integer
+          title: Input Tokens
+          description: Number of input tokens billed for this request.
+          x-order: 1
+        input_token_details:
+          $ref: '#/components/schemas/InputTokenDetails'
+          description: Details about the input tokens billed for this request.
+          x-order: 2
+        output_tokens:
+          type: integer
+          title: Output Tokens
+          description: Number of output tokens generated.
+          x-order: 3
+        total_tokens:
+          type: integer
+          title: Total Tokens
+          description: Total number of tokens used (input + output).
+          x-order: 4
+      type: object
+      required:
+      - type
+      - input_tokens
+      - output_tokens
+      - total_tokens
+      title: TranscriptTextUsageTokens
+      description: "Usage statistics for models billed by token usage.\n\nFields:\n  - type (required): Literal['tokens']\n  - input_tokens (required): int\n  - input_token_details (optional): InputTokenDetails\n  - output_tokens (required): int\n  - total_tokens (required): int"
+    LogprobsItem:
+      properties:
+        token:
+          type: string
+          title: Token
+          description: The token in the transcription.
+          x-order: 0
+        logprob:
+          type: number
+          title: Logprob
+          description: The log probability of the token.
+          x-order: 1
+        bytes:
+          items:
+            type: number
+          type: array
+          title: Bytes
+          description: The bytes of the token.
+          x-order: 2
+      type: object
+      title: LogprobsItem
+      description: 'Fields:  # noqa: D415.
+
+
+        - token (optional): str
+
+        - logprob (optional): float
+
+        - bytes (optional): list[float]'
+    Body_create_translation_v1_audio_translations_post:
+      properties:
+        file:
+          type: string
+          format: binary
+          title: File
+        model:
+          type: string
+          title: Model
+        prompt:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Prompt
+        response_format:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Response Format
+        temperature:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Temperature
+      type: object
+      required:
+      - file
+      - model
+      title: Body_create_translation_v1_audio_translations_post
     SpeechRequest:
       properties:
         model:
@@ -597,6 +718,20 @@ components:
         - speed (optional): float
 
         - stream_format (optional): Literal["sse", "audio"]'
+    CreateTranslationResponseJson:
+      properties:
+        text:
+          type: string
+          title: Text
+          x-order: 0
+      type: object
+      required:
+      - text
+      title: CreateTranslationResponseJson
+      description: 'Fields:  # noqa: D415.
+
+
+        - text (required): str'
     TranscriptionWord:
       properties:
         word:
@@ -628,85 +763,6 @@ components:
         - start (required): float
 
         - end (required): float'
-    TranscriptTextUsageDuration:
-      properties:
-        type:
-          type: string
-          const: duration
-          title: Type
-          description: The type of the usage object. Always `duration` for this variant.
-          x-order: 0
-        seconds:
-          type: number
-          title: Seconds
-          description: Duration of the input audio in seconds.
-          x-order: 1
-      type: object
-      required:
-      - type
-      - seconds
-      title: TranscriptTextUsageDuration
-      description: "Usage statistics for models billed by audio input duration.\n\nFields:\n  - type (required): Literal['duration']\n  - seconds (required): float"
-    Body_create_translation_v1_audio_translations_post:
-      properties:
-        file:
-          type: string
-          format: binary
-          title: File
-        model:
-          type: string
-          title: Model
-        prompt:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Prompt
-        response_format:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Response Format
-        temperature:
-          anyOf:
-          - type: number
-          - type: 'null'
-          title: Temperature
-      type: object
-      required:
-      - file
-      - model
-      title: Body_create_translation_v1_audio_translations_post
-    CreateTranscriptionResponseJson:
-      properties:
-        text:
-          type: string
-          title: Text
-          description: The transcribed text.
-          x-order: 0
-        logprobs:
-          items:
-            $ref: '#/components/schemas/LogprobsItem'
-          type: array
-          title: Logprobs
-          description: The log probabilities of the tokens in the transcription. Only returned with the models `gpt-4o-transcribe` and `gpt-4o-mini-transcribe` if `logprobs` is added to the `include` array.
-          x-order: 1
-        usage:
-          oneOf:
-          - $ref: '#/components/schemas/TranscriptTextUsageTokens'
-          - $ref: '#/components/schemas/TranscriptTextUsageDuration'
-          title: Usage
-          description: Token usage statistics for the request.
-          discriminator:
-            propertyName: type
-            mapping:
-              duration: '#/components/schemas/TranscriptTextUsageDuration'
-              tokens: '#/components/schemas/TranscriptTextUsageTokens'
-          x-order: 2
-      type: object
-      required:
-      - text
-      title: CreateTranscriptionResponseJson
-      description: "Represents a transcription response returned by model, based on the provided input.\n\nFields:\n  - text (required): str\n  - logprobs (optional): list[LogprobsItem]\n  - usage (optional): Usage"
     CreateTranslationResponseVerboseJson:
       properties:
         language:
@@ -747,62 +803,6 @@ components:
         - text (required): str
 
         - segments (optional): list[TranscriptionSegment]'
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    CreateTranslationResponseJson:
-      properties:
-        text:
-          type: string
-          title: Text
-          x-order: 0
-      type: object
-      required:
-      - text
-      title: CreateTranslationResponseJson
-      description: 'Fields:  # noqa: D415.
-
-
-        - text (required): str'
-    InputTokenDetails:
-      properties:
-        text_tokens:
-          type: integer
-          title: Text Tokens
-          description: Number of text tokens billed for this request.
-          x-order: 0
-        audio_tokens:
-          type: integer
-          title: Audio Tokens
-          description: Number of audio tokens billed for this request.
-          x-order: 1
-      type: object
-      title: InputTokenDetails
-      description: "Details about the input tokens billed for this request.\n\nFields:\n  - text_tokens (optional): int\n  - audio_tokens (optional): int"
-    VoiceIdsOrCustomVoiceInline:
-      properties:
-        id:
-          type: string
-          title: Id
-          description: The custom voice ID, e.g. `voice_1234`.
-          x-order: 0
-      type: object
-      required:
-      - id
-      title: VoiceIdsOrCustomVoiceInline
-      description: 'Custom voice reference.
-
-
-        Fields:
-
-        - id (required): str'
-      x-ddls-inline: true
   securitySchemes:
     Bearer:
       type: http

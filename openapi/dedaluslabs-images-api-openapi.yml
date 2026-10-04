@@ -191,32 +191,6 @@ paths:
           result, err := client.Images.NewVariation(ctx, body githubcomdedaluslabsdedalussdkgo.ImageNewVariationParams)'
 components:
   schemas:
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-        input:
-          title: Input
-        ctx:
-          type: object
-          title: Context
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
     Body_edit_image_v1_images_edits_post:
       properties:
         image:
@@ -266,29 +240,72 @@ components:
       - image
       - prompt
       title: Body_edit_image_v1_images_edits_post
-    Image:
+    Body_create_variation_v1_images_variations_post:
       properties:
-        url:
+        image:
+          type: string
+          format: binary
+          title: Image
+        model:
           anyOf:
           - type: string
           - type: 'null'
-          title: Url
-          description: URL of the generated image (if response_format=url)
-        b64_json:
+          title: Model
+          default: openai/dall-e-2
+        n:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: N
+          default: 1
+        size:
           anyOf:
           - type: string
           - type: 'null'
-          title: B64 Json
-          description: Base64-encoded image data (if response_format=b64_json)
-        revised_prompt:
+          title: Size
+          default: 1024x1024
+        response_format:
           anyOf:
           - type: string
           - type: 'null'
-          title: Revised Prompt
-          description: Revised prompt used for generation (dall-e-3)
+          title: Response Format
+          default: url
+        user:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: User
       type: object
-      title: Image
-      description: Single image object.
+      required:
+      - image
+      title: Body_create_variation_v1_images_variations_post
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    ImagesResponse:
+      properties:
+        created:
+          type: integer
+          title: Created
+          description: Unix timestamp when images were created
+        data:
+          items:
+            $ref: '#/components/schemas/Image'
+          type: array
+          title: Data
+          description: List of generated images
+      type: object
+      required:
+      - created
+      - data
+      title: ImagesResponse
+      description: Response from image generation.
     ImageGenerateRequest:
       properties:
         prompt:
@@ -492,72 +509,55 @@ components:
       - prompt
       title: ImageGenerateRequest
       description: Request to generate images.
-    HTTPValidationError:
+    ValidationError:
       properties:
-        detail:
+        loc:
           items:
-            $ref: '#/components/schemas/ValidationError'
+            anyOf:
+            - type: string
+            - type: integer
           type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    Body_create_variation_v1_images_variations_post:
-      properties:
-        image:
+          title: Location
+        msg:
           type: string
-          format: binary
-          title: Image
-        model:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Model
-          default: openai/dall-e-2
-        n:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: N
-          default: 1
-        size:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Size
-          default: 1024x1024
-        response_format:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Response Format
-          default: url
-        user:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: User
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
       type: object
       required:
-      - image
-      title: Body_create_variation_v1_images_variations_post
-    ImagesResponse:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    Image:
       properties:
-        created:
-          type: integer
-          title: Created
-          description: Unix timestamp when images were created
-        data:
-          items:
-            $ref: '#/components/schemas/Image'
-          type: array
-          title: Data
-          description: List of generated images
+        url:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Url
+          description: URL of the generated image (if response_format=url)
+        b64_json:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: B64 Json
+          description: Base64-encoded image data (if response_format=b64_json)
+        revised_prompt:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Revised Prompt
+          description: Revised prompt used for generation (dall-e-3)
       type: object
-      required:
-      - created
-      - data
-      title: ImagesResponse
-      description: Response from image generation.
+      title: Image
+      description: Single image object.
   securitySchemes:
     Bearer:
       type: http

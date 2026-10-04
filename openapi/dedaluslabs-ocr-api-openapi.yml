@@ -75,6 +75,42 @@ paths:
           result = client.ocr.process(**params)'
 components:
   schemas:
+    OCRPage:
+      properties:
+        index:
+          type: integer
+          title: Index
+        markdown:
+          type: string
+          title: Markdown
+      type: object
+      required:
+      - index
+      - markdown
+      title: OCRPage
+      description: Single page OCR result.
+    OCRRequest:
+      properties:
+        model:
+          type: string
+          title: Model
+          default: mistral-ocr-latest
+        document:
+          $ref: '#/components/schemas/OCRDocument'
+      type: object
+      required:
+      - document
+      title: OCRRequest
+      description: OCR request schema.
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
     OCRDocument:
       properties:
         type:
@@ -116,42 +152,6 @@ components:
       - msg
       - type
       title: ValidationError
-    OCRPage:
-      properties:
-        index:
-          type: integer
-          title: Index
-        markdown:
-          type: string
-          title: Markdown
-      type: object
-      required:
-      - index
-      - markdown
-      title: OCRPage
-      description: Single page OCR result.
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    OCRRequest:
-      properties:
-        model:
-          type: string
-          title: Model
-          default: mistral-ocr-latest
-        document:
-          $ref: '#/components/schemas/OCRDocument'
-      type: object
-      required:
-      - document
-      title: OCRRequest
-      description: OCR request schema.
     OCRResponse:
       properties:
         pages:

@@ -201,79 +201,20 @@ paths:
           result, err := client.Models.Get(ctx, modelID string)'
 components:
   schemas:
-    ValidationError:
+    ModelProviderRoute:
       properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-        input:
-          title: Input
-        ctx:
-          type: object
-          title: Context
+        endpoint:
+          $ref: '#/components/schemas/Endpoint'
+          description: Dedalus endpoint path
+        upstream_api:
+          $ref: '#/components/schemas/UpstreamAPI'
+          description: Provider API used for this endpoint
       type: object
       required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    ListModelsResponse:
-      properties:
-        object:
-          type: string
-          const: list
-          title: Object
-          description: Response object type
-          default: list
-        data:
-          items:
-            $ref: '#/components/schemas/Model'
-          type: array
-          title: Data
-          description: List of available models
-      type: object
-      required:
-      - data
-      title: ListModelsResponse
-      description: Response for /v1/models endpoint.
-    UpstreamAPI:
-      type: string
-      enum:
-      - openai/chat/completions
-      - openai/responses
-      - openai/embeddings
-      - openai/images
-      - openai/audio/speech
-      - openai/audio/transcriptions
-      - anthropic/messages
-      - google/generateContent
-      - google/embedContent
-      - xai/chat/completions
-      - openai-compatible
-      title: UpstreamAPI
-      description: Upstream provider API types.
-    Endpoint:
-      type: string
-      enum:
-      - /v1/chat/completions
-      - /v1/responses
-      - /v1/embeddings
-      - /v1/images/generations
-      - /v1/audio/speech
-      - /v1/audio/transcriptions
-      - /v1/moderations
-      title: Endpoint
-      description: API endpoints we expose.
+      - endpoint
+      - upstream_api
+      title: ModelProviderRoute
+      description: One endpoint -> upstream routing entry exposed by `/v1/models`.
     Provider:
       type: string
       enum:
@@ -292,6 +233,44 @@ components:
       - moonshot
       title: Provider
       description: Supported LLM providers.
+    ModelProviderInfo:
+      properties:
+        routing:
+          items:
+            $ref: '#/components/schemas/ModelProviderRoute'
+          type: array
+          title: Routing
+          description: Per-endpoint upstream routing metadata
+        status:
+          $ref: '#/components/schemas/ModelStatus'
+          description: Availability status
+      type: object
+      required:
+      - routing
+      - status
+      title: ModelProviderInfo
+      description: Typed provider metadata surfaced to SDKs.
+    ModelStatus:
+      type: string
+      enum:
+      - enabled
+      - disabled
+      - preview
+      - deprecated
+      title: ModelStatus
+      description: Model availability status.
+    Endpoint:
+      type: string
+      enum:
+      - /v1/chat/completions
+      - /v1/responses
+      - /v1/embeddings
+      - /v1/images/generations
+      - /v1/audio/speech
+      - /v1/audio/transcriptions
+      - /v1/moderations
+      title: Endpoint
+      description: API endpoints we expose.
     Model:
       properties:
         id:
@@ -359,6 +338,15 @@ components:
         Combines provider-specific schemas into a single, consistent format.
 
         Fields that aren''t available from a provider are set to None.'
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
     ModelDefaults:
       properties:
         temperature:
@@ -388,20 +376,51 @@ components:
       type: object
       title: ModelDefaults
       description: Provider-declared default parameters for model generation.
-    ModelProviderRoute:
+    ListModelsResponse:
       properties:
-        endpoint:
-          $ref: '#/components/schemas/Endpoint'
-          description: Dedalus endpoint path
-        upstream_api:
-          $ref: '#/components/schemas/UpstreamAPI'
-          description: Provider API used for this endpoint
+        object:
+          type: string
+          const: list
+          title: Object
+          description: Response object type
+          default: list
+        data:
+          items:
+            $ref: '#/components/schemas/Model'
+          type: array
+          title: Data
+          description: List of available models
       type: object
       required:
-      - endpoint
-      - upstream_api
-      title: ModelProviderRoute
-      description: One endpoint -> upstream routing entry exposed by `/v1/models`.
+      - data
+      title: ListModelsResponse
+      description: Response for /v1/models endpoint.
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
     ModelCapabilities:
       properties:
         text:
@@ -467,41 +486,22 @@ components:
       type: object
       title: ModelCapabilities
       description: Normalized model capabilities across all providers.
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    ModelProviderInfo:
-      properties:
-        routing:
-          items:
-            $ref: '#/components/schemas/ModelProviderRoute'
-          type: array
-          title: Routing
-          description: Per-endpoint upstream routing metadata
-        status:
-          $ref: '#/components/schemas/ModelStatus'
-          description: Availability status
-      type: object
-      required:
-      - routing
-      - status
-      title: ModelProviderInfo
-      description: Typed provider metadata surfaced to SDKs.
-    ModelStatus:
+    UpstreamAPI:
       type: string
       enum:
-      - enabled
-      - disabled
-      - preview
-      - deprecated
-      title: ModelStatus
-      description: Model availability status.
+      - openai/chat/completions
+      - openai/responses
+      - openai/embeddings
+      - openai/images
+      - openai/audio/speech
+      - openai/audio/transcriptions
+      - anthropic/messages
+      - google/generateContent
+      - google/embedContent
+      - xai/chat/completions
+      - openai-compatible
+      title: UpstreamAPI
+      description: Upstream provider API types.
   securitySchemes:
     Bearer:
       type: http

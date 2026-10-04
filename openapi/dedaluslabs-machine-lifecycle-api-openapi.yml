@@ -6099,6 +6099,636 @@ paths:
       - Machine Lifecycle
 components:
   schemas:
+    ArtifactListResponse:
+      additionalProperties: false
+      properties:
+        items:
+          items:
+            $ref: '#/components/schemas/ArtifactResponse'
+          type:
+          - array
+          - 'null'
+        next_cursor:
+          type: string
+      required:
+      - items
+      type: object
+    ErrorDetail:
+      additionalProperties: false
+      properties:
+        location:
+          description: Where the error occurred, e.g. 'body.items[3].tags' or 'path.thing-id'
+          type: string
+        message:
+          description: Error message text
+          type: string
+        value:
+          description: The value at the given location
+      type: object
+    SSHSessionListResponse:
+      additionalProperties: false
+      properties:
+        items:
+          items:
+            $ref: '#/components/schemas/SSHSessionResponse'
+          type:
+          - array
+          - 'null'
+        next_cursor:
+          type: string
+      required:
+      - items
+      type: object
+    ExecutionEventsResponse:
+      additionalProperties: false
+      properties:
+        items:
+          items:
+            $ref: '#/components/schemas/ExecutionEvent'
+          type:
+          - array
+          - 'null'
+        next_cursor:
+          type: string
+      required:
+      - items
+      type: object
+    SSHHostTrust:
+      additionalProperties: false
+      properties:
+        host_pattern:
+          type: string
+        kind:
+          enum:
+          - cert_authority
+          type: string
+        public_key:
+          type: string
+      required:
+      - kind
+      - host_pattern
+      - public_key
+      type: object
+    ArtifactRef:
+      additionalProperties: false
+      properties:
+        artifact_id:
+          type: string
+        name:
+          type: string
+      required:
+      - artifact_id
+      - name
+      type: object
+    PreviewListResponse:
+      additionalProperties: false
+      properties:
+        items:
+          items:
+            $ref: '#/components/schemas/PreviewResponse'
+          type:
+          - array
+          - 'null'
+        next_cursor:
+          type: string
+      required:
+      - items
+      type: object
+    TerminalResponse:
+      additionalProperties: false
+      properties:
+        created_at:
+          format: date-time
+          type: string
+        error_code:
+          type: string
+        error_message:
+          type: string
+        expires_at:
+          format: date-time
+          type: string
+        height:
+          format: int64
+          type: integer
+        machine_id:
+          type: string
+        protocol:
+          enum:
+          - websocket
+          type: string
+        ready_at:
+          format: date-time
+          type: string
+        retry_after_ms:
+          format: int64
+          type: integer
+        status:
+          enum:
+          - wake_in_progress
+          - ready
+          - closed
+          - expired
+          - failed
+          type: string
+        stream_url:
+          type: string
+        terminal_id:
+          type: string
+        width:
+          format: int64
+          type: integer
+      required:
+      - terminal_id
+      - machine_id
+      - status
+      - created_at
+      - width
+      - height
+      type: object
+    UpdateMachineRequest:
+      additionalProperties: false
+      properties:
+        memory_mib:
+          description: Memory in MiB.
+          format: int64
+          type: integer
+        storage_gib:
+          description: Storage in GiB.
+          format: int64
+          type: integer
+        vcpu:
+          description: CPU in vCPUs.
+          format: double
+          type: number
+      type: object
+    CreateSSHSessionRequest:
+      additionalProperties: false
+      properties:
+        public_key:
+          type: string
+      required:
+      - public_key
+      type: object
+    PreviewResponse:
+      additionalProperties: false
+      properties:
+        created_at:
+          format: date-time
+          type: string
+        error_code:
+          type: string
+        error_message:
+          type: string
+        expires_at:
+          format: date-time
+          type: string
+        machine_id:
+          type: string
+        port:
+          format: int64
+          type: integer
+        preview_id:
+          type: string
+        protocol:
+          enum:
+          - http
+          - https
+          type: string
+        ready_at:
+          format: date-time
+          type: string
+        retry_after_ms:
+          format: int64
+          type: integer
+        status:
+          enum:
+          - wake_in_progress
+          - ready
+          - closed
+          - expired
+          - failed
+          type: string
+        url:
+          type: string
+        visibility:
+          enum:
+          - public
+          - private
+          - org
+          type: string
+      required:
+      - preview_id
+      - machine_id
+      - status
+      - port
+      - visibility
+      - created_at
+      type: object
+    CreateExecutionRequest:
+      additionalProperties: false
+      properties:
+        command:
+          items:
+            type: string
+          type:
+          - array
+          - 'null'
+        cwd:
+          type: string
+        env:
+          additionalProperties:
+            type: string
+          type: object
+        stdin:
+          type: string
+        timeout_ms:
+          format: int64
+          type: integer
+      required:
+      - command
+      type: object
+    MachineListItem:
+      additionalProperties: false
+      properties:
+        created_at:
+          format: date-time
+          type: string
+        desired_state:
+          enum:
+          - running
+          - sleeping
+          - destroyed
+          type: string
+        machine_id:
+          type: string
+        memory_mib:
+          description: Memory in MiB.
+          format: int64
+          type: integer
+        status:
+          $ref: '#/components/schemas/LifecycleStatus'
+        storage_gib:
+          format: int64
+          type: integer
+        vcpu:
+          description: CPU in vCPUs.
+          format: double
+          type: number
+      required:
+      - machine_id
+      - vcpu
+      - memory_mib
+      - storage_gib
+      - desired_state
+      - status
+      - created_at
+      type: object
+    SSHConnection:
+      additionalProperties: false
+      properties:
+        endpoint:
+          type: string
+        host_trust:
+          $ref: '#/components/schemas/SSHHostTrust'
+        port:
+          format: int64
+          type: integer
+        ssh_username:
+          type: string
+        user_certificate:
+          type: string
+      required:
+      - endpoint
+      - port
+      - ssh_username
+      type: object
+    LifecycleStatus:
+      additionalProperties: false
+      properties:
+        last_error:
+          type: string
+        last_progress_at:
+          format: date-time
+          type: string
+        last_transition_at:
+          format: date-time
+          type: string
+        phase:
+          enum:
+          - accepted
+          - placement_pending
+          - starting
+          - running
+          - stopping
+          - sleeping
+          - destroying
+          - destroyed
+          - failed
+          type: string
+        reason:
+          type: string
+        retryable:
+          type: boolean
+        revision:
+          type: string
+      required:
+      - phase
+      - reason
+      - retryable
+      - revision
+      - last_transition_at
+      - last_progress_at
+      type: object
+    ErrorModel:
+      additionalProperties: false
+      properties:
+        detail:
+          description: A human-readable explanation specific to this occurrence of the problem.
+          examples:
+          - Property foo is required but is missing.
+          type: string
+        errors:
+          description: Optional list of individual error details
+          items:
+            $ref: '#/components/schemas/ErrorDetail'
+          type:
+          - array
+          - 'null'
+        instance:
+          description: A URI reference that identifies the specific occurrence of the problem.
+          examples:
+          - https://example.com/error-log/abc123
+          format: uri
+          type: string
+        status:
+          description: HTTP status code
+          examples:
+          - 400
+          format: int64
+          type: integer
+        title:
+          description: A short, human-readable summary of the problem type. This value should not change between occurrences of the error.
+          examples:
+          - Bad Request
+          type: string
+        type:
+          default: about:blank
+          description: A URI reference to human-readable documentation for the error.
+          examples:
+          - https://example.com/errors/example
+          format: uri
+          type: string
+      type: object
+    SSHSessionResponse:
+      additionalProperties: false
+      properties:
+        connection:
+          $ref: '#/components/schemas/SSHConnection'
+        created_at:
+          format: date-time
+          type: string
+        error_code:
+          type: string
+        error_message:
+          type: string
+        expires_at:
+          format: date-time
+          type: string
+        machine_id:
+          type: string
+        ready_at:
+          format: date-time
+          type: string
+        retry_after_ms:
+          format: int64
+          type: integer
+        session_id:
+          type: string
+        status:
+          enum:
+          - wake_in_progress
+          - ready
+          - closed
+          - expired
+          - failed
+          type: string
+      required:
+      - session_id
+      - machine_id
+      - status
+      - created_at
+      type: object
+    LifecycleResponse:
+      additionalProperties: false
+      properties:
+        desired_state:
+          enum:
+          - running
+          - sleeping
+          - destroyed
+          type: string
+        machine_id:
+          type: string
+        memory_mib:
+          description: Memory in MiB.
+          format: int64
+          type: integer
+        status:
+          $ref: '#/components/schemas/LifecycleStatus'
+        storage_gib:
+          format: int64
+          type: integer
+        vcpu:
+          description: CPU in vCPUs.
+          format: double
+          type: number
+      required:
+      - machine_id
+      - vcpu
+      - memory_mib
+      - storage_gib
+      - desired_state
+      - status
+      type: object
+    CreatePreviewRequest:
+      additionalProperties: false
+      properties:
+        port:
+          format: int64
+          type: integer
+        protocol:
+          enum:
+          - http
+          - https
+          type: string
+        visibility:
+          enum:
+          - public
+          - private
+          - org
+          type: string
+      required:
+      - port
+      type: object
+    CreateMachineRequest:
+      additionalProperties: false
+      properties:
+        memory_mib:
+          description: Memory in MiB.
+          format: int64
+          type: integer
+        storage_gib:
+          description: Storage in GiB.
+          format: int64
+          type: integer
+        vcpu:
+          description: CPU in vCPUs.
+          format: double
+          type: number
+      required:
+      - vcpu
+      - memory_mib
+      - storage_gib
+      type: object
+    ExecutionEvent:
+      additionalProperties: false
+      properties:
+        at:
+          format: date-time
+          type: string
+        chunk:
+          type: string
+        error_code:
+          type: string
+        error_message:
+          type: string
+        exit_code:
+          format: int64
+          type: integer
+        sequence:
+          format: int64
+          type: integer
+        signal:
+          format: int64
+          type: integer
+        status:
+          enum:
+          - wake_in_progress
+          - queued
+          - running
+          - succeeded
+          - failed
+          - cancelled
+          - expired
+          type: string
+        type:
+          enum:
+          - lifecycle
+          - stdout
+          - stderr
+          type: string
+      required:
+      - sequence
+      - type
+      - at
+      type: object
+    ArtifactResponse:
+      additionalProperties: false
+      properties:
+        artifact_id:
+          type: string
+        created_at:
+          format: date-time
+          type: string
+        download_url:
+          type: string
+        execution_id:
+          type: string
+        expires_at:
+          format: date-time
+          type: string
+        machine_id:
+          type: string
+        mime_type:
+          type: string
+        name:
+          type: string
+        sha256:
+          type: string
+        size_bytes:
+          format: int64
+          type: integer
+      required:
+      - artifact_id
+      - machine_id
+      - name
+      - size_bytes
+      - created_at
+      type: object
+    ExecutionListResponse:
+      additionalProperties: false
+      properties:
+        items:
+          items:
+            $ref: '#/components/schemas/ExecutionResponse'
+          type:
+          - array
+          - 'null'
+        next_cursor:
+          type: string
+      required:
+      - items
+      type: object
+    TerminalListResponse:
+      additionalProperties: false
+      properties:
+        items:
+          items:
+            $ref: '#/components/schemas/TerminalResponse'
+          type:
+          - array
+          - 'null'
+        next_cursor:
+          type: string
+      required:
+      - items
+      type: object
+    MachineListResponse:
+      additionalProperties: false
+      properties:
+        items:
+          items:
+            $ref: '#/components/schemas/MachineListItem'
+          type:
+          - array
+          - 'null'
+        next_cursor:
+          type: string
+      required:
+      - items
+      type: object
+    ExecutionOutputResponse:
+      additionalProperties: false
+      properties:
+        execution_id:
+          type: string
+        stderr:
+          type: string
+        stderr_bytes:
+          format: int64
+          type: integer
+        stderr_truncated:
+          type: boolean
+        stdout:
+          type: string
+        stdout_bytes:
+          format: int64
+          type: integer
+        stdout_truncated:
+          type: boolean
+      required:
+      - execution_id
+      type: object
     ExecutionResponse:
       additionalProperties: false
       properties:
@@ -6178,171 +6808,6 @@ components:
       - command
       - created_at
       type: object
-    LifecycleResponse:
-      additionalProperties: false
-      properties:
-        desired_state:
-          enum:
-          - running
-          - sleeping
-          - destroyed
-          type: string
-        machine_id:
-          type: string
-        memory_mib:
-          description: Memory in MiB.
-          format: int64
-          type: integer
-        status:
-          $ref: '#/components/schemas/LifecycleStatus'
-        storage_gib:
-          format: int64
-          type: integer
-        vcpu:
-          description: CPU in vCPUs.
-          format: double
-          type: number
-      required:
-      - machine_id
-      - vcpu
-      - memory_mib
-      - storage_gib
-      - desired_state
-      - status
-      type: object
-    LifecycleStatus:
-      additionalProperties: false
-      properties:
-        last_error:
-          type: string
-        last_progress_at:
-          format: date-time
-          type: string
-        last_transition_at:
-          format: date-time
-          type: string
-        phase:
-          enum:
-          - accepted
-          - placement_pending
-          - starting
-          - running
-          - stopping
-          - sleeping
-          - destroying
-          - destroyed
-          - failed
-          type: string
-        reason:
-          type: string
-        retryable:
-          type: boolean
-        revision:
-          type: string
-      required:
-      - phase
-      - reason
-      - retryable
-      - revision
-      - last_transition_at
-      - last_progress_at
-      type: object
-    PreviewListResponse:
-      additionalProperties: false
-      properties:
-        items:
-          items:
-            $ref: '#/components/schemas/PreviewResponse'
-          type:
-          - array
-          - 'null'
-        next_cursor:
-          type: string
-      required:
-      - items
-      type: object
-    ErrorModel:
-      additionalProperties: false
-      properties:
-        detail:
-          description: A human-readable explanation specific to this occurrence of the problem.
-          examples:
-          - Property foo is required but is missing.
-          type: string
-        errors:
-          description: Optional list of individual error details
-          items:
-            $ref: '#/components/schemas/ErrorDetail'
-          type:
-          - array
-          - 'null'
-        instance:
-          description: A URI reference that identifies the specific occurrence of the problem.
-          examples:
-          - https://example.com/error-log/abc123
-          format: uri
-          type: string
-        status:
-          description: HTTP status code
-          examples:
-          - 400
-          format: int64
-          type: integer
-        title:
-          description: A short, human-readable summary of the problem type. This value should not change between occurrences of the error.
-          examples:
-          - Bad Request
-          type: string
-        type:
-          default: about:blank
-          description: A URI reference to human-readable documentation for the error.
-          examples:
-          - https://example.com/errors/example
-          format: uri
-          type: string
-      type: object
-    ExecutionEvent:
-      additionalProperties: false
-      properties:
-        at:
-          format: date-time
-          type: string
-        chunk:
-          type: string
-        error_code:
-          type: string
-        error_message:
-          type: string
-        exit_code:
-          format: int64
-          type: integer
-        sequence:
-          format: int64
-          type: integer
-        signal:
-          format: int64
-          type: integer
-        status:
-          enum:
-          - wake_in_progress
-          - queued
-          - running
-          - succeeded
-          - failed
-          - cancelled
-          - expired
-          type: string
-        type:
-          enum:
-          - lifecycle
-          - stdout
-          - stderr
-          type: string
-      required:
-      - sequence
-      - type
-      - at
-      type: object
     CreateTerminalRequest:
       additionalProperties: false
       properties:
@@ -6363,471 +6828,6 @@ components:
       required:
       - width
       - height
-      type: object
-    PreviewResponse:
-      additionalProperties: false
-      properties:
-        created_at:
-          format: date-time
-          type: string
-        error_code:
-          type: string
-        error_message:
-          type: string
-        expires_at:
-          format: date-time
-          type: string
-        machine_id:
-          type: string
-        port:
-          format: int64
-          type: integer
-        preview_id:
-          type: string
-        protocol:
-          enum:
-          - http
-          - https
-          type: string
-        ready_at:
-          format: date-time
-          type: string
-        retry_after_ms:
-          format: int64
-          type: integer
-        status:
-          enum:
-          - wake_in_progress
-          - ready
-          - closed
-          - expired
-          - failed
-          type: string
-        url:
-          type: string
-        visibility:
-          enum:
-          - public
-          - private
-          - org
-          type: string
-      required:
-      - preview_id
-      - machine_id
-      - status
-      - port
-      - visibility
-      - created_at
-      type: object
-    ArtifactListResponse:
-      additionalProperties: false
-      properties:
-        items:
-          items:
-            $ref: '#/components/schemas/ArtifactResponse'
-          type:
-          - array
-          - 'null'
-        next_cursor:
-          type: string
-      required:
-      - items
-      type: object
-    ErrorDetail:
-      additionalProperties: false
-      properties:
-        location:
-          description: Where the error occurred, e.g. 'body.items[3].tags' or 'path.thing-id'
-          type: string
-        message:
-          description: Error message text
-          type: string
-        value:
-          description: The value at the given location
-      type: object
-    SSHSessionListResponse:
-      additionalProperties: false
-      properties:
-        items:
-          items:
-            $ref: '#/components/schemas/SSHSessionResponse'
-          type:
-          - array
-          - 'null'
-        next_cursor:
-          type: string
-      required:
-      - items
-      type: object
-    ExecutionListResponse:
-      additionalProperties: false
-      properties:
-        items:
-          items:
-            $ref: '#/components/schemas/ExecutionResponse'
-          type:
-          - array
-          - 'null'
-        next_cursor:
-          type: string
-      required:
-      - items
-      type: object
-    SSHHostTrust:
-      additionalProperties: false
-      properties:
-        host_pattern:
-          type: string
-        kind:
-          enum:
-          - cert_authority
-          type: string
-        public_key:
-          type: string
-      required:
-      - kind
-      - host_pattern
-      - public_key
-      type: object
-    ArtifactRef:
-      additionalProperties: false
-      properties:
-        artifact_id:
-          type: string
-        name:
-          type: string
-      required:
-      - artifact_id
-      - name
-      type: object
-    MachineListResponse:
-      additionalProperties: false
-      properties:
-        items:
-          items:
-            $ref: '#/components/schemas/MachineListItem'
-          type:
-          - array
-          - 'null'
-        next_cursor:
-          type: string
-      required:
-      - items
-      type: object
-    CreatePreviewRequest:
-      additionalProperties: false
-      properties:
-        port:
-          format: int64
-          type: integer
-        protocol:
-          enum:
-          - http
-          - https
-          type: string
-        visibility:
-          enum:
-          - public
-          - private
-          - org
-          type: string
-      required:
-      - port
-      type: object
-    SSHConnection:
-      additionalProperties: false
-      properties:
-        endpoint:
-          type: string
-        host_trust:
-          $ref: '#/components/schemas/SSHHostTrust'
-        port:
-          format: int64
-          type: integer
-        ssh_username:
-          type: string
-        user_certificate:
-          type: string
-      required:
-      - endpoint
-      - port
-      - ssh_username
-      type: object
-    SSHSessionResponse:
-      additionalProperties: false
-      properties:
-        connection:
-          $ref: '#/components/schemas/SSHConnection'
-        created_at:
-          format: date-time
-          type: string
-        error_code:
-          type: string
-        error_message:
-          type: string
-        expires_at:
-          format: date-time
-          type: string
-        machine_id:
-          type: string
-        ready_at:
-          format: date-time
-          type: string
-        retry_after_ms:
-          format: int64
-          type: integer
-        session_id:
-          type: string
-        status:
-          enum:
-          - wake_in_progress
-          - ready
-          - closed
-          - expired
-          - failed
-          type: string
-      required:
-      - session_id
-      - machine_id
-      - status
-      - created_at
-      type: object
-    CreateExecutionRequest:
-      additionalProperties: false
-      properties:
-        command:
-          items:
-            type: string
-          type:
-          - array
-          - 'null'
-        cwd:
-          type: string
-        env:
-          additionalProperties:
-            type: string
-          type: object
-        stdin:
-          type: string
-        timeout_ms:
-          format: int64
-          type: integer
-      required:
-      - command
-      type: object
-    UpdateMachineRequest:
-      additionalProperties: false
-      properties:
-        memory_mib:
-          description: Memory in MiB.
-          format: int64
-          type: integer
-        storage_gib:
-          description: Storage in GiB.
-          format: int64
-          type: integer
-        vcpu:
-          description: CPU in vCPUs.
-          format: double
-          type: number
-      type: object
-    ExecutionEventsResponse:
-      additionalProperties: false
-      properties:
-        items:
-          items:
-            $ref: '#/components/schemas/ExecutionEvent'
-          type:
-          - array
-          - 'null'
-        next_cursor:
-          type: string
-      required:
-      - items
-      type: object
-    ExecutionOutputResponse:
-      additionalProperties: false
-      properties:
-        execution_id:
-          type: string
-        stderr:
-          type: string
-        stderr_bytes:
-          format: int64
-          type: integer
-        stderr_truncated:
-          type: boolean
-        stdout:
-          type: string
-        stdout_bytes:
-          format: int64
-          type: integer
-        stdout_truncated:
-          type: boolean
-      required:
-      - execution_id
-      type: object
-    TerminalListResponse:
-      additionalProperties: false
-      properties:
-        items:
-          items:
-            $ref: '#/components/schemas/TerminalResponse'
-          type:
-          - array
-          - 'null'
-        next_cursor:
-          type: string
-      required:
-      - items
-      type: object
-    CreateSSHSessionRequest:
-      additionalProperties: false
-      properties:
-        public_key:
-          type: string
-      required:
-      - public_key
-      type: object
-    MachineListItem:
-      additionalProperties: false
-      properties:
-        created_at:
-          format: date-time
-          type: string
-        desired_state:
-          enum:
-          - running
-          - sleeping
-          - destroyed
-          type: string
-        machine_id:
-          type: string
-        memory_mib:
-          description: Memory in MiB.
-          format: int64
-          type: integer
-        status:
-          $ref: '#/components/schemas/LifecycleStatus'
-        storage_gib:
-          format: int64
-          type: integer
-        vcpu:
-          description: CPU in vCPUs.
-          format: double
-          type: number
-      required:
-      - machine_id
-      - vcpu
-      - memory_mib
-      - storage_gib
-      - desired_state
-      - status
-      - created_at
-      type: object
-    TerminalResponse:
-      additionalProperties: false
-      properties:
-        created_at:
-          format: date-time
-          type: string
-        error_code:
-          type: string
-        error_message:
-          type: string
-        expires_at:
-          format: date-time
-          type: string
-        height:
-          format: int64
-          type: integer
-        machine_id:
-          type: string
-        protocol:
-          enum:
-          - websocket
-          type: string
-        ready_at:
-          format: date-time
-          type: string
-        retry_after_ms:
-          format: int64
-          type: integer
-        status:
-          enum:
-          - wake_in_progress
-          - ready
-          - closed
-          - expired
-          - failed
-          type: string
-        stream_url:
-          type: string
-        terminal_id:
-          type: string
-        width:
-          format: int64
-          type: integer
-      required:
-      - terminal_id
-      - machine_id
-      - status
-      - created_at
-      - width
-      - height
-      type: object
-    CreateMachineRequest:
-      additionalProperties: false
-      properties:
-        memory_mib:
-          description: Memory in MiB.
-          format: int64
-          type: integer
-        storage_gib:
-          description: Storage in GiB.
-          format: int64
-          type: integer
-        vcpu:
-          description: CPU in vCPUs.
-          format: double
-          type: number
-      required:
-      - vcpu
-      - memory_mib
-      - storage_gib
-      type: object
-    ArtifactResponse:
-      additionalProperties: false
-      properties:
-        artifact_id:
-          type: string
-        created_at:
-          format: date-time
-          type: string
-        download_url:
-          type: string
-        execution_id:
-          type: string
-        expires_at:
-          format: date-time
-          type: string
-        machine_id:
-          type: string
-        mime_type:
-          type: string
-        name:
-          type: string
-        sha256:
-          type: string
-        size_bytes:
-          format: int64
-          type: integer
-      required:
-      - artifact_id
-      - machine_id
-      - name
-      - size_bytes
-      - created_at
       type: object
   securitySchemes:
     ApiKeyAuth:
