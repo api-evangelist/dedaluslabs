@@ -176,6 +176,8 @@ apis:
   humanURL: https://docs.dedaluslabs.ai/api-reference/api
   baseURL: https://api.dedaluslabs.ai
   tags:
+  - Image
+  tags_raw:
   - Images
   properties:
   - type: OpenAPI
@@ -211,6 +213,9 @@ apis:
   - type: OpenAPI
     url: openapi/dedaluslabs-responses-api-openapi.yml
 common:
+- type: CapabilityMap
+  url: capabilities/dedaluslabs-capability-edges.yml
+  name: Dedalus Labs Business Capability Map
 - type: Overlay
   url: overlays/dedaluslabs-agents-overlay.yaml
 - type: Website
