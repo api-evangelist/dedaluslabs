@@ -1,0 +1,25 @@
+slug: dedaluslabs
+provider: Dedalus Labs
+generated_by: planning/capability-mapping/scripts/classify_capabilities.py
+model: claude-opus-5
+frame:
+- Software & Technology
+min_confidence: 0.7
+capability_model:
+  source: https://github.com/vincentmakes/turbo-ea-capabilities
+  license: CC-BY-4.0
+  attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
+    CC BY 4.0
+  notice: NOTICE
+edge_count: 1
+edges:
+- tag: Machine Lifecycle
+  spec_file: dedaluslabs-machine-lifecycle-api-openapi.yml
+  capability_id: BC-600.50
+  capability_id_l1: BC-600
+  capability_name: IT Infrastructure Management
+  confidence: 0.8
+  evidence: GET /v1/machines  List machines; POST /v1/machines  Create machine; DELETE /v1/machines/{machine_id}  Destroy
+    machine; 'Controlplane API for Dedalus Cloud Services (DCS)'
+  reason: Provisioning, updating and destroying persistent Linux VMs plus executions, SSH sessions and
+    artefacts is cloud compute infrastructure provisioning — IT Infrastructure Management.
