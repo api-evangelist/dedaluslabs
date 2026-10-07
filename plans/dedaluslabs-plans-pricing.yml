@@ -1,0 +1,66 @@
+# Pricing transcribed from the provider's own page — see provenance. Numbers are quoted, not derived.
+generated: '2026-10-07'
+method: searched
+source: https://www.dedaluslabs.ai/pricing
+sources:
+- https://www.dedaluslabs.ai/pricing
+- https://dedaluslabs.ai/pricing
+provenance:
+  tool: all/0-working/economics/harvest_pricing.py
+  run: 20261007T104522
+  grounding: every price_text was found verbatim in the fetched page text
+audience: developer-api
+pricing_basis: usage-other
+delivery:
+  delivery: managed+licensed
+  method: page
+  read: '2026-10-07'
+  evidence: Bring your own cloud
+  managed_tier: Pro
+published: true
+note: Compute (vCPU/RAM per second) usage pricing plus tiered plans; Enterprise is Contact sales.
+plan_count: 6
+currency: USD
+plans:
+- name: vCPU
+  price_text: $0.04536 per vCPU
+  price: 0.04536
+  currency: USD
+  period: per-use
+  unit: per vCPU (per hour)
+- name: Memory
+  price_text: $0.01458 per GiB
+  price: 0.01458
+  currency: USD
+  period: per-use
+  unit: per GiB
+- name: Storage
+  price_text: $0.0001 per GiB-hour
+  price: 0.0001
+  currency: USD
+  period: per-use
+  unit: GiB-hour
+- name: Hobby
+  price_text: $0 /mo
+  price: 0
+  currency: USD
+  period: month
+  included_quota: $20 one-time sign-up credit; up to 4 vCPU, 16 GiB RAM, 10 GiB free storage, up to 5
+    machines
+- name: Pro
+  price_text: $20 /mo
+  price: 20
+  currency: USD
+  period: month
+  included_quota: $20 of compute included every month; up to 16 vCPU, 64 GiB RAM, 20 GiB free storage,
+    up to 20 machines
+  overage: Additional storage charged at $0.0001/GiB-hour
+- name: Enterprise
+  price_text: Custom
+  period: none
+  included_quota: Dedicated fleet option, SSO/RBAC/audit logs, SLA, BYOC
+rate_limit_statements:
+- vCPU / Machine Up to 4
+- Machines Up to 5
+- vCPU / Machine Up to 16
+- Machines Up to 20
