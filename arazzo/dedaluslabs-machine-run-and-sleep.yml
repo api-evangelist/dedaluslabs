@@ -3,6 +3,17 @@ info:
   title: Create a Dedalus Machine, run a command, and sleep it
   version: 1.0.0
   summary: Provision a persistent Linux VM, execute a command, read the output, then sleep it to pause billing.
+  x-realizes-capability-ids:
+  - BC-600.50
+  x-capability-derivation:
+    method: 'deterministic join: sourceDescriptions -> per-tag OpenAPI -> tag/capability edge. No classification at this step.'
+    min_confidence: 0.7
+    sources:
+    - capability_id: BC-600.50
+      capability_name: IT Infrastructure Management
+      spec: dedaluslabs-machine-lifecycle-api-openapi.yml
+      confidence: 0.8
+    model: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities, CC BY 4.0
 sourceDescriptions:
 - name: machineLifecycleApi
   url: ../openapi/dedaluslabs-machine-lifecycle-api-openapi.yml
