@@ -1,0 +1,22 @@
+edges:
+- partner_name: OpenAI
+  partner: openai
+  partner_match: domain
+  type: contract
+  channel: provider-built
+  relationship: compatible
+  direction: provider-built
+  evidence: https://github.com/api-evangelist/dedaluslabs/blob/main/openapi/dedaluslabs-chat-completions-api-openapi.yml#L1147
+  contract_reference:
+    repo: dedaluslabs
+    spec_file: dedaluslabs-chat-completions-api-openapi.yml
+    property: description
+    value: OpenAI-compatible
+    note: 'dedaluslabs declares OpenAI compatibility: ''OpenAI-compatible choice object for non-streaming responses.'''
+    detected_by: sweep-model-routing.py
+    detected: '2026-10-13'
+  detected_by: sweep-model-routing.py
+  first_seen: '2026-10-13'
+generated: '2026-10-13'
+method: searched
+checked: []
