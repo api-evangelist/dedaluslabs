@@ -185,160 +185,6 @@ paths:
                 $ref: '#/components/schemas/StripeBalanceResponse'
 components:
   schemas:
-    PayoutRequestResponse:
-      properties:
-        success:
-          type: boolean
-          title: Success
-        payout_id:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Payout Id
-        amount_milli_cents:
-          type: integer
-          title: Amount Milli Cents
-          default: 0
-        amount_cents:
-          type: integer
-          title: Amount Cents
-          default: 0
-        error:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Error
-      type: object
-      required:
-      - success
-      title: PayoutRequestResponse
-      description: Response from payout request.
-    StripeBalanceResponse:
-      properties:
-        available_cents:
-          type: integer
-          title: Available Cents
-          description: Available balance in cents
-        pending_cents:
-          type: integer
-          title: Pending Cents
-          description: Pending balance in cents
-        stripe_connect_account_id:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Stripe Connect Account Id
-          description: Stripe account ID
-      type: object
-      required:
-      - available_cents
-      - pending_cents
-      - stripe_connect_account_id
-      title: StripeBalanceResponse
-      description: Balance from Stripe connected account.
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    ConnectStatusResponse:
-      properties:
-        stripe_connect_account_id:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Stripe Connect Account Id
-        details_submitted:
-          type: boolean
-          title: Details Submitted
-        transfer_enabled:
-          type: boolean
-          title: Transfer Enabled
-        payouts_enabled:
-          type: boolean
-          title: Payouts Enabled
-        is_onboarded:
-          type: boolean
-          title: Is Onboarded
-        last_payout_failure:
-          anyOf:
-          - $ref: '#/components/schemas/PayoutFailureResponse'
-          - type: 'null'
-        requirements_currently_due:
-          type: integer
-          title: Requirements Currently Due
-          default: 0
-        requirements_pending_verification:
-          type: integer
-          title: Requirements Pending Verification
-          default: 0
-      type: object
-      required:
-      - stripe_connect_account_id
-      - details_submitted
-      - transfer_enabled
-      - payouts_enabled
-      - is_onboarded
-      title: ConnectStatusResponse
-      description: Stripe Connect onboarding status.
-    OnboardRequest:
-      properties:
-        return_url:
-          type: string
-          title: Return Url
-          description: Redirect after successful onboarding
-        refresh_url:
-          type: string
-          title: Refresh Url
-          description: Redirect if link expires
-        email:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Email
-          description: Contact email for the Stripe account
-        country:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Country
-          description: ISO 3166-1 alpha-2 country code
-      type: object
-      required:
-      - return_url
-      - refresh_url
-      title: OnboardRequest
-      description: Request to start Stripe Connect onboarding.
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-        input:
-          title: Input
-        ctx:
-          type: object
-          title: Context
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
     PayoutBalanceResponse:
       properties:
         total_earning_milli_cents:
@@ -405,6 +251,32 @@ components:
       - success
       title: DashboardResponse
       description: Response with Stripe dashboard link.
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
     PayoutFailureResponse:
       properties:
         stripe_payout_id:
@@ -440,6 +312,78 @@ components:
       type: object
       title: PayoutFailureResponse
       description: Latest Stripe payout failure metadata for the seller.
+    StripeBalanceResponse:
+      properties:
+        available_cents:
+          type: integer
+          title: Available Cents
+          description: Available balance in cents
+        pending_cents:
+          type: integer
+          title: Pending Cents
+          description: Pending balance in cents
+        stripe_connect_account_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Stripe Connect Account Id
+          description: Stripe account ID
+      type: object
+      required:
+      - available_cents
+      - pending_cents
+      - stripe_connect_account_id
+      title: StripeBalanceResponse
+      description: Balance from Stripe connected account.
+    ConnectStatusResponse:
+      properties:
+        stripe_connect_account_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Stripe Connect Account Id
+        details_submitted:
+          type: boolean
+          title: Details Submitted
+        transfer_enabled:
+          type: boolean
+          title: Transfer Enabled
+        payouts_enabled:
+          type: boolean
+          title: Payouts Enabled
+        is_onboarded:
+          type: boolean
+          title: Is Onboarded
+        last_payout_failure:
+          anyOf:
+          - $ref: '#/components/schemas/PayoutFailureResponse'
+          - type: 'null'
+        requirements_currently_due:
+          type: integer
+          title: Requirements Currently Due
+          default: 0
+        requirements_pending_verification:
+          type: integer
+          title: Requirements Pending Verification
+          default: 0
+      type: object
+      required:
+      - stripe_connect_account_id
+      - details_submitted
+      - transfer_enabled
+      - payouts_enabled
+      - is_onboarded
+      title: ConnectStatusResponse
+      description: Stripe Connect onboarding status.
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
     OnboardResponse:
       properties:
         success:
@@ -465,6 +409,62 @@ components:
       - success
       title: OnboardResponse
       description: Response with Stripe onboarding link.
+    PayoutRequestResponse:
+      properties:
+        success:
+          type: boolean
+          title: Success
+        payout_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Payout Id
+        amount_milli_cents:
+          type: integer
+          title: Amount Milli Cents
+          default: 0
+        amount_cents:
+          type: integer
+          title: Amount Cents
+          default: 0
+        error:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Error
+      type: object
+      required:
+      - success
+      title: PayoutRequestResponse
+      description: Response from payout request.
+    OnboardRequest:
+      properties:
+        return_url:
+          type: string
+          title: Return Url
+          description: Redirect after successful onboarding
+        refresh_url:
+          type: string
+          title: Refresh Url
+          description: Redirect if link expires
+        email:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Email
+          description: Contact email for the Stripe account
+        country:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Country
+          description: ISO 3166-1 alpha-2 country code
+      type: object
+      required:
+      - return_url
+      - refresh_url
+      title: OnboardRequest
+      description: Request to start Stripe Connect onboarding.
   securitySchemes:
     Bearer:
       type: http

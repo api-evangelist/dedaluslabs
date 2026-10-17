@@ -191,55 +191,6 @@ paths:
           result, err := client.Images.NewVariation(ctx, body githubcomdedaluslabsdedalussdkgo.ImageNewVariationParams)'
 components:
   schemas:
-    Body_edit_image_v1_images_edits_post:
-      properties:
-        image:
-          type: string
-          format: binary
-          title: Image
-        prompt:
-          type: string
-          title: Prompt
-        mask:
-          anyOf:
-          - type: string
-            format: binary
-          - type: 'null'
-          title: Mask
-        model:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Model
-          default: openai/dall-e-2
-        n:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: N
-          default: 1
-        size:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Size
-          default: 1024x1024
-        response_format:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Response Format
-          default: url
-        user:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: User
-      type: object
-      required:
-      - image
-      - prompt
-      title: Body_edit_image_v1_images_edits_post
     Body_create_variation_v1_images_variations_post:
       properties:
         image:
@@ -279,33 +230,6 @@ components:
       required:
       - image
       title: Body_create_variation_v1_images_variations_post
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    ImagesResponse:
-      properties:
-        created:
-          type: integer
-          title: Created
-          description: Unix timestamp when images were created
-        data:
-          items:
-            $ref: '#/components/schemas/Image'
-          type: array
-          title: Data
-          description: List of generated images
-      type: object
-      required:
-      - created
-      - data
-      title: ImagesResponse
-      description: Response from image generation.
     ImageGenerateRequest:
       properties:
         prompt:
@@ -558,6 +482,82 @@ components:
       type: object
       title: Image
       description: Single image object.
+    Body_edit_image_v1_images_edits_post:
+      properties:
+        image:
+          type: string
+          format: binary
+          title: Image
+        prompt:
+          type: string
+          title: Prompt
+        mask:
+          anyOf:
+          - type: string
+            format: binary
+          - type: 'null'
+          title: Mask
+        model:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Model
+          default: openai/dall-e-2
+        n:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: N
+          default: 1
+        size:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Size
+          default: 1024x1024
+        response_format:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Response Format
+          default: url
+        user:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: User
+      type: object
+      required:
+      - image
+      - prompt
+      title: Body_edit_image_v1_images_edits_post
+    ImagesResponse:
+      properties:
+        created:
+          type: integer
+          title: Created
+          description: Unix timestamp when images were created
+        data:
+          items:
+            $ref: '#/components/schemas/Image'
+          type: array
+          title: Data
+          description: List of generated images
+      type: object
+      required:
+      - created
+      - data
+      title: ImagesResponse
+      description: Response from image generation.
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
   securitySchemes:
     Bearer:
       type: http

@@ -19,7 +19,9 @@
     "dedaluslabs-private-api-openapi.yml",
     "dedaluslabs-machine-lifecycle-api-openapi.yml"
   ],
-  "archived": [],
+  "archived": [
+    "deleted 1 superseded output(s) from the previous generation"
+  ],
   "errors": [],
   "warnings": [],
   "notes": [
@@ -50,11 +52,12 @@
     "dedaluslabs-machines-openapi-original.yml: declared missing tag: Machine SSH",
     "dedaluslabs-machines-openapi-original.yml: declared missing tag: Machine Terminals",
     "dedaluslabs-machines-openapi-original.yml: multi-axis tagging (6 tags, 1 first tags, 1.73x duplication over 30 operations) \u2014 split on first tag, 22 operations narrowed",
-    "apis.yml register: already-registered"
+    "superseded outputs removed: dedaluslabs-chat-completions-api-openapi.yml",
+    "apis.yml register: written (+1 apis, 13 total)"
   ],
   "skipped": [
     "dedaluslabs-audio-api-openapi.yml: previously refined output, superseded by openapi/_original/",
-    "dedaluslabs-chat-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "dedaluslabs-chat-completions-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "dedaluslabs-dedalus-api-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "dedaluslabs-embeddings-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "dedaluslabs-health-api-openapi.yml: previously refined output, superseded by openapi/_original/",
