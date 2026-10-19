@@ -17,6 +17,120 @@ edges:
     detected: '2026-10-15'
   detected_by: sweep-model-routing.py
   first_seen: '2026-10-13'
+- partner_name: Go module proxy
+  partner: null
+  partner_match: null
+  type: register
+  direction: provider-built
+  category: official SDK (Go)
+  evidence: https://pkg.go.dev/github.com/dedalus-labs/dedalus-go
+  channel: package-registry
+  relationship: distribution-channel
+  contract_reference:
+    register: Go module proxy (public registry JSON)
+    spec_file: null
+    language: Go
+    packages:
+    - name: github.com/dedalus-labs/dedalus-go
+      version: v0.6.0
+      released: '2026-09-24'
+      released_field: Time
+      lapsed: false
+      page: https://pkg.go.dev/github.com/dedalus-labs/dedalus-go
+      repo_leg: github-org:dedalus-labs
+      publisher_leg: org:dedalus-labs
+      matched_by: github-org
+    current: true
+    signal_note: 'an official package on the registry: distribution, not an integration; lapsed = no release in
+      24 months'
+    detected_by: sweep-official-sdks.py
+    detected: '2026-10-18'
+  detected_by: sweep-official-sdks.py
+  first_seen: '2026-10-18'
+- partner_name: npm registry
+  partner: npm
+  partner_match: register
+  type: register
+  direction: provider-built
+  category: official SDK (JavaScript/TypeScript)
+  evidence: https://www.npmjs.com/package/dedalus
+  channel: package-registry
+  relationship: distribution-channel
+  contract_reference:
+    register: npm registry (public registry JSON)
+    spec_file: null
+    language: JavaScript/TypeScript
+    packages:
+    - name: dedalus
+      version: 0.6.0
+      released: '2026-09-24'
+      released_field: modified
+      lapsed: false
+      page: https://www.npmjs.com/package/dedalus
+      repo_leg: github-org:dedalus-labs
+      publisher_leg: email:dedaluslabs.ai
+      matched_by: domain
+    - name: dedalus-labs
+      version: 0.1.0-alpha.8
+      released: '2025-11-26'
+      released_field: modified
+      lapsed: false
+      page: https://www.npmjs.com/package/dedalus-labs
+      repo_leg: github-org:dedalus-labs
+      publisher_leg: email:dedaluslabs.ai
+      matched_by: domain
+    current: true
+    signal_note: 'an official package on the registry: distribution, not an integration; lapsed = no release in
+      24 months'
+    detected_by: sweep-official-sdks.py
+    detected: '2026-10-18'
+  detected_by: sweep-official-sdks.py
+  first_seen: '2026-10-18'
+- partner_name: PyPI
+  partner: pypi
+  partner_match: register
+  type: register
+  direction: provider-built
+  category: official SDK (Python)
+  evidence: https://pypi.org/project/dedalus-labs/
+  channel: package-registry
+  relationship: distribution-channel
+  contract_reference:
+    register: PyPI (public registry JSON)
+    spec_file: null
+    language: Python
+    packages:
+    - name: dedalus-labs
+      version: 0.3.0
+      released: '2026-02-28'
+      released_field: upload_time
+      lapsed: false
+      page: https://pypi.org/project/dedalus-labs/
+      repo_leg: github-org:dedalus-labs
+      publisher_leg: email:dedaluslabs.ai
+      matched_by: domain
+    current: true
+    signal_note: 'an official package on the registry: distribution, not an integration; lapsed = no release in
+      24 months'
+    detected_by: sweep-official-sdks.py
+    detected: '2026-10-18'
+  detected_by: sweep-official-sdks.py
+  first_seen: '2026-10-18'
 generated: '2026-10-13'
 method: searched
-checked: []
+checked:
+- https://api.nuget.org/v3
+- https://crates.io/api/v1
+- https://proxy.golang.org
+- https://pypi.org/pypi
+- https://registry.npmjs.org
+- https://repo1.maven.org/maven2
+- https://rubygems.org/api/v1
+source:
+- https://api.nuget.org/v3
+- https://crates.io/api/v1
+- https://proxy.golang.org
+- https://pypi.org/pypi
+- https://registry.npmjs.org
+- https://repo1.maven.org/maven2
+- https://rubygems.org/api/v1
