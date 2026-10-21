@@ -143,6 +143,23 @@ edges:
     detected: '2026-10-20'
   detected_by: sweep-ide-extension-marketplaces.py
   first_seen: '2026-10-20'
+- partner_name: Terraform (terraform-registry)
+  partner: terraform
+  partner_match: mirror
+  mirror_match: register
+  type: marketplace
+  relationship: platform-app
+  direction: third-party
+  channel: partner-built
+  marketplace: terraform-registry
+  evidence: https://registry.terraform.io/providers/dedalus-labs/dedalus
+  mirror_of: terraform/integrations/terraform-integration-edges.yml
+  apps:
+  - dedalus-labs/dedalus
+  listing_count: 1
+  detected: '2026-10-21'
+  detected_by: mirror-platform-listings.py
+  category: infrastructure-as-code provider registry listing
 generated: '2026-10-13'
 method: searched
 checked:
@@ -155,6 +172,7 @@ checked:
 - https://rubygems.org/api/v1
 - https://pypi.org/org/{org}/
 - https://pypi.org/pypi/{package}/json
+- terraform/integrations/terraform-integration-edges.yml
 source:
 - https://registry.npmjs.org
 - https://pypi.org/pypi
