@@ -213,6 +213,8 @@ apis:
   - type: OpenAPI
     url: openapi/dedaluslabs-chat-completions-api-openapi.yml
 common:
+- type: PostmanWorkspace
+  url: https://www.postman.com/kinlaneapi/dedalus-labs/overview
 - type: Plans
   url: plans/dedaluslabs-plans-pricing.yml
 - type: CapabilityMap
