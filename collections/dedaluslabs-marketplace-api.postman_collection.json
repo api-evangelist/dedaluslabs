@@ -1,540 +1,612 @@
 {
+  "info": {
+    "_postman_id": "3c2472c7-89ca-4c99-a5a7-51c01789ec57",
+    "name": "Dedalus Marketplace API",
+    "description": "MCP gateway for AI agents. Mix-and-match any model with any tool from our marketplace.\n\n## Authentication\nUse Bearer token or X-API-Key header authentication:\n```\nAuthorization: Bearer your-api-key-here\n```\n```\nx-api-key: your-api-key-here\n```\n\n## Available Endpoints\n- **GET /v1/models**: list available models\n- **POST /v1/chat/completions**: Chat completions with MCP tools\n- **GET /health**: Service health check",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-10-21T21:05:31.000Z",
+    "updatedAt": "2026-10-21T21:05:31.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-3c2472c7-89ca-4c99-a5a7-51c01789ec57"
+  },
   "item": [
     {
-      "id": "d1a3cf22-528e-4d8b-8689-517334b9702a",
-      "name": "Marketplace",
-      "description": {
-        "content": "",
-        "type": "text/plain"
-      },
+      "name": "marketplace",
       "item": [
         {
-          "id": "2fa789db-9893-4b24-bc6e-71c696ebbde6",
-          "name": "Start Onboarding",
-          "request": {
-            "name": "Start Onboarding",
-            "description": {
-              "content": "Create Stripe Express account and return onboarding link.\n\nArgs:\n    body: Contains return and refresh URLs.\n    request: FastAPI request for auth extraction.\n\nReturns:\n    OnboardResponse with onboarding URL or error.",
-              "type": "text/plain"
-            },
-            "url": {
-              "path": [
-                "marketplace",
-                "connect",
-                "onboard"
-              ],
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "query": [],
-              "variable": []
-            },
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              },
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "method": "POST",
-            "auth": null,
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"return_url\": \"<string>\",\n  \"refresh_url\": \"<string>\",\n  \"email\": \"<string>\",\n  \"country\": \"<string>\"\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            }
-          },
-          "response": [
+          "name": "connect",
+          "item": [
             {
-              "id": "98637fb2-e96d-40b2-9e4a-25bb8ecfc14f",
-              "name": "Successful Response",
-              "originalRequest": {
-                "url": {
-                  "path": [
-                    "marketplace",
-                    "connect",
-                    "onboard"
-                  ],
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "query": [],
-                  "variable": []
-                },
-                "header": [
-                  {
-                    "key": "Accept",
-                    "value": "application/json"
-                  }
-                ],
-                "method": "POST",
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\n  \"return_url\": \"<string>\",\n  \"refresh_url\": \"<string>\",\n  \"email\": \"<string>\",\n  \"country\": \"<string>\"\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
+              "name": "onboard",
+              "item": [
+                {
+                  "name": "Start Onboarding",
+                  "id": "4ebdf411-cb29-45e4-aa00-4dfa2e4b5ba3",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"return_url\": \"<string>\",\n  \"refresh_url\": \"<string>\",\n  \"email\": \"<string>\",\n  \"country\": \"<string>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/marketplace/connect/onboard",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "marketplace",
+                        "connect",
+                        "onboard"
+                      ]
+                    },
+                    "description": "Create Stripe Express account and return onboarding link.\n\nArgs:\nbody: Contains return and refresh URLs.\nrequest: FastAPI request for auth extraction.\n\nReturns:\nOnboardResponse with onboarding URL or error."
+                  },
+                  "response": [
+                    {
+                      "id": "dad8881b-b5d6-4b5c-9835-f7883d80d9c2",
+                      "name": "Successful Response",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"return_url\": \"<string>\",\n  \"refresh_url\": \"<string>\",\n  \"email\": \"<string>\",\n  \"country\": \"<string>\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/marketplace/connect/onboard",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "marketplace",
+                            "connect",
+                            "onboard"
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"success\": \"<boolean>\",\n  \"onboarding_url\": \"<string>\",\n  \"stripe_connect_account_id\": \"<string>\",\n  \"error\": \"<string>\"\n}",
+                      "createdAt": "2026-10-21T21:05:31.000Z",
+                      "updatedAt": "2026-10-21T21:05:31.000Z",
+                      "uid": "35240-dad8881b-b5d6-4b5c-9835-f7883d80d9c2"
+                    },
+                    {
+                      "id": "43cc17ed-b742-4851-b415-f85976b935f4",
+                      "name": "Validation Error",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"return_url\": \"<string>\",\n  \"refresh_url\": \"<string>\",\n  \"email\": \"<string>\",\n  \"country\": \"<string>\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/marketplace/connect/onboard",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "marketplace",
+                            "connect",
+                            "onboard"
+                          ]
+                        }
+                      },
+                      "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+                      "code": 422,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"msg\": \"<string>\",\n      \"type\": \"<string>\",\n      \"input\": {\n        \"title\": \"Input\"\n      },\n      \"ctx\": {}\n    },\n    {\n      \"loc\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"msg\": \"<string>\",\n      \"type\": \"<string>\",\n      \"input\": {\n        \"title\": \"Input\"\n      },\n      \"ctx\": {}\n    }\n  ]\n}",
+                      "createdAt": "2026-10-21T21:05:31.000Z",
+                      "updatedAt": "2026-10-21T21:05:31.000Z",
+                      "uid": "35240-43cc17ed-b742-4851-b415-f85976b935f4"
                     }
-                  }
-                }
-              },
-              "status": "OK",
-              "code": 200,
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "application/json"
+                  ],
+                  "createdAt": "2026-10-21T21:05:31.000Z",
+                  "updatedAt": "2026-10-21T21:05:31.000Z",
+                  "uid": "35240-4ebdf411-cb29-45e4-aa00-4dfa2e4b5ba3"
                 }
               ],
-              "body": "{\n  \"success\": false,\n  \"onboarding_url\": \"string\",\n  \"stripe_connect_account_id\": \"string\",\n  \"error\": \"string\"\n}",
-              "cookie": [],
-              "_postman_previewlanguage": "json"
+              "id": "f080698e-1290-4543-91fa-bd8d1b12f668",
+              "createdAt": "2026-10-21T21:05:31.000Z",
+              "updatedAt": "2026-10-21T21:05:31.000Z",
+              "uid": "35240-f080698e-1290-4543-91fa-bd8d1b12f668"
             },
             {
-              "id": "58f51c79-dd62-445a-a5af-fd77103af745",
-              "name": "Validation Error",
-              "originalRequest": {
-                "url": {
-                  "path": [
-                    "marketplace",
-                    "connect",
-                    "onboard"
-                  ],
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "query": [],
-                  "variable": []
-                },
-                "header": [
-                  {
-                    "key": "Accept",
-                    "value": "application/json"
-                  }
-                ],
-                "method": "POST",
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\n  \"return_url\": \"<string>\",\n  \"refresh_url\": \"<string>\",\n  \"email\": \"<string>\",\n  \"country\": \"<string>\"\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
+              "name": "status",
+              "item": [
+                {
+                  "name": "Get Status",
+                  "id": "c6203b35-b1c4-463b-b7db-e0d7fd8dae56",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/marketplace/connect/status",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "marketplace",
+                        "connect",
+                        "status"
+                      ]
+                    },
+                    "description": "Return Stripe Connect onboarding status.\n\nArgs:\nrequest: FastAPI request. Pass ?sync=true for fresh Stripe data.\n\nReturns:\nConnectStatusResponse with onboarding status."
+                  },
+                  "response": [
+                    {
+                      "id": "37c6151d-2f66-42a8-9e28-28390cc35acd",
+                      "name": "Successful Response",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/marketplace/connect/status",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "marketplace",
+                            "connect",
+                            "status"
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"stripe_connect_account_id\": \"<string>\",\n  \"details_submitted\": \"<boolean>\",\n  \"transfer_enabled\": \"<boolean>\",\n  \"payouts_enabled\": \"<boolean>\",\n  \"is_onboarded\": \"<boolean>\",\n  \"last_payout_failure\": {\n    \"stripe_payout_id\": \"<string>\",\n    \"failure_code\": \"<string>\",\n    \"failure_message\": \"<string>\",\n    \"amount_cents\": \"<integer>\",\n    \"currency\": \"<string>\",\n    \"occurred_at\": \"<string>\"\n  },\n  \"requirements_currently_due\": 0,\n  \"requirements_pending_verification\": 0\n}",
+                      "createdAt": "2026-10-21T21:05:31.000Z",
+                      "updatedAt": "2026-10-21T21:05:31.000Z",
+                      "uid": "35240-37c6151d-2f66-42a8-9e28-28390cc35acd"
                     }
-                  }
-                }
-              },
-              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
-              "code": 422,
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "application/json"
+                  ],
+                  "createdAt": "2026-10-21T21:05:31.000Z",
+                  "updatedAt": "2026-10-21T21:05:31.000Z",
+                  "uid": "35240-c6203b35-b1c4-463b-b7db-e0d7fd8dae56"
                 }
               ],
-              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    }\n  ]\n}",
-              "cookie": [],
-              "_postman_previewlanguage": "json"
+              "id": "f8a5259b-e3a1-4969-981e-ad342f1b3c3c",
+              "createdAt": "2026-10-21T21:05:31.000Z",
+              "updatedAt": "2026-10-21T21:05:31.000Z",
+              "uid": "35240-f8a5259b-e3a1-4969-981e-ad342f1b3c3c"
+            },
+            {
+              "name": "dashboard",
+              "item": [
+                {
+                  "name": "Get Dashboard",
+                  "id": "662b78dc-6a6f-4ffb-aefd-0324a9c4e218",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/marketplace/connect/dashboard",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "marketplace",
+                        "connect",
+                        "dashboard"
+                      ]
+                    },
+                    "description": "Get Stripe Express dashboard login link.\n\nArgs:\nrequest: FastAPI request for auth extraction.\n\nReturns:\nDashboardResponse with dashboard URL or error."
+                  },
+                  "response": [
+                    {
+                      "id": "56b4dcbd-c8f4-4c99-a7d4-b546845bc435",
+                      "name": "Successful Response",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/marketplace/connect/dashboard",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "marketplace",
+                            "connect",
+                            "dashboard"
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"success\": \"<boolean>\",\n  \"dashboard_url\": \"<string>\",\n  \"error\": \"<string>\"\n}",
+                      "createdAt": "2026-10-21T21:05:31.000Z",
+                      "updatedAt": "2026-10-21T21:05:31.000Z",
+                      "uid": "35240-56b4dcbd-c8f4-4c99-a7d4-b546845bc435"
+                    }
+                  ],
+                  "createdAt": "2026-10-21T21:05:31.000Z",
+                  "updatedAt": "2026-10-21T21:05:31.000Z",
+                  "uid": "35240-662b78dc-6a6f-4ffb-aefd-0324a9c4e218"
+                }
+              ],
+              "id": "2f325881-1696-4709-93c0-5d40e9dac95e",
+              "createdAt": "2026-10-21T21:05:31.000Z",
+              "updatedAt": "2026-10-21T21:05:31.000Z",
+              "uid": "35240-2f325881-1696-4709-93c0-5d40e9dac95e"
             }
           ],
-          "event": [],
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          }
+          "id": "4e7bdf7b-fa03-4370-8e2c-f3577d6f41df",
+          "createdAt": "2026-10-21T21:05:31.000Z",
+          "updatedAt": "2026-10-21T21:05:31.000Z",
+          "uid": "35240-4e7bdf7b-fa03-4370-8e2c-f3577d6f41df"
         },
         {
-          "id": "4e2a1e53-0444-4ddf-9d60-36889148e78f",
-          "name": "Get Status",
-          "request": {
-            "name": "Get Status",
-            "description": {
-              "content": "Return Stripe Connect onboarding status.\n\nArgs:\n    request: FastAPI request. Pass ?sync=true for fresh Stripe data.\n\nReturns:\n    ConnectStatusResponse with onboarding status.",
-              "type": "text/plain"
-            },
-            "url": {
-              "path": [
-                "marketplace",
-                "connect",
-                "status"
-              ],
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "query": [],
-              "variable": []
-            },
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "method": "GET",
-            "auth": null
-          },
-          "response": [
+          "name": "payouts",
+          "item": [
             {
-              "id": "f853d334-de07-435f-b6e9-49edd0922dff",
-              "name": "Successful Response",
-              "originalRequest": {
-                "url": {
-                  "path": [
-                    "marketplace",
-                    "connect",
-                    "status"
+              "name": "balance",
+              "item": [
+                {
+                  "name": "Get Payout Balance",
+                  "id": "c4ec1cf0-4381-4a27-b260-6f11a7ce00a7",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/marketplace/payouts/balance",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "marketplace",
+                        "payouts",
+                        "balance"
+                      ]
+                    },
+                    "description": "Get seller's current balance and payout eligibility.\n\nReturns balance info and whether the seller can request a payout.\nActive, unexpired Pro sellers have no minimum; everyone else needs $20."
+                  },
+                  "response": [
+                    {
+                      "id": "6dcacddd-36ee-4a10-bd41-7b1535ac67ee",
+                      "name": "Successful Response",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/marketplace/payouts/balance",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "marketplace",
+                            "payouts",
+                            "balance"
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"total_earning_milli_cents\": \"<integer>\",\n  \"redeemable_milli_cents\": \"<integer>\",\n  \"redeemable_cents\": \"<integer>\",\n  \"total_withdrawn_milli_cents\": \"<integer>\",\n  \"in_flight_milli_cents\": \"<integer>\",\n  \"is_onboarded\": \"<boolean>\",\n  \"min_threshold_milli_cents\": \"<integer>\",\n  \"can_request_payout\": \"<boolean>\"\n}",
+                      "createdAt": "2026-10-21T21:05:31.000Z",
+                      "updatedAt": "2026-10-21T21:05:31.000Z",
+                      "uid": "35240-6dcacddd-36ee-4a10-bd41-7b1535ac67ee"
+                    }
                   ],
-                  "host": [
-                    "{{baseUrl}}"
+                  "createdAt": "2026-10-21T21:05:31.000Z",
+                  "updatedAt": "2026-10-21T21:05:31.000Z",
+                  "uid": "35240-c4ec1cf0-4381-4a27-b260-6f11a7ce00a7"
+                }
+              ],
+              "id": "1e51d81f-8691-40e6-a739-e2aa715c0218",
+              "createdAt": "2026-10-21T21:05:31.000Z",
+              "updatedAt": "2026-10-21T21:05:31.000Z",
+              "uid": "35240-1e51d81f-8691-40e6-a739-e2aa715c0218"
+            },
+            {
+              "name": "request",
+              "item": [
+                {
+                  "name": "Request Payout",
+                  "id": "2c83a492-ac3f-435b-984d-91283db3e5f5",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/marketplace/payouts/request",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "marketplace",
+                        "payouts",
+                        "request"
+                      ]
+                    },
+                    "description": "Request an on-demand payout of matured earnings.\n\nAll sellers can request payouts subject to tier-based thresholds:\n- Active, unexpired Pro sellers: No minimum.\n- Everyone else: Minimum $20 required.\n\nThe payout is executed immediately via Stripe Transfer."
+                  },
+                  "response": [
+                    {
+                      "id": "2518f5b7-e766-4300-9163-bdba709df657",
+                      "name": "Successful Response",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/marketplace/payouts/request",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "marketplace",
+                            "payouts",
+                            "request"
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"success\": \"<boolean>\",\n  \"payout_id\": \"<string>\",\n  \"amount_milli_cents\": 0,\n  \"amount_cents\": 0,\n  \"error\": \"<string>\"\n}",
+                      "createdAt": "2026-10-21T21:05:31.000Z",
+                      "updatedAt": "2026-10-21T21:05:31.000Z",
+                      "uid": "35240-2518f5b7-e766-4300-9163-bdba709df657"
+                    }
                   ],
-                  "query": [],
-                  "variable": []
-                },
-                "header": [
-                  {
-                    "key": "Accept",
-                    "value": "application/json"
-                  }
-                ],
+                  "createdAt": "2026-10-21T21:05:31.000Z",
+                  "updatedAt": "2026-10-21T21:05:31.000Z",
+                  "uid": "35240-2c83a492-ac3f-435b-984d-91283db3e5f5"
+                }
+              ],
+              "id": "0d0d58b9-7e94-4fe4-aea0-bd72a0c8b561",
+              "createdAt": "2026-10-21T21:05:31.000Z",
+              "updatedAt": "2026-10-21T21:05:31.000Z",
+              "uid": "35240-0d0d58b9-7e94-4fe4-aea0-bd72a0c8b561"
+            }
+          ],
+          "id": "77090f6f-7421-4fbc-9226-5973d3c52071",
+          "createdAt": "2026-10-21T21:05:31.000Z",
+          "updatedAt": "2026-10-21T21:05:31.000Z",
+          "uid": "35240-77090f6f-7421-4fbc-9226-5973d3c52071"
+        },
+        {
+          "name": "stripe-balance",
+          "item": [
+            {
+              "name": "Get Stripe Balance",
+              "id": "0e32e4c3-debf-44f3-b419-a525ad14df0e",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
                 "method": "GET",
-                "body": {}
-              },
-              "status": "OK",
-              "code": 200,
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "application/json"
-                }
-              ],
-              "body": "{\n  \"stripe_connect_account_id\": \"string\",\n  \"details_submitted\": false,\n  \"transfer_enabled\": false,\n  \"payouts_enabled\": false,\n  \"is_onboarded\": true,\n  \"last_payout_failure\": {\n    \"stripe_payout_id\": \"string\",\n    \"failure_code\": \"string\",\n    \"failure_message\": \"string\",\n    \"amount_cents\": 3877,\n    \"currency\": \"string\",\n    \"occurred_at\": \"string\"\n  },\n  \"requirements_currently_due\": 0,\n  \"requirements_pending_verification\": 0\n}",
-              "cookie": [],
-              "_postman_previewlanguage": "json"
-            }
-          ],
-          "event": [],
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          }
-        },
-        {
-          "id": "4d95d91f-cd5c-40ce-bd02-5d0fdd3dc1e5",
-          "name": "Get Dashboard",
-          "request": {
-            "name": "Get Dashboard",
-            "description": {
-              "content": "Get Stripe Express dashboard login link.\n\nArgs:\n    request: FastAPI request for auth extraction.\n\nReturns:\n    DashboardResponse with dashboard URL or error.",
-              "type": "text/plain"
-            },
-            "url": {
-              "path": [
-                "marketplace",
-                "connect",
-                "dashboard"
-              ],
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "query": [],
-              "variable": []
-            },
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "method": "POST",
-            "auth": null
-          },
-          "response": [
-            {
-              "id": "3d5ec1ce-79dd-4246-b804-038f336396a2",
-              "name": "Successful Response",
-              "originalRequest": {
-                "url": {
-                  "path": [
-                    "marketplace",
-                    "connect",
-                    "dashboard"
-                  ],
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "query": [],
-                  "variable": []
-                },
                 "header": [
                   {
                     "key": "Accept",
                     "value": "application/json"
                   }
                 ],
-                "method": "POST",
-                "body": {}
-              },
-              "status": "OK",
-              "code": 200,
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "application/json"
-                }
-              ],
-              "body": "{\n  \"success\": false,\n  \"dashboard_url\": \"string\",\n  \"error\": \"string\"\n}",
-              "cookie": [],
-              "_postman_previewlanguage": "json"
-            }
-          ],
-          "event": [],
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          }
-        },
-        {
-          "id": "80f865ad-5ff6-4d9a-8555-1ceb860ac91c",
-          "name": "Get Payout Balance",
-          "request": {
-            "name": "Get Payout Balance",
-            "description": {
-              "content": "Get seller's current balance and payout eligibility.\n\nReturns balance info and whether the seller can request a payout.\nActive, unexpired Pro sellers have no minimum; everyone else needs $20.",
-              "type": "text/plain"
-            },
-            "url": {
-              "path": [
-                "marketplace",
-                "payouts",
-                "balance"
-              ],
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "query": [],
-              "variable": []
-            },
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "method": "GET",
-            "auth": null
-          },
-          "response": [
-            {
-              "id": "a5902a81-b195-4365-81f8-f6ee729d8d4d",
-              "name": "Successful Response",
-              "originalRequest": {
                 "url": {
-                  "path": [
-                    "marketplace",
-                    "payouts",
-                    "balance"
-                  ],
+                  "raw": "{{baseUrl}}/marketplace/stripe-balance",
                   "host": [
                     "{{baseUrl}}"
                   ],
-                  "query": [],
-                  "variable": []
-                },
-                "header": [
-                  {
-                    "key": "Accept",
-                    "value": "application/json"
-                  }
-                ],
-                "method": "GET",
-                "body": {}
-              },
-              "status": "OK",
-              "code": 200,
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "application/json"
-                }
-              ],
-              "body": "{\n  \"total_earning_milli_cents\": 4466,\n  \"redeemable_milli_cents\": 6256,\n  \"redeemable_cents\": 3024,\n  \"total_withdrawn_milli_cents\": 9841,\n  \"in_flight_milli_cents\": 4212,\n  \"is_onboarded\": false,\n  \"min_threshold_milli_cents\": 8380,\n  \"can_request_payout\": false\n}",
-              "cookie": [],
-              "_postman_previewlanguage": "json"
-            }
-          ],
-          "event": [],
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          }
-        },
-        {
-          "id": "95354e12-8bc8-44a0-9740-894ede131c20",
-          "name": "Request Payout",
-          "request": {
-            "name": "Request Payout",
-            "description": {
-              "content": "Request an on-demand payout of matured earnings.\n\nAll sellers can request payouts subject to tier-based thresholds:\n- Active, unexpired Pro sellers: No minimum.\n- Everyone else: Minimum $20 required.\n\nThe payout is executed immediately via Stripe Transfer.",
-              "type": "text/plain"
-            },
-            "url": {
-              "path": [
-                "marketplace",
-                "payouts",
-                "request"
-              ],
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "query": [],
-              "variable": []
-            },
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "method": "POST",
-            "auth": null
-          },
-          "response": [
-            {
-              "id": "5675292f-9d35-44ae-b415-379d5ddfe503",
-              "name": "Successful Response",
-              "originalRequest": {
-                "url": {
-                  "path": [
-                    "marketplace",
-                    "payouts",
-                    "request"
-                  ],
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "query": [],
-                  "variable": []
-                },
-                "header": [
-                  {
-                    "key": "Accept",
-                    "value": "application/json"
-                  }
-                ],
-                "method": "POST",
-                "body": {}
-              },
-              "status": "OK",
-              "code": 200,
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "application/json"
-                }
-              ],
-              "body": "{\n  \"success\": false,\n  \"payout_id\": \"string\",\n  \"amount_milli_cents\": 0,\n  \"amount_cents\": 0,\n  \"error\": \"string\"\n}",
-              "cookie": [],
-              "_postman_previewlanguage": "json"
-            }
-          ],
-          "event": [],
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          }
-        },
-        {
-          "id": "5f35a3d1-c594-4592-b7c2-3272bf5bdb59",
-          "name": "Get Stripe Balance",
-          "request": {
-            "name": "Get Stripe Balance",
-            "description": {
-              "content": "Get the actual balance from Stripe for the connected account.\n\nThis fetches the real-time balance from Stripe, useful for comparing\nwith the app's internal ledger or for debugging.",
-              "type": "text/plain"
-            },
-            "url": {
-              "path": [
-                "marketplace",
-                "stripe-balance"
-              ],
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "query": [],
-              "variable": []
-            },
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "method": "GET",
-            "auth": null
-          },
-          "response": [
-            {
-              "id": "42df4c97-d628-4f24-b734-e6e20ce3167a",
-              "name": "Successful Response",
-              "originalRequest": {
-                "url": {
                   "path": [
                     "marketplace",
                     "stripe-balance"
-                  ],
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "query": [],
-                  "variable": []
+                  ]
                 },
-                "header": [
-                  {
-                    "key": "Accept",
-                    "value": "application/json"
-                  }
-                ],
-                "method": "GET",
-                "body": {}
+                "description": "Get the actual balance from Stripe for the connected account.\n\nThis fetches the real-time balance from Stripe, useful for comparing\nwith the app's internal ledger or for debugging."
               },
-              "status": "OK",
-              "code": 200,
-              "header": [
+              "response": [
                 {
-                  "key": "Content-Type",
-                  "value": "application/json"
+                  "id": "e43ec3c1-84da-4042-b8da-1fffb45b45a4",
+                  "name": "Successful Response",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/marketplace/stripe-balance",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "marketplace",
+                        "stripe-balance"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"available_cents\": \"<integer>\",\n  \"pending_cents\": \"<integer>\",\n  \"stripe_connect_account_id\": \"<string>\"\n}",
+                  "createdAt": "2026-10-21T21:05:31.000Z",
+                  "updatedAt": "2026-10-21T21:05:31.000Z",
+                  "uid": "35240-e43ec3c1-84da-4042-b8da-1fffb45b45a4"
                 }
               ],
-              "body": "{\n  \"available_cents\": 4191,\n  \"pending_cents\": 5848,\n  \"stripe_connect_account_id\": \"string\"\n}",
-              "cookie": [],
-              "_postman_previewlanguage": "json"
+              "createdAt": "2026-10-21T21:05:31.000Z",
+              "updatedAt": "2026-10-21T21:05:31.000Z",
+              "uid": "35240-0e32e4c3-debf-44f3-b419-a525ad14df0e"
             }
           ],
-          "event": [],
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          }
+          "id": "46b131c5-b310-4f75-8103-3045c0a03b63",
+          "createdAt": "2026-10-21T21:05:31.000Z",
+          "updatedAt": "2026-10-21T21:05:31.000Z",
+          "uid": "35240-46b131c5-b310-4f75-8103-3045c0a03b63"
         }
       ],
-      "event": []
+      "id": "bb6695a9-12d0-4dc2-b74c-0edf269a1b75",
+      "createdAt": "2026-10-21T21:05:31.000Z",
+      "updatedAt": "2026-10-21T21:05:31.000Z",
+      "uid": "35240-bb6695a9-12d0-4dc2-b74c-0edf269a1b75"
     }
   ],
-  "event": [],
   "variable": [
     {
-      "type": "string",
-      "value": "https://api.dedaluslabs.ai",
-      "key": "baseUrl"
+      "key": "baseUrl",
+      "value": "https://api.dedaluslabs.ai"
     }
-  ],
-  "info": {
-    "_postman_id": "163073c3-bb44-4bdb-952a-872c0d6adbca",
-    "name": "Dedalus Audio Marketplace API",
-    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-    "description": {
-      "content": "MCP gateway for AI agents. Mix-and-match any model with any tool from our marketplace.\n\n## Authentication\nUse Bearer token or X-API-Key header authentication:\n```\nAuthorization: Bearer your-api-key-here\n```\n```\nx-api-key: your-api-key-here\n```\n\n## Available Endpoints\n- **GET /v1/models**: list available models\n- **POST /v1/chat/completions**: Chat completions with MCP tools\n- **GET /health**: Service health check",
-      "type": "text/plain"
-    }
-  }
+  ]
 }

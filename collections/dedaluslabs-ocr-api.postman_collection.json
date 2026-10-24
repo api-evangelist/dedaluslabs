@@ -1,193 +1,208 @@
 {
+  "info": {
+    "_postman_id": "628c08fe-db36-404e-9265-078994e10333",
+    "name": "Dedalus OCR API",
+    "description": "MCP gateway for AI agents. Mix-and-match any model with any tool from our marketplace.\n\n## Authentication\nUse Bearer token or X-API-Key header authentication:\n```\nAuthorization: Bearer your-api-key-here\n```\n```\nx-api-key: your-api-key-here\n```\n\n## Available Endpoints\n- **GET /v1/models**: list available models\n- **POST /v1/chat/completions**: Chat completions with MCP tools\n- **GET /health**: Service health check",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-10-21T21:06:17.000Z",
+    "updatedAt": "2026-10-21T21:06:17.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-628c08fe-db36-404e-9265-078994e10333"
+  },
   "item": [
     {
-      "id": "61cb1553-c5a0-483d-8543-7b382b3bf72b",
-      "name": "OCR",
-      "description": {
-        "content": "",
-        "type": "text/plain"
-      },
+      "name": "v1",
       "item": [
         {
-          "id": "1e4a33b5-03ad-4287-a281-adb7594520cf",
-          "name": "Process Ocr",
-          "request": {
-            "name": "Process Ocr",
-            "description": {
-              "content": "Process a document through Mistral OCR.\n\nExtracts text from PDFs and images, returning markdown-formatted content.",
-              "type": "text/plain"
-            },
-            "url": {
-              "path": [
-                "v1",
-                "ocr"
-              ],
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "query": [],
-              "variable": []
-            },
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              },
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "method": "POST",
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{bearerToken}}"
-                }
-              ]
-            },
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"document\": {\n    \"document_url\": \"<string>\",\n    \"type\": \"document_url\"\n  },\n  \"model\": \"mistral-ocr-latest\"\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            }
-          },
-          "response": [
+          "name": "ocr",
+          "item": [
             {
-              "id": "8b6dfcd4-59a5-4e2b-930b-f5d839f44ee1",
-              "name": "Successful Response",
-              "originalRequest": {
-                "url": {
-                  "path": [
-                    "v1",
-                    "ocr"
-                  ],
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "query": [],
-                  "variable": []
+              "name": "Process Ocr",
+              "id": "f45fe477-5bc6-4c8e-9638-bebbcaea0e26",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{bearerToken}}",
+                      "type": "string"
+                    }
+                  ]
                 },
+                "method": "POST",
                 "header": [
                   {
-                    "description": {
-                      "content": "Added as a part of security scheme: bearer",
-                      "type": "text/plain"
-                    },
-                    "key": "Authorization",
-                    "value": "Bearer <token>"
+                    "key": "Content-Type",
+                    "value": "application/json"
                   },
                   {
                     "key": "Accept",
                     "value": "application/json"
                   }
                 ],
-                "method": "POST",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"document\": {\n    \"document_url\": \"string\",\n    \"type\": \"document_url\"\n  },\n  \"model\": \"mistral-ocr-latest\"\n}",
+                  "raw": "{\n  \"document\": {\n    \"document_url\": \"<string>\",\n    \"type\": \"document_url\"\n  },\n  \"model\": \"mistral-ocr-latest\"\n}",
                   "options": {
                     "raw": {
+                      "headerFamily": "json",
                       "language": "json"
                     }
                   }
-                }
-              },
-              "status": "OK",
-              "code": 200,
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "application/json"
-                }
-              ],
-              "body": "{\n  \"pages\": [\n    {\n      \"index\": 7300,\n      \"markdown\": \"string\"\n    },\n    {\n      \"index\": 2587,\n      \"markdown\": \"string\"\n    }\n  ],\n  \"model\": \"string\",\n  \"usage\": {\n    \"key_0\": 6273.372666727749\n  }\n}",
-              "cookie": [],
-              "_postman_previewlanguage": "json"
-            },
-            {
-              "id": "832c5f1f-3941-4880-9719-9e1aff5dc32c",
-              "name": "Validation Error",
-              "originalRequest": {
+                },
                 "url": {
-                  "path": [
-                    "v1",
-                    "ocr"
-                  ],
+                  "raw": "{{baseUrl}}/v1/ocr",
                   "host": [
                     "{{baseUrl}}"
                   ],
-                  "query": [],
-                  "variable": []
+                  "path": [
+                    "v1",
+                    "ocr"
+                  ]
                 },
-                "header": [
-                  {
-                    "description": {
-                      "content": "Added as a part of security scheme: bearer",
-                      "type": "text/plain"
-                    },
-                    "key": "Authorization",
-                    "value": "Bearer <token>"
-                  },
-                  {
-                    "key": "Accept",
-                    "value": "application/json"
-                  }
-                ],
-                "method": "POST",
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\n  \"document\": {\n    \"document_url\": \"string\",\n    \"type\": \"document_url\"\n  },\n  \"model\": \"mistral-ocr-latest\"\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                }
+                "description": "Process a document through Mistral OCR.\n\nExtracts text from PDFs and images, returning markdown-formatted content."
               },
-              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
-              "code": 422,
-              "header": [
+              "response": [
                 {
-                  "key": "Content-Type",
-                  "value": "application/json"
+                  "id": "3764b4c8-7deb-461e-9ddc-2506ee66881b",
+                  "name": "Successful Response",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"document\": {\n    \"document_url\": \"<string>\",\n    \"type\": \"document_url\"\n  },\n  \"model\": \"mistral-ocr-latest\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/ocr",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "ocr"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"pages\": [\n    {\n      \"index\": \"<integer>\",\n      \"markdown\": \"<string>\"\n    },\n    {\n      \"index\": \"<integer>\",\n      \"markdown\": \"<string>\"\n    }\n  ],\n  \"model\": \"<string>\",\n  \"usage\": {\n    \"cillum_3e\": false,\n    \"Ut_1\": -80797073,\n    \"commodo_4d5\": -12527208.837263793,\n    \"dolore893\": -46218388\n  }\n}",
+                  "createdAt": "2026-10-21T21:06:17.000Z",
+                  "updatedAt": "2026-10-21T21:06:17.000Z",
+                  "uid": "35240-3764b4c8-7deb-461e-9ddc-2506ee66881b"
+                },
+                {
+                  "id": "6792499b-514a-403a-94fa-cb8c253f96cc",
+                  "name": "Validation Error",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"document\": {\n    \"document_url\": \"<string>\",\n    \"type\": \"document_url\"\n  },\n  \"model\": \"mistral-ocr-latest\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/ocr",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "ocr"
+                      ]
+                    }
+                  },
+                  "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+                  "code": 422,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"msg\": \"<string>\",\n      \"type\": \"<string>\",\n      \"input\": {\n        \"title\": \"Input\"\n      },\n      \"ctx\": {}\n    },\n    {\n      \"loc\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"msg\": \"<string>\",\n      \"type\": \"<string>\",\n      \"input\": {\n        \"title\": \"Input\"\n      },\n      \"ctx\": {}\n    }\n  ]\n}",
+                  "createdAt": "2026-10-21T21:06:17.000Z",
+                  "updatedAt": "2026-10-21T21:06:17.000Z",
+                  "uid": "35240-6792499b-514a-403a-94fa-cb8c253f96cc"
                 }
               ],
-              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    }\n  ]\n}",
-              "cookie": [],
-              "_postman_previewlanguage": "json"
+              "createdAt": "2026-10-21T21:06:17.000Z",
+              "updatedAt": "2026-10-21T21:06:17.000Z",
+              "uid": "35240-f45fe477-5bc6-4c8e-9638-bebbcaea0e26"
             }
           ],
-          "event": [],
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          }
+          "id": "dd6cd6b0-37be-4cf8-b912-3a3b18d059e1",
+          "createdAt": "2026-10-21T21:06:17.000Z",
+          "updatedAt": "2026-10-21T21:06:17.000Z",
+          "uid": "35240-dd6cd6b0-37be-4cf8-b912-3a3b18d059e1"
         }
       ],
-      "event": []
+      "id": "45ced654-05dc-420e-9e29-dc2fb6715848",
+      "createdAt": "2026-10-21T21:06:17.000Z",
+      "updatedAt": "2026-10-21T21:06:17.000Z",
+      "uid": "35240-45ced654-05dc-420e-9e29-dc2fb6715848"
     }
   ],
-  "event": [],
   "variable": [
     {
-      "type": "string",
-      "value": "https://api.dedaluslabs.ai",
-      "key": "baseUrl"
+      "key": "baseUrl",
+      "value": "https://api.dedaluslabs.ai"
     }
-  ],
-  "info": {
-    "_postman_id": "f4bf9b9b-6f88-405c-9e40-90a8206fb9aa",
-    "name": "Dedalus Audio OCR API",
-    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-    "description": {
-      "content": "MCP gateway for AI agents. Mix-and-match any model with any tool from our marketplace.\n\n## Authentication\nUse Bearer token or X-API-Key header authentication:\n```\nAuthorization: Bearer your-api-key-here\n```\n```\nx-api-key: your-api-key-here\n```\n\n## Available Endpoints\n- **GET /v1/models**: list available models\n- **POST /v1/chat/completions**: Chat completions with MCP tools\n- **GET /health**: Service health check",
-      "type": "text/plain"
-    }
-  }
+  ]
 }

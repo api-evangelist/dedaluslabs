@@ -1,0 +1,208 @@
+{
+  "info": {
+    "_postman_id": "4b5d963e-3531-41a5-9bf5-588197af46bf",
+    "name": "Dedalus Responses API",
+    "description": "MCP gateway for AI agents. Mix-and-match any model with any tool from our marketplace.\n\n## Authentication\nUse Bearer token or X-API-Key header authentication:\n```\nAuthorization: Bearer your-api-key-here\n```\n```\nx-api-key: your-api-key-here\n```\n\n## Available Endpoints\n- **GET /v1/models**: list available models\n- **POST /v1/chat/completions**: Chat completions with MCP tools\n- **GET /health**: Service health check",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-10-21T21:06:24.000Z",
+    "updatedAt": "2026-10-21T21:06:25.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-4b5d963e-3531-41a5-9bf5-588197af46bf"
+  },
+  "item": [
+    {
+      "name": "v1",
+      "item": [
+        {
+          "name": "responses",
+          "item": [
+            {
+              "name": "Create Response",
+              "id": "5e2f9fe0-2a15-4dc2-b0d2-22a72f268f40",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{bearerToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"input\": \"<string>\",\n  \"model\": \"<string>\",\n  \"instructions\": \"<string>\",\n  \"text\": {\n    \"magna78\": \"<string>\",\n    \"ullamco_63\": \"<string>\"\n  },\n  \"temperature\": \"<number>\",\n  \"top_p\": \"<number>\",\n  \"max_output_tokens\": \"<integer>\",\n  \"presence_penalty\": \"<number>\",\n  \"frequency_penalty\": \"<number>\",\n  \"tools\": [\n    {\n      \"tempor_5\": \"<string>\",\n      \"Excepteura\": \"<string>\"\n    },\n    {\n      \"Duisb\": \"<string>\"\n    }\n  ],\n  \"tool_choice\": \"<string>\",\n  \"parallel_tool_calls\": \"<boolean>\",\n  \"max_tool_calls\": \"<integer>\",\n  \"stream\": false,\n  \"stream_options\": {\n    \"dolor__a\": \"<string>\",\n    \"dolor_716\": \"<string>\",\n    \"aliquipa65\": \"<string>\"\n  },\n  \"background\": \"<boolean>\",\n  \"include\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"truncation\": \"auto\",\n  \"conversation\": \"<string>\",\n  \"previous_response_id\": \"<string>\",\n  \"reasoning\": {\n    \"sint_a2\": \"<string>\",\n    \"qui_5fb\": \"<string>\",\n    \"ut4e\": \"<string>\"\n  },\n  \"top_logprobs\": \"<integer>\",\n  \"service_tier\": \"default\",\n  \"prompt_cache_key\": \"<string>\",\n  \"safety_identifier\": \"<string>\",\n  \"user\": \"<string>\",\n  \"metadata\": {\n    \"culpaa\": \"<string>\",\n    \"ea_95\": \"<string>\"\n  },\n  \"store\": \"<boolean>\",\n  \"prompt\": {\n    \"id\": \"<string>\",\n    \"version\": \"<string>\",\n    \"variables\": {\n      \"sunt1b8\": \"<string>\"\n    }\n  },\n  \"mcp_servers\": \"<string>\",\n  \"credentials\": {\n    \"connection_name\": \"<string>\",\n    \"values\": {\n      \"est30\": \"<string>\",\n      \"do_f56\": \"<string>\"\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/v1/responses",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "v1",
+                    "responses"
+                  ]
+                },
+                "description": "Create a response using the OpenAI Responses API.\n\nThis endpoint routes directly to OpenAI's Responses API.\nOnly OpenAI models are supported."
+              },
+              "response": [
+                {
+                  "id": "83168ae6-1ffa-425c-9e38-5bec975defbe",
+                  "name": "Successful Response",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"input\": \"<string>\",\n  \"model\": \"<string>\",\n  \"instructions\": \"<string>\",\n  \"text\": {\n    \"magna78\": \"<string>\",\n    \"ullamco_63\": \"<string>\"\n  },\n  \"temperature\": \"<number>\",\n  \"top_p\": \"<number>\",\n  \"max_output_tokens\": \"<integer>\",\n  \"presence_penalty\": \"<number>\",\n  \"frequency_penalty\": \"<number>\",\n  \"tools\": [\n    {\n      \"tempor_5\": \"<string>\",\n      \"Excepteura\": \"<string>\"\n    },\n    {\n      \"Duisb\": \"<string>\"\n    }\n  ],\n  \"tool_choice\": \"<string>\",\n  \"parallel_tool_calls\": \"<boolean>\",\n  \"max_tool_calls\": \"<integer>\",\n  \"stream\": false,\n  \"stream_options\": {\n    \"dolor__a\": \"<string>\",\n    \"dolor_716\": \"<string>\",\n    \"aliquipa65\": \"<string>\"\n  },\n  \"background\": \"<boolean>\",\n  \"include\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"truncation\": \"auto\",\n  \"conversation\": \"<string>\",\n  \"previous_response_id\": \"<string>\",\n  \"reasoning\": {\n    \"sint_a2\": \"<string>\",\n    \"qui_5fb\": \"<string>\",\n    \"ut4e\": \"<string>\"\n  },\n  \"top_logprobs\": \"<integer>\",\n  \"service_tier\": \"default\",\n  \"prompt_cache_key\": \"<string>\",\n  \"safety_identifier\": \"<string>\",\n  \"user\": \"<string>\",\n  \"metadata\": {\n    \"culpaa\": \"<string>\",\n    \"ea_95\": \"<string>\"\n  },\n  \"store\": \"<boolean>\",\n  \"prompt\": {\n    \"id\": \"<string>\",\n    \"version\": \"<string>\",\n    \"variables\": {\n      \"sunt1b8\": \"<string>\"\n    }\n  },\n  \"mcp_servers\": \"<string>\",\n  \"credentials\": {\n    \"connection_name\": \"<string>\",\n    \"values\": {\n      \"est30\": \"<string>\",\n      \"do_f56\": \"<string>\"\n    }\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/responses",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "responses"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"id\": \"<string>\",\n  \"created_at\": \"<number>\",\n  \"model\": \"<string>\",\n  \"status\": \"completed\",\n  \"output\": [\n    {\n      \"ut9\": \"<string>\",\n      \"est9\": \"<string>\"\n    },\n    {\n      \"in_1b7\": \"<string>\"\n    }\n  ],\n  \"object\": \"response\",\n  \"completed_at\": \"<number>\",\n  \"error\": {\n    \"cupidatat756\": \"<string>\"\n  },\n  \"incomplete_details\": {\n    \"anim93\": \"<string>\"\n  },\n  \"instructions\": \"<string>\",\n  \"previous_response_id\": \"<string>\",\n  \"tools\": [\n    {\n      \"minim8\": \"<string>\",\n      \"ad_84\": \"<string>\",\n      \"irure277\": \"<string>\"\n    },\n    {\n      \"elit_7e3\": \"<string>\",\n      \"dolor_d_\": \"<string>\"\n    }\n  ],\n  \"tool_choice\": \"<string>\",\n  \"truncation\": \"<string>\",\n  \"parallel_tool_calls\": \"<boolean>\",\n  \"text\": {\n    \"nostrud_56\": \"<string>\"\n  },\n  \"temperature\": \"<number>\",\n  \"top_p\": \"<number>\",\n  \"presence_penalty\": \"<number>\",\n  \"frequency_penalty\": \"<number>\",\n  \"top_logprobs\": \"<integer>\",\n  \"reasoning\": {\n    \"eac\": \"<string>\"\n  },\n  \"usage\": {\n    \"velit_32\": \"<string>\"\n  },\n  \"max_output_tokens\": \"<integer>\",\n  \"max_tool_calls\": \"<integer>\",\n  \"store\": \"<boolean>\",\n  \"background\": \"<boolean>\",\n  \"service_tier\": \"<string>\",\n  \"safety_identifier\": \"<string>\",\n  \"prompt_cache_key\": \"<string>\",\n  \"output_text\": \"<string>\",\n  \"metadata\": {\n    \"animd\": \"<string>\",\n    \"consectetur099\": \"<string>\",\n    \"eiusmod_0b9\": \"<string>\",\n    \"nulla659\": \"<string>\"\n  },\n  \"conversation\": {\n    \"dob4b\": \"<string>\",\n    \"in_9\": \"<string>\",\n    \"Ute3\": \"<string>\",\n    \"aliquad62\": \"<string>\",\n    \"dolor_4e\": \"<string>\"\n  },\n  \"tools_executed\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"mcp_server_errors\": {\n    \"sunt6\": {\n      \"message\": \"<string>\",\n      \"code\": \"<string>\",\n      \"recommendation\": \"<string>\"\n    },\n    \"mollit8\": {\n      \"message\": \"<string>\",\n      \"code\": \"<string>\",\n      \"recommendation\": \"<string>\"\n    }\n  },\n  \"mcp_tool_results\": [\n    {\n      \"tool_name\": \"<string>\",\n      \"server_name\": \"<string>\",\n      \"arguments\": {\n        \"et_cd\": \"<string>\"\n      },\n      \"is_error\": \"<boolean>\",\n      \"result\": \"<string>\",\n      \"duration_ms\": \"<integer>\"\n    },\n    {\n      \"tool_name\": \"<string>\",\n      \"server_name\": \"<string>\",\n      \"arguments\": {\n        \"dolor4\": \"<string>\"\n      },\n      \"is_error\": \"<boolean>\",\n      \"result\": \"<string>\",\n      \"duration_ms\": \"<integer>\"\n    }\n  ]\n}",
+                  "createdAt": "2026-10-21T21:06:25.000Z",
+                  "updatedAt": "2026-10-21T21:06:25.000Z",
+                  "uid": "35240-83168ae6-1ffa-425c-9e38-5bec975defbe"
+                },
+                {
+                  "id": "ee332ba0-a287-4a5e-beac-126368aab80b",
+                  "name": "Validation Error",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"input\": \"<string>\",\n  \"model\": \"<string>\",\n  \"instructions\": \"<string>\",\n  \"text\": {\n    \"magna78\": \"<string>\",\n    \"ullamco_63\": \"<string>\"\n  },\n  \"temperature\": \"<number>\",\n  \"top_p\": \"<number>\",\n  \"max_output_tokens\": \"<integer>\",\n  \"presence_penalty\": \"<number>\",\n  \"frequency_penalty\": \"<number>\",\n  \"tools\": [\n    {\n      \"tempor_5\": \"<string>\",\n      \"Excepteura\": \"<string>\"\n    },\n    {\n      \"Duisb\": \"<string>\"\n    }\n  ],\n  \"tool_choice\": \"<string>\",\n  \"parallel_tool_calls\": \"<boolean>\",\n  \"max_tool_calls\": \"<integer>\",\n  \"stream\": false,\n  \"stream_options\": {\n    \"dolor__a\": \"<string>\",\n    \"dolor_716\": \"<string>\",\n    \"aliquipa65\": \"<string>\"\n  },\n  \"background\": \"<boolean>\",\n  \"include\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"truncation\": \"auto\",\n  \"conversation\": \"<string>\",\n  \"previous_response_id\": \"<string>\",\n  \"reasoning\": {\n    \"sint_a2\": \"<string>\",\n    \"qui_5fb\": \"<string>\",\n    \"ut4e\": \"<string>\"\n  },\n  \"top_logprobs\": \"<integer>\",\n  \"service_tier\": \"default\",\n  \"prompt_cache_key\": \"<string>\",\n  \"safety_identifier\": \"<string>\",\n  \"user\": \"<string>\",\n  \"metadata\": {\n    \"culpaa\": \"<string>\",\n    \"ea_95\": \"<string>\"\n  },\n  \"store\": \"<boolean>\",\n  \"prompt\": {\n    \"id\": \"<string>\",\n    \"version\": \"<string>\",\n    \"variables\": {\n      \"sunt1b8\": \"<string>\"\n    }\n  },\n  \"mcp_servers\": \"<string>\",\n  \"credentials\": {\n    \"connection_name\": \"<string>\",\n    \"values\": {\n      \"est30\": \"<string>\",\n      \"do_f56\": \"<string>\"\n    }\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/responses",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "responses"
+                      ]
+                    }
+                  },
+                  "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+                  "code": 422,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"msg\": \"<string>\",\n      \"type\": \"<string>\",\n      \"input\": {\n        \"title\": \"Input\"\n      },\n      \"ctx\": {}\n    },\n    {\n      \"loc\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"msg\": \"<string>\",\n      \"type\": \"<string>\",\n      \"input\": {\n        \"title\": \"Input\"\n      },\n      \"ctx\": {}\n    }\n  ]\n}",
+                  "createdAt": "2026-10-21T21:06:25.000Z",
+                  "updatedAt": "2026-10-21T21:06:25.000Z",
+                  "uid": "35240-ee332ba0-a287-4a5e-beac-126368aab80b"
+                }
+              ],
+              "createdAt": "2026-10-21T21:06:25.000Z",
+              "updatedAt": "2026-10-21T21:06:25.000Z",
+              "uid": "35240-5e2f9fe0-2a15-4dc2-b0d2-22a72f268f40"
+            }
+          ],
+          "id": "1a87f8be-92e9-458d-bea4-2d7e389e89d9",
+          "createdAt": "2026-10-21T21:06:25.000Z",
+          "updatedAt": "2026-10-21T21:06:25.000Z",
+          "uid": "35240-1a87f8be-92e9-458d-bea4-2d7e389e89d9"
+        }
+      ],
+      "id": "08f54eed-b8bc-4455-bd07-c3263a827b74",
+      "createdAt": "2026-10-21T21:06:25.000Z",
+      "updatedAt": "2026-10-21T21:06:25.000Z",
+      "uid": "35240-08f54eed-b8bc-4455-bd07-c3263a827b74"
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://api.dedaluslabs.ai"
+    }
+  ]
+}

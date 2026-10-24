@@ -1,0 +1,220 @@
+{
+  "info": {
+    "_postman_id": "aa65a028-ff3d-4cad-99e6-a45ee4c2800f",
+    "name": "Dedalus Chat API",
+    "description": "MCP gateway for AI agents. Mix-and-match any model with any tool from our marketplace.\n\n## Authentication\nUse Bearer token or X-API-Key header authentication:\n```\nAuthorization: Bearer your-api-key-here\n```\n```\nx-api-key: your-api-key-here\n```\n\n## Available Endpoints\n- **GET /v1/models**: list available models\n- **POST /v1/chat/completions**: Chat completions with MCP tools\n- **GET /health**: Service health check",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-10-21T21:06:31.000Z",
+    "updatedAt": "2026-10-21T21:06:31.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-aa65a028-ff3d-4cad-99e6-a45ee4c2800f"
+  },
+  "item": [
+    {
+      "name": "v1",
+      "item": [
+        {
+          "name": "chat",
+          "item": [
+            {
+              "name": "completions",
+              "item": [
+                {
+                  "name": "Create Chat Completion",
+                  "id": "555b4ab1-918e-40ae-a4be-5a607209e165",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{bearerToken}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"model\": \"<string>\",\n  \"audio\": {\n    \"voice\": \"<string>\",\n    \"format\": \"opus\"\n  },\n  \"frequency_penalty\": \"<number>\",\n  \"function_call\": \"<string>\",\n  \"functions\": [\n    {\n      \"name\": \"<string>\",\n      \"description\": \"<string>\",\n      \"parameters\": {\n        \"adb\": -57652204,\n        \"labore__\": true,\n        \"do0\": 97105819\n      }\n    },\n    {\n      \"name\": \"<string>\",\n      \"description\": \"<string>\",\n      \"parameters\": {\n        \"eu_4c0\": -41194257.3545578,\n        \"laboris6a\": \"irure Excepteur\"\n      }\n    }\n  ],\n  \"logit_bias\": {\n    \"cupidatat2\": \"<integer>\"\n  },\n  \"logprobs\": \"<boolean>\",\n  \"max_completion_tokens\": \"<integer>\",\n  \"max_tokens\": \"<integer>\",\n  \"messages\": [\n    {\n      \"content\": \"<string>\",\n      \"role\": \"<string>\",\n      \"name\": \"<string>\"\n    },\n    {\n      \"content\": \"<string>\",\n      \"role\": \"<string>\",\n      \"name\": \"<string>\"\n    }\n  ],\n  \"metadata\": {\n    \"est_d49\": \"<string>\"\n  },\n  \"modalities\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"n\": \"<integer>\",\n  \"parallel_tool_calls\": \"<boolean>\",\n  \"prediction\": {\n    \"type\": \"<string>\",\n    \"content\": \"<string>\"\n  },\n  \"presence_penalty\": \"<number>\",\n  \"prompt_cache_key\": \"<string>\",\n  \"prompt_cache_retention\": \"<string>\",\n  \"reasoning_effort\": \"<string>\",\n  \"response_format\": {\n    \"type\": \"<string>\"\n  },\n  \"safety_identifier\": \"<string>\",\n  \"seed\": \"<integer>\",\n  \"service_tier\": \"<string>\",\n  \"stop\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"store\": \"<boolean>\",\n  \"stream\": \"<boolean>\",\n  \"stream_options\": {\n    \"pariaturba\": \"<string>\"\n  },\n  \"system_instruction\": {\n    \"ut_55\": \"<string>\"\n  },\n  \"temperature\": \"<number>\",\n  \"tool_choice\": \"<string>\",\n  \"tools\": [\n    {\n      \"function\": {\n        \"name\": \"<string>\"\n      },\n      \"type\": \"function\"\n    },\n    {\n      \"function\": {\n        \"name\": \"<string>\"\n      },\n      \"type\": \"function\"\n    }\n  ],\n  \"top_k\": \"<integer>\",\n  \"top_logprobs\": \"<integer>\",\n  \"top_p\": \"<number>\",\n  \"user\": \"<string>\",\n  \"verbosity\": \"<string>\",\n  \"web_search_options\": {\n    \"ipsum__7\": \"<string>\"\n  },\n  \"cache_control\": {\n    \"type\": \"<string>\",\n    \"ttl\": \"5m\"\n  },\n  \"cached_content\": \"<string>\",\n  \"container\": \"<string>\",\n  \"deferred\": \"<boolean>\",\n  \"generation_config\": {\n    \"tempor_\": \"<string>\",\n    \"officia_86\": \"<string>\"\n  },\n  \"inference_geo\": \"<string>\",\n  \"output_config\": {\n    \"sit03\": \"<string>\"\n  },\n  \"prompt_mode\": \"<string>\",\n  \"safe_prompt\": \"<boolean>\",\n  \"safety_settings\": [\n    {\n      \"category\": \"SEXUALLY_EXPLICIT\",\n      \"threshold\": \"BLOCK_UNSET\"\n    },\n    {\n      \"category\": \"DANGEROUS_CONTENT\",\n      \"threshold\": \"BLOCK_UNSET\"\n    }\n  ],\n  \"search_parameters\": {\n    \"aliquip_3\": \"<string>\",\n    \"aliquip6\": \"<string>\",\n    \"esse_1\": \"<string>\",\n    \"culpa8_3\": \"<string>\"\n  },\n  \"thinking\": {\n    \"budget_tokens\": \"<integer>\",\n    \"type\": \"<string>\"\n  },\n  \"tool_config\": {\n    \"occaecat_ee8\": \"<string>\"\n  },\n  \"mcp_servers\": \"<string>\",\n  \"credentials\": {\n    \"connection_name\": \"<string>\",\n    \"values\": {\n      \"ullamco_1d\": \"<string>\"\n    }\n  },\n  \"guardrails\": [\n    {\n      \"ullamco_e\": true,\n      \"ipsumde\": -3459343,\n      \"laboris_09\": true\n    },\n    {\n      \"cillum95\": 57997102,\n      \"Duis3a2\": true\n    }\n  ],\n  \"handoff_config\": {\n    \"cupidatat0e\": 77700139\n  },\n  \"model_attributes\": {\n    \"irure3\": {\n      \"iruref\": \"<number>\"\n    }\n  },\n  \"agent_attributes\": {\n    \"adipisicing_b\": \"<number>\",\n    \"id3\": \"<number>\"\n  },\n  \"max_turns\": \"<integer>\",\n  \"automatic_tool_execution\": true,\n  \"correlation_id\": \"<string>\",\n  \"deferred_calls\": [\n    {\n      \"id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"arguments\": {\n        \"in9\": \"<string>\"\n      },\n      \"venue\": \"server\",\n      \"dependencies\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"blocked_by\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    },\n    {\n      \"id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"arguments\": {\n        \"amet_c\": \"<string>\"\n      },\n      \"venue\": \"server\",\n      \"dependencies\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"blocked_by\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    }\n  ],\n  \"handoff_mode\": \"<boolean>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/chat/completions",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "chat",
+                        "completions"
+                      ]
+                    },
+                    "description": "Create a chat completion.\n\nGenerates a model response for the given conversation and configuration.\nSupports OpenAI-compatible parameters and provider-specific extensions.\n\nHeaders:\n- Authorization: bearer key for the calling account.\n- X-Provider / X-Provider-Key: optional headers for using your own provider API key.\n\nBehavior:\n- If multiple models are supplied, the first one is used, and the agent may hand off to another model.\n- Tools may be invoked on the server or signaled for the client to run.\n- Streaming responses emit incremental deltas; non-streaming returns a single object.\n- Usage metrics are computed when available and returned in the response.\n\nResponses:\n- 200 OK: JSON completion object with choices, message content, and usage.\n- 400 Bad Request: validation error.\n- 401 Unauthorized: authentication failed.\n- 402 Payment Required or 429 Too Many Requests: quota, balance, or rate limit issue.\n- 500 Internal Server Error: unexpected failure.\n\nBilling:\n- Token usage metered by the selected model(s).\n- Tool calls and MCP sessions may be billed separately.\n- Streaming is settled after the stream ends via an async task.\n\nExample (non-streaming HTTP):\nPOST /v1/chat/completions\nContent-Type: application/json\nAuthorization: Bearer\n\n{\n\"model\": \"provider/model-name\",\n\"messages\": [{\"role\": \"user\", \"content\": \"Hello\"}]\n}\n\n200 OK\n{\n\"id\": \"cmpl_123\",\n\"object\": \"chat.completion\",\n\"choices\": [\n{\"index\": 0, \"message\": {\"role\": \"assistant\", \"content\": \"Hi there!\"}, \"finish_reason\": \"stop\"}\n],\n\"usage\": {\"prompt_tokens\": 3, \"completion_tokens\": 4, \"total_tokens\": 7}\n}\n\nExample (streaming over SSE):\nPOST /v1/chat/completions\nAccept: text/event-stream\n\ndata: {\"id\":\"cmpl_123\",\"choices\":[{\"index\":0,\"delta\":{\"content\":\"Hi\"}}]}\ndata: {\"id\":\"cmpl_123\",\"choices\":[{\"index\":0,\"delta\":{\"content\":\" there!\"}}]}\ndata: [DONE]"
+                  },
+                  "response": [
+                    {
+                      "id": "8f8b1e0d-856b-4656-a7aa-d10ecd99e20a",
+                      "name": "JSON or SSE stream of ChatCompletionChunk events",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"model\": \"<string>\",\n  \"audio\": {\n    \"voice\": \"<string>\",\n    \"format\": \"opus\"\n  },\n  \"frequency_penalty\": \"<number>\",\n  \"function_call\": \"<string>\",\n  \"functions\": [\n    {\n      \"name\": \"<string>\",\n      \"description\": \"<string>\",\n      \"parameters\": {\n        \"adb\": -57652204,\n        \"labore__\": true,\n        \"do0\": 97105819\n      }\n    },\n    {\n      \"name\": \"<string>\",\n      \"description\": \"<string>\",\n      \"parameters\": {\n        \"eu_4c0\": -41194257.3545578,\n        \"laboris6a\": \"irure Excepteur\"\n      }\n    }\n  ],\n  \"logit_bias\": {\n    \"cupidatat2\": \"<integer>\"\n  },\n  \"logprobs\": \"<boolean>\",\n  \"max_completion_tokens\": \"<integer>\",\n  \"max_tokens\": \"<integer>\",\n  \"messages\": [\n    {\n      \"content\": \"<string>\",\n      \"role\": \"<string>\",\n      \"name\": \"<string>\"\n    },\n    {\n      \"content\": \"<string>\",\n      \"role\": \"<string>\",\n      \"name\": \"<string>\"\n    }\n  ],\n  \"metadata\": {\n    \"est_d49\": \"<string>\"\n  },\n  \"modalities\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"n\": \"<integer>\",\n  \"parallel_tool_calls\": \"<boolean>\",\n  \"prediction\": {\n    \"type\": \"<string>\",\n    \"content\": \"<string>\"\n  },\n  \"presence_penalty\": \"<number>\",\n  \"prompt_cache_key\": \"<string>\",\n  \"prompt_cache_retention\": \"<string>\",\n  \"reasoning_effort\": \"<string>\",\n  \"response_format\": {\n    \"type\": \"<string>\"\n  },\n  \"safety_identifier\": \"<string>\",\n  \"seed\": \"<integer>\",\n  \"service_tier\": \"<string>\",\n  \"stop\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"store\": \"<boolean>\",\n  \"stream\": \"<boolean>\",\n  \"stream_options\": {\n    \"pariaturba\": \"<string>\"\n  },\n  \"system_instruction\": {\n    \"ut_55\": \"<string>\"\n  },\n  \"temperature\": \"<number>\",\n  \"tool_choice\": \"<string>\",\n  \"tools\": [\n    {\n      \"function\": {\n        \"name\": \"<string>\"\n      },\n      \"type\": \"function\"\n    },\n    {\n      \"function\": {\n        \"name\": \"<string>\"\n      },\n      \"type\": \"function\"\n    }\n  ],\n  \"top_k\": \"<integer>\",\n  \"top_logprobs\": \"<integer>\",\n  \"top_p\": \"<number>\",\n  \"user\": \"<string>\",\n  \"verbosity\": \"<string>\",\n  \"web_search_options\": {\n    \"ipsum__7\": \"<string>\"\n  },\n  \"cache_control\": {\n    \"type\": \"<string>\",\n    \"ttl\": \"5m\"\n  },\n  \"cached_content\": \"<string>\",\n  \"container\": \"<string>\",\n  \"deferred\": \"<boolean>\",\n  \"generation_config\": {\n    \"tempor_\": \"<string>\",\n    \"officia_86\": \"<string>\"\n  },\n  \"inference_geo\": \"<string>\",\n  \"output_config\": {\n    \"sit03\": \"<string>\"\n  },\n  \"prompt_mode\": \"<string>\",\n  \"safe_prompt\": \"<boolean>\",\n  \"safety_settings\": [\n    {\n      \"category\": \"SEXUALLY_EXPLICIT\",\n      \"threshold\": \"BLOCK_UNSET\"\n    },\n    {\n      \"category\": \"DANGEROUS_CONTENT\",\n      \"threshold\": \"BLOCK_UNSET\"\n    }\n  ],\n  \"search_parameters\": {\n    \"aliquip_3\": \"<string>\",\n    \"aliquip6\": \"<string>\",\n    \"esse_1\": \"<string>\",\n    \"culpa8_3\": \"<string>\"\n  },\n  \"thinking\": {\n    \"budget_tokens\": \"<integer>\",\n    \"type\": \"<string>\"\n  },\n  \"tool_config\": {\n    \"occaecat_ee8\": \"<string>\"\n  },\n  \"mcp_servers\": \"<string>\",\n  \"credentials\": {\n    \"connection_name\": \"<string>\",\n    \"values\": {\n      \"ullamco_1d\": \"<string>\"\n    }\n  },\n  \"guardrails\": [\n    {\n      \"ullamco_e\": true,\n      \"ipsumde\": -3459343,\n      \"laboris_09\": true\n    },\n    {\n      \"cillum95\": 57997102,\n      \"Duis3a2\": true\n    }\n  ],\n  \"handoff_config\": {\n    \"cupidatat0e\": 77700139\n  },\n  \"model_attributes\": {\n    \"irure3\": {\n      \"iruref\": \"<number>\"\n    }\n  },\n  \"agent_attributes\": {\n    \"adipisicing_b\": \"<number>\",\n    \"id3\": \"<number>\"\n  },\n  \"max_turns\": \"<integer>\",\n  \"automatic_tool_execution\": true,\n  \"correlation_id\": \"<string>\",\n  \"deferred_calls\": [\n    {\n      \"id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"arguments\": {\n        \"in9\": \"<string>\"\n      },\n      \"venue\": \"server\",\n      \"dependencies\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"blocked_by\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    },\n    {\n      \"id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"arguments\": {\n        \"amet_c\": \"<string>\"\n      },\n      \"venue\": \"server\",\n      \"dependencies\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"blocked_by\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    }\n  ],\n  \"handoff_mode\": \"<boolean>\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/chat/completions",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "chat",
+                            "completions"
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"id\": \"<string>\",\n  \"choices\": [\n    {\n      \"index\": \"<integer>\",\n      \"message\": {\n        \"content\": \"<string>\",\n        \"refusal\": \"<string>\",\n        \"role\": \"<string>\",\n        \"tool_calls\": [\n          {\n            \"id\": \"<string>\",\n            \"type\": \"<string>\",\n            \"function\": {\n              \"name\": \"<string>\",\n              \"arguments\": \"<string>\"\n            },\n            \"thought_signature\": \"<string>\"\n          },\n          {\n            \"id\": \"<string>\",\n            \"type\": \"<string>\",\n            \"function\": {\n              \"name\": \"<string>\",\n              \"arguments\": \"<string>\"\n            },\n            \"thought_signature\": \"<string>\"\n          }\n        ],\n        \"annotations\": [\n          {\n            \"type\": \"<string>\",\n            \"url_citation\": {\n              \"end_index\": \"<integer>\",\n              \"start_index\": \"<integer>\",\n              \"url\": \"<string>\",\n              \"title\": \"<string>\"\n            }\n          },\n          {\n            \"type\": \"<string>\",\n            \"url_citation\": {\n              \"end_index\": \"<integer>\",\n              \"start_index\": \"<integer>\",\n              \"url\": \"<string>\",\n              \"title\": \"<string>\"\n            }\n          }\n        ],\n        \"function_call\": {\n          \"arguments\": \"<string>\",\n          \"name\": \"<string>\"\n        },\n        \"audio\": {\n          \"id\": \"<string>\",\n          \"expires_at\": \"<integer>\",\n          \"data\": \"<string>\",\n          \"transcript\": \"<string>\"\n        }\n      },\n      \"finish_reason\": \"content_filter\",\n      \"logprobs\": {\n        \"content\": [\n          {\n            \"token\": \"<string>\",\n            \"logprob\": \"<number>\",\n            \"bytes\": [\n              \"<integer>\",\n              \"<integer>\"\n            ],\n            \"top_logprobs\": [\n              {\n                \"token\": \"<string>\",\n                \"logprob\": \"<number>\",\n                \"bytes\": [\n                  \"<integer>\",\n                  \"<integer>\"\n                ]\n              },\n              {\n                \"token\": \"<string>\",\n                \"logprob\": \"<number>\",\n                \"bytes\": [\n                  \"<integer>\",\n                  \"<integer>\"\n                ]\n              }\n            ]\n          },\n          {\n            \"token\": \"<string>\",\n            \"logprob\": \"<number>\",\n            \"bytes\": [\n              \"<integer>\",\n              \"<integer>\"\n            ],\n            \"top_logprobs\": [\n              {\n                \"token\": \"<string>\",\n                \"logprob\": \"<number>\",\n                \"bytes\": [\n                  \"<integer>\",\n                  \"<integer>\"\n                ]\n              },\n              {\n                \"token\": \"<string>\",\n                \"logprob\": \"<number>\",\n                \"bytes\": [\n                  \"<integer>\",\n                  \"<integer>\"\n                ]\n              }\n            ]\n          }\n        ],\n        \"refusal\": [\n          {\n            \"token\": \"<string>\",\n            \"logprob\": \"<number>\",\n            \"bytes\": [\n              \"<integer>\",\n              \"<integer>\"\n            ],\n            \"top_logprobs\": [\n              {\n                \"token\": \"<string>\",\n                \"logprob\": \"<number>\",\n                \"bytes\": [\n                  \"<integer>\",\n                  \"<integer>\"\n                ]\n              },\n              {\n                \"token\": \"<string>\",\n                \"logprob\": \"<number>\",\n                \"bytes\": [\n                  \"<integer>\",\n                  \"<integer>\"\n                ]\n              }\n            ]\n          },\n          {\n            \"token\": \"<string>\",\n            \"logprob\": \"<number>\",\n            \"bytes\": [\n              \"<integer>\",\n              \"<integer>\"\n            ],\n            \"top_logprobs\": [\n              {\n                \"token\": \"<string>\",\n                \"logprob\": \"<number>\",\n                \"bytes\": [\n                  \"<integer>\",\n                  \"<integer>\"\n                ]\n              },\n              {\n                \"token\": \"<string>\",\n                \"logprob\": \"<number>\",\n                \"bytes\": [\n                  \"<integer>\",\n                  \"<integer>\"\n                ]\n              }\n            ]\n          }\n        ]\n      }\n    },\n    {\n      \"index\": \"<integer>\",\n      \"message\": {\n        \"content\": \"<string>\",\n        \"refusal\": \"<string>\",\n        \"role\": \"<string>\",\n        \"tool_calls\": [\n          {\n            \"id\": \"<string>\",\n            \"type\": \"<string>\",\n            \"function\": {\n              \"name\": \"<string>\",\n              \"arguments\": \"<string>\"\n            },\n            \"thought_signature\": \"<string>\"\n          },\n          {\n            \"id\": \"<string>\",\n            \"type\": \"<string>\",\n            \"function\": {\n              \"name\": \"<string>\",\n              \"arguments\": \"<string>\"\n            },\n            \"thought_signature\": \"<string>\"\n          }\n        ],\n        \"annotations\": [\n          {\n            \"type\": \"<string>\",\n            \"url_citation\": {\n              \"end_index\": \"<integer>\",\n              \"start_index\": \"<integer>\",\n              \"url\": \"<string>\",\n              \"title\": \"<string>\"\n            }\n          },\n          {\n            \"type\": \"<string>\",\n            \"url_citation\": {\n              \"end_index\": \"<integer>\",\n              \"start_index\": \"<integer>\",\n              \"url\": \"<string>\",\n              \"title\": \"<string>\"\n            }\n          }\n        ],\n        \"function_call\": {\n          \"arguments\": \"<string>\",\n          \"name\": \"<string>\"\n        },\n        \"audio\": {\n          \"id\": \"<string>\",\n          \"expires_at\": \"<integer>\",\n          \"data\": \"<string>\",\n          \"transcript\": \"<string>\"\n        }\n      },\n      \"finish_reason\": \"function_call\",\n      \"logprobs\": {\n        \"content\": [\n          {\n            \"token\": \"<string>\",\n            \"logprob\": \"<number>\",\n            \"bytes\": [\n              \"<integer>\",\n              \"<integer>\"\n            ],\n            \"top_logprobs\": [\n              {\n                \"token\": \"<string>\",\n                \"logprob\": \"<number>\",\n                \"bytes\": [\n                  \"<integer>\",\n                  \"<integer>\"\n                ]\n              },\n              {\n                \"token\": \"<string>\",\n                \"logprob\": \"<number>\",\n                \"bytes\": [\n                  \"<integer>\",\n                  \"<integer>\"\n                ]\n              }\n            ]\n          },\n          {\n            \"token\": \"<string>\",\n            \"logprob\": \"<number>\",\n            \"bytes\": [\n              \"<integer>\",\n              \"<integer>\"\n            ],\n            \"top_logprobs\": [\n              {\n                \"token\": \"<string>\",\n                \"logprob\": \"<number>\",\n                \"bytes\": [\n                  \"<integer>\",\n                  \"<integer>\"\n                ]\n              },\n              {\n                \"token\": \"<string>\",\n                \"logprob\": \"<number>\",\n                \"bytes\": [\n                  \"<integer>\",\n                  \"<integer>\"\n                ]\n              }\n            ]\n          }\n        ],\n        \"refusal\": [\n          {\n            \"token\": \"<string>\",\n            \"logprob\": \"<number>\",\n            \"bytes\": [\n              \"<integer>\",\n              \"<integer>\"\n            ],\n            \"top_logprobs\": [\n              {\n                \"token\": \"<string>\",\n                \"logprob\": \"<number>\",\n                \"bytes\": [\n                  \"<integer>\",\n                  \"<integer>\"\n                ]\n              },\n              {\n                \"token\": \"<string>\",\n                \"logprob\": \"<number>\",\n                \"bytes\": [\n                  \"<integer>\",\n                  \"<integer>\"\n                ]\n              }\n            ]\n          },\n          {\n            \"token\": \"<string>\",\n            \"logprob\": \"<number>\",\n            \"bytes\": [\n              \"<integer>\",\n              \"<integer>\"\n            ],\n            \"top_logprobs\": [\n              {\n                \"token\": \"<string>\",\n                \"logprob\": \"<number>\",\n                \"bytes\": [\n                  \"<integer>\",\n                  \"<integer>\"\n                ]\n              },\n              {\n                \"token\": \"<string>\",\n                \"logprob\": \"<number>\",\n                \"bytes\": [\n                  \"<integer>\",\n                  \"<integer>\"\n                ]\n              }\n            ]\n          }\n        ]\n      }\n    }\n  ],\n  \"created\": \"<integer>\",\n  \"model\": \"<string>\",\n  \"object\": \"<string>\",\n  \"service_tier\": \"flex\",\n  \"system_fingerprint\": \"<string>\",\n  \"usage\": {\n    \"completion_tokens\": \"<integer>\",\n    \"prompt_tokens\": \"<integer>\",\n    \"total_tokens\": \"<integer>\",\n    \"completion_tokens_details\": {\n      \"accepted_prediction_tokens\": 0,\n      \"audio_tokens\": 0,\n      \"reasoning_tokens\": 0,\n      \"rejected_prediction_tokens\": 0\n    },\n    \"prompt_tokens_details\": {\n      \"audio_tokens\": 0,\n      \"cached_tokens\": 0\n    }\n  },\n  \"tools_executed\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"mcp_server_errors\": {\n    \"ut_7\": {\n      \"message\": \"<string>\",\n      \"code\": \"<string>\",\n      \"recommendation\": \"<string>\"\n    }\n  },\n  \"mcp_tool_results\": [\n    {\n      \"tool_name\": \"<string>\",\n      \"server_name\": \"<string>\",\n      \"arguments\": {\n        \"sunt3_4\": \"<string>\"\n      },\n      \"is_error\": \"<boolean>\",\n      \"result\": \"<string>\",\n      \"duration_ms\": \"<integer>\"\n    },\n    {\n      \"tool_name\": \"<string>\",\n      \"server_name\": \"<string>\",\n      \"arguments\": {\n        \"culpaa7b\": \"<string>\",\n        \"autee\": \"<string>\"\n      },\n      \"is_error\": \"<boolean>\",\n      \"result\": \"<string>\",\n      \"duration_ms\": \"<integer>\"\n    }\n  ],\n  \"correlation_id\": \"<string>\",\n  \"server_results\": {\n    \"dolor_d\": \"<string>\"\n  },\n  \"deferred\": [\n    {\n      \"id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"arguments\": {\n        \"velit85e\": \"<string>\"\n      },\n      \"venue\": \"server\",\n      \"dependencies\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"blocked_by\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    },\n    {\n      \"id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"arguments\": {\n        \"cillum_348\": \"<string>\",\n        \"ex_a4a\": \"<string>\"\n      },\n      \"venue\": \"server\",\n      \"dependencies\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"blocked_by\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    }\n  ],\n  \"pending_tools\": [\n    {\n      \"id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"arguments\": {\n        \"laborum_89d\": \"<string>\",\n        \"magna_4\": \"<string>\",\n        \"quis0_8\": \"<string>\"\n      },\n      \"dependencies\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    },\n    {\n      \"id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"arguments\": {\n        \"elit_f3\": \"<string>\"\n      },\n      \"dependencies\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    }\n  ],\n  \"turns_consumed\": \"<integer>\"\n}",
+                      "createdAt": "2026-10-21T21:06:31.000Z",
+                      "updatedAt": "2026-10-21T21:06:31.000Z",
+                      "uid": "35240-8f8b1e0d-856b-4656-a7aa-d10ecd99e20a"
+                    },
+                    {
+                      "id": "a21b9396-3842-4bc8-a933-a1812750f970",
+                      "name": "Validation Error",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"model\": \"<string>\",\n  \"audio\": {\n    \"voice\": \"<string>\",\n    \"format\": \"opus\"\n  },\n  \"frequency_penalty\": \"<number>\",\n  \"function_call\": \"<string>\",\n  \"functions\": [\n    {\n      \"name\": \"<string>\",\n      \"description\": \"<string>\",\n      \"parameters\": {\n        \"adb\": -57652204,\n        \"labore__\": true,\n        \"do0\": 97105819\n      }\n    },\n    {\n      \"name\": \"<string>\",\n      \"description\": \"<string>\",\n      \"parameters\": {\n        \"eu_4c0\": -41194257.3545578,\n        \"laboris6a\": \"irure Excepteur\"\n      }\n    }\n  ],\n  \"logit_bias\": {\n    \"cupidatat2\": \"<integer>\"\n  },\n  \"logprobs\": \"<boolean>\",\n  \"max_completion_tokens\": \"<integer>\",\n  \"max_tokens\": \"<integer>\",\n  \"messages\": [\n    {\n      \"content\": \"<string>\",\n      \"role\": \"<string>\",\n      \"name\": \"<string>\"\n    },\n    {\n      \"content\": \"<string>\",\n      \"role\": \"<string>\",\n      \"name\": \"<string>\"\n    }\n  ],\n  \"metadata\": {\n    \"est_d49\": \"<string>\"\n  },\n  \"modalities\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"n\": \"<integer>\",\n  \"parallel_tool_calls\": \"<boolean>\",\n  \"prediction\": {\n    \"type\": \"<string>\",\n    \"content\": \"<string>\"\n  },\n  \"presence_penalty\": \"<number>\",\n  \"prompt_cache_key\": \"<string>\",\n  \"prompt_cache_retention\": \"<string>\",\n  \"reasoning_effort\": \"<string>\",\n  \"response_format\": {\n    \"type\": \"<string>\"\n  },\n  \"safety_identifier\": \"<string>\",\n  \"seed\": \"<integer>\",\n  \"service_tier\": \"<string>\",\n  \"stop\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"store\": \"<boolean>\",\n  \"stream\": \"<boolean>\",\n  \"stream_options\": {\n    \"pariaturba\": \"<string>\"\n  },\n  \"system_instruction\": {\n    \"ut_55\": \"<string>\"\n  },\n  \"temperature\": \"<number>\",\n  \"tool_choice\": \"<string>\",\n  \"tools\": [\n    {\n      \"function\": {\n        \"name\": \"<string>\"\n      },\n      \"type\": \"function\"\n    },\n    {\n      \"function\": {\n        \"name\": \"<string>\"\n      },\n      \"type\": \"function\"\n    }\n  ],\n  \"top_k\": \"<integer>\",\n  \"top_logprobs\": \"<integer>\",\n  \"top_p\": \"<number>\",\n  \"user\": \"<string>\",\n  \"verbosity\": \"<string>\",\n  \"web_search_options\": {\n    \"ipsum__7\": \"<string>\"\n  },\n  \"cache_control\": {\n    \"type\": \"<string>\",\n    \"ttl\": \"5m\"\n  },\n  \"cached_content\": \"<string>\",\n  \"container\": \"<string>\",\n  \"deferred\": \"<boolean>\",\n  \"generation_config\": {\n    \"tempor_\": \"<string>\",\n    \"officia_86\": \"<string>\"\n  },\n  \"inference_geo\": \"<string>\",\n  \"output_config\": {\n    \"sit03\": \"<string>\"\n  },\n  \"prompt_mode\": \"<string>\",\n  \"safe_prompt\": \"<boolean>\",\n  \"safety_settings\": [\n    {\n      \"category\": \"SEXUALLY_EXPLICIT\",\n      \"threshold\": \"BLOCK_UNSET\"\n    },\n    {\n      \"category\": \"DANGEROUS_CONTENT\",\n      \"threshold\": \"BLOCK_UNSET\"\n    }\n  ],\n  \"search_parameters\": {\n    \"aliquip_3\": \"<string>\",\n    \"aliquip6\": \"<string>\",\n    \"esse_1\": \"<string>\",\n    \"culpa8_3\": \"<string>\"\n  },\n  \"thinking\": {\n    \"budget_tokens\": \"<integer>\",\n    \"type\": \"<string>\"\n  },\n  \"tool_config\": {\n    \"occaecat_ee8\": \"<string>\"\n  },\n  \"mcp_servers\": \"<string>\",\n  \"credentials\": {\n    \"connection_name\": \"<string>\",\n    \"values\": {\n      \"ullamco_1d\": \"<string>\"\n    }\n  },\n  \"guardrails\": [\n    {\n      \"ullamco_e\": true,\n      \"ipsumde\": -3459343,\n      \"laboris_09\": true\n    },\n    {\n      \"cillum95\": 57997102,\n      \"Duis3a2\": true\n    }\n  ],\n  \"handoff_config\": {\n    \"cupidatat0e\": 77700139\n  },\n  \"model_attributes\": {\n    \"irure3\": {\n      \"iruref\": \"<number>\"\n    }\n  },\n  \"agent_attributes\": {\n    \"adipisicing_b\": \"<number>\",\n    \"id3\": \"<number>\"\n  },\n  \"max_turns\": \"<integer>\",\n  \"automatic_tool_execution\": true,\n  \"correlation_id\": \"<string>\",\n  \"deferred_calls\": [\n    {\n      \"id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"arguments\": {\n        \"in9\": \"<string>\"\n      },\n      \"venue\": \"server\",\n      \"dependencies\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"blocked_by\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    },\n    {\n      \"id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"arguments\": {\n        \"amet_c\": \"<string>\"\n      },\n      \"venue\": \"server\",\n      \"dependencies\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"blocked_by\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    }\n  ],\n  \"handoff_mode\": \"<boolean>\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/chat/completions",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "chat",
+                            "completions"
+                          ]
+                        }
+                      },
+                      "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+                      "code": 422,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"msg\": \"<string>\",\n      \"type\": \"<string>\",\n      \"input\": {\n        \"title\": \"Input\"\n      },\n      \"ctx\": {}\n    },\n    {\n      \"loc\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"msg\": \"<string>\",\n      \"type\": \"<string>\",\n      \"input\": {\n        \"title\": \"Input\"\n      },\n      \"ctx\": {}\n    }\n  ]\n}",
+                      "createdAt": "2026-10-21T21:06:31.000Z",
+                      "updatedAt": "2026-10-21T21:06:31.000Z",
+                      "uid": "35240-a21b9396-3842-4bc8-a933-a1812750f970"
+                    }
+                  ],
+                  "createdAt": "2026-10-21T21:06:31.000Z",
+                  "updatedAt": "2026-10-21T21:06:31.000Z",
+                  "uid": "35240-555b4ab1-918e-40ae-a4be-5a607209e165"
+                }
+              ],
+              "id": "a3aaef81-07f4-4ef4-8e38-5f6994cc682d",
+              "createdAt": "2026-10-21T21:06:31.000Z",
+              "updatedAt": "2026-10-21T21:06:31.000Z",
+              "uid": "35240-a3aaef81-07f4-4ef4-8e38-5f6994cc682d"
+            }
+          ],
+          "id": "c25c920e-b319-4cf6-a047-7ece22ed5362",
+          "createdAt": "2026-10-21T21:06:31.000Z",
+          "updatedAt": "2026-10-21T21:06:31.000Z",
+          "uid": "35240-c25c920e-b319-4cf6-a047-7ece22ed5362"
+        }
+      ],
+      "id": "1c980c6d-660a-45e4-96f6-f3397a56ed79",
+      "createdAt": "2026-10-21T21:06:31.000Z",
+      "updatedAt": "2026-10-21T21:06:31.000Z",
+      "uid": "35240-1c980c6d-660a-45e4-96f6-f3397a56ed79"
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://api.dedaluslabs.ai"
+    }
+  ]
+}

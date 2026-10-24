@@ -1,0 +1,208 @@
+{
+  "info": {
+    "_postman_id": "5f309adc-21ca-46b0-891c-1a3c32cadb0b",
+    "name": "Dedalus Embeddings API",
+    "description": "MCP gateway for AI agents. Mix-and-match any model with any tool from our marketplace.\n\n## Authentication\nUse Bearer token or X-API-Key header authentication:\n```\nAuthorization: Bearer your-api-key-here\n```\n```\nx-api-key: your-api-key-here\n```\n\n## Available Endpoints\n- **GET /v1/models**: list available models\n- **POST /v1/chat/completions**: Chat completions with MCP tools\n- **GET /health**: Service health check",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-10-21T21:05:54.000Z",
+    "updatedAt": "2026-10-21T21:05:54.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-5f309adc-21ca-46b0-891c-1a3c32cadb0b"
+  },
+  "item": [
+    {
+      "name": "v1",
+      "item": [
+        {
+          "name": "embeddings",
+          "item": [
+            {
+              "name": "Create Embeddings",
+              "id": "df2434a5-a0b5-4c15-8be4-6ce170f43f00",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{bearerToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"input\": \"<string>\",\n  \"model\": \"<string>\",\n  \"encoding_format\": \"float\",\n  \"dimensions\": \"<integer>\",\n  \"user\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/v1/embeddings",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "v1",
+                    "embeddings"
+                  ]
+                },
+                "description": "Create embeddings using the configured provider."
+              },
+              "response": [
+                {
+                  "id": "a3e8efa7-f903-4a27-a0ee-c3d68bcc7e84",
+                  "name": "Successful Response",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"input\": \"<string>\",\n  \"model\": \"<string>\",\n  \"encoding_format\": \"float\",\n  \"dimensions\": \"<integer>\",\n  \"user\": \"<string>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/embeddings",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "embeddings"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"data\": [\n    {\n      \"index\": \"<integer>\",\n      \"embedding\": [\n        \"<number>\",\n        \"<number>\"\n      ],\n      \"object\": \"<string>\"\n    },\n    {\n      \"index\": \"<integer>\",\n      \"embedding\": [\n        \"<number>\",\n        \"<number>\"\n      ],\n      \"object\": \"<string>\"\n    }\n  ],\n  \"model\": \"<string>\",\n  \"object\": \"<string>\",\n  \"usage\": {\n    \"prompt_tokens\": \"<integer>\",\n    \"total_tokens\": \"<integer>\"\n  }\n}",
+                  "createdAt": "2026-10-21T21:05:55.000Z",
+                  "updatedAt": "2026-10-21T21:05:55.000Z",
+                  "uid": "35240-a3e8efa7-f903-4a27-a0ee-c3d68bcc7e84"
+                },
+                {
+                  "id": "1adad206-2787-4b57-850b-841ccce29af1",
+                  "name": "Validation Error",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"input\": \"<string>\",\n  \"model\": \"<string>\",\n  \"encoding_format\": \"float\",\n  \"dimensions\": \"<integer>\",\n  \"user\": \"<string>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/embeddings",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "embeddings"
+                      ]
+                    }
+                  },
+                  "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+                  "code": 422,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"msg\": \"<string>\",\n      \"type\": \"<string>\",\n      \"input\": {\n        \"title\": \"Input\"\n      },\n      \"ctx\": {}\n    },\n    {\n      \"loc\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"msg\": \"<string>\",\n      \"type\": \"<string>\",\n      \"input\": {\n        \"title\": \"Input\"\n      },\n      \"ctx\": {}\n    }\n  ]\n}",
+                  "createdAt": "2026-10-21T21:05:55.000Z",
+                  "updatedAt": "2026-10-21T21:05:55.000Z",
+                  "uid": "35240-1adad206-2787-4b57-850b-841ccce29af1"
+                }
+              ],
+              "createdAt": "2026-10-21T21:05:55.000Z",
+              "updatedAt": "2026-10-21T21:05:55.000Z",
+              "uid": "35240-df2434a5-a0b5-4c15-8be4-6ce170f43f00"
+            }
+          ],
+          "id": "0f41fb7b-a722-41e5-bba4-68a88c154747",
+          "createdAt": "2026-10-21T21:05:55.000Z",
+          "updatedAt": "2026-10-21T21:05:55.000Z",
+          "uid": "35240-0f41fb7b-a722-41e5-bba4-68a88c154747"
+        }
+      ],
+      "id": "437dde32-2e29-4f7e-a95c-ba4df0b10ae9",
+      "createdAt": "2026-10-21T21:05:55.000Z",
+      "updatedAt": "2026-10-21T21:05:55.000Z",
+      "uid": "35240-437dde32-2e29-4f7e-a95c-ba4df0b10ae9"
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://api.dedaluslabs.ai"
+    }
+  ]
+}

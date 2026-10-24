@@ -1,0 +1,281 @@
+{
+  "info": {
+    "_postman_id": "92d9a2f9-6e67-4cee-a331-92c68da6e7ee",
+    "name": "Dedalus Models API",
+    "description": "MCP gateway for AI agents. Mix-and-match any model with any tool from our marketplace.\n\n## Authentication\nUse Bearer token or X-API-Key header authentication:\n```\nAuthorization: Bearer your-api-key-here\n```\n```\nx-api-key: your-api-key-here\n```\n\n## Available Endpoints\n- **GET /v1/models**: list available models\n- **POST /v1/chat/completions**: Chat completions with MCP tools\n- **GET /health**: Service health check",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-10-21T21:06:13.000Z",
+    "updatedAt": "2026-10-21T21:06:13.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-92d9a2f9-6e67-4cee-a331-92c68da6e7ee"
+  },
+  "item": [
+    {
+      "name": "v1",
+      "item": [
+        {
+          "name": "models",
+          "item": [
+            {
+              "name": "{model_id}",
+              "item": [
+                {
+                  "name": "Retrieve Model",
+                  "id": "dfcdc386-ac1f-477a-a979-7db8ff2f52df",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{bearerToken}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/models/:model_id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "models",
+                        ":model_id"
+                      ],
+                      "variable": [
+                        {
+                          "id": "a025a592-8e23-496e-895e-4749b8f84ce1",
+                          "key": "model_id",
+                          "value": "<string>",
+                          "description": "(Required) "
+                        }
+                      ]
+                    },
+                    "description": "Retrieve a model.\n\nRetrieve detailed information about a specific model, including its capabilities,\nprovider, and supported features.\n\nArgs:\nmodel_id: The ID of the model to retrieve (e.g., 'openai/gpt-4', 'anthropic/claude-3-5-sonnet-20241022')\nuser: Authenticated user obtained from API key validation\n\nReturns:\nModel: Information about the requested model\n\nRaises:\nHTTPException:\n- 401 if authentication fails\n- 404 if model not found or not accessible with current API key\n- 500 if internal error occurs\n\nRequires:\nValid API key with 'read' scope permission\n\nExample:\n```python\nimport dedalus_sdk\n\nclient = dedalus_sdk.Client(api_key=\"your-api-key\")\nmodel = client.models.retrieve(\"openai/gpt-4\")\n\nprint(f\"Model: {model.id}\")\nprint(f\"Owner: {model.owned_by}\")\n```\n\nResponse:\n```json\n{\n\"id\": \"openai/gpt-4\",\n\"object\": \"model\",\n\"created\": 1687882411,\n\"owned_by\": \"openai\"\n}\n```"
+                  },
+                  "response": [
+                    {
+                      "id": "47bae4ca-f458-4144-90fe-1d704db1071c",
+                      "name": "Successful Response",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/models/:model_id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "models",
+                            ":model_id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "model_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"id\": \"<string>\",\n  \"provider\": \"groq\",\n  \"created_at\": \"<dateTime>\",\n  \"display_name\": \"<string>\",\n  \"description\": \"<string>\",\n  \"version\": \"<string>\",\n  \"capabilities\": {\n    \"text\": \"<boolean>\",\n    \"vision\": \"<boolean>\",\n    \"image_generation\": \"<boolean>\",\n    \"audio\": \"<boolean>\",\n    \"tools\": \"<boolean>\",\n    \"structured_output\": \"<boolean>\",\n    \"streaming\": \"<boolean>\",\n    \"thinking\": \"<boolean>\",\n    \"input_token_limit\": \"<integer>\",\n    \"output_token_limit\": \"<integer>\"\n  },\n  \"defaults\": {\n    \"temperature\": \"<number>\",\n    \"top_p\": \"<number>\",\n    \"top_k\": \"<integer>\",\n    \"max_output_tokens\": \"<integer>\"\n  },\n  \"provider_info\": {\n    \"routing\": [\n      {\n        \"endpoint\": \"/v1/embeddings\",\n        \"upstream_api\": \"openai/responses\"\n      },\n      {\n        \"endpoint\": \"/v1/images/generations\",\n        \"upstream_api\": \"anthropic/messages\"\n      }\n    ],\n    \"status\": \"disabled\"\n  },\n  \"provider_declared_generation_methods\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                      "createdAt": "2026-10-21T21:06:13.000Z",
+                      "updatedAt": "2026-10-21T21:06:13.000Z",
+                      "uid": "35240-47bae4ca-f458-4144-90fe-1d704db1071c"
+                    },
+                    {
+                      "id": "0e93c8f1-91c9-4e49-886e-f4c2adde3908",
+                      "name": "Validation Error",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/models/:model_id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "models",
+                            ":model_id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "model_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+                      "code": 422,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"msg\": \"<string>\",\n      \"type\": \"<string>\",\n      \"input\": {\n        \"title\": \"Input\"\n      },\n      \"ctx\": {}\n    },\n    {\n      \"loc\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"msg\": \"<string>\",\n      \"type\": \"<string>\",\n      \"input\": {\n        \"title\": \"Input\"\n      },\n      \"ctx\": {}\n    }\n  ]\n}",
+                      "createdAt": "2026-10-21T21:06:13.000Z",
+                      "updatedAt": "2026-10-21T21:06:13.000Z",
+                      "uid": "35240-0e93c8f1-91c9-4e49-886e-f4c2adde3908"
+                    }
+                  ],
+                  "createdAt": "2026-10-21T21:06:13.000Z",
+                  "updatedAt": "2026-10-21T21:06:13.000Z",
+                  "uid": "35240-dfcdc386-ac1f-477a-a979-7db8ff2f52df"
+                }
+              ],
+              "id": "caec35b5-e1bc-4cab-945b-9df55f1b8802",
+              "createdAt": "2026-10-21T21:06:13.000Z",
+              "updatedAt": "2026-10-21T21:06:13.000Z",
+              "uid": "35240-caec35b5-e1bc-4cab-945b-9df55f1b8802"
+            },
+            {
+              "name": "List Models",
+              "id": "496b98ae-7fe0-44e1-930f-857c35898941",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{bearerToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/v1/models",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "v1",
+                    "models"
+                  ]
+                },
+                "description": "List available models.\n\nRetrieve the complete list of models available to your organization, including\nmodels from OpenAI, Anthropic, Google, xAI, Mistral, Fireworks, and DeepSeek.\n\nReturns:\nListModelsResponse: List of available models across all supported providers"
+              },
+              "response": [
+                {
+                  "id": "4578fbd1-d3f4-463d-8151-5922d9dc64e1",
+                  "name": "Successful Response",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/models",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "models"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"data\": [\n    {\n      \"id\": \"<string>\",\n      \"provider\": \"google\",\n      \"created_at\": \"<dateTime>\",\n      \"display_name\": \"<string>\",\n      \"description\": \"<string>\",\n      \"version\": \"<string>\",\n      \"capabilities\": {\n        \"text\": \"<boolean>\",\n        \"vision\": \"<boolean>\",\n        \"image_generation\": \"<boolean>\",\n        \"audio\": \"<boolean>\",\n        \"tools\": \"<boolean>\",\n        \"structured_output\": \"<boolean>\",\n        \"streaming\": \"<boolean>\",\n        \"thinking\": \"<boolean>\",\n        \"input_token_limit\": \"<integer>\",\n        \"output_token_limit\": \"<integer>\"\n      },\n      \"defaults\": {\n        \"temperature\": \"<number>\",\n        \"top_p\": \"<number>\",\n        \"top_k\": \"<integer>\",\n        \"max_output_tokens\": \"<integer>\"\n      },\n      \"provider_info\": {\n        \"routing\": [\n          {\n            \"endpoint\": \"/v1/images/generations\",\n            \"upstream_api\": \"openai/audio/transcriptions\"\n          },\n          {\n            \"endpoint\": \"/v1/audio/transcriptions\",\n            \"upstream_api\": \"openai/responses\"\n          }\n        ],\n        \"status\": \"preview\"\n      },\n      \"provider_declared_generation_methods\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    },\n    {\n      \"id\": \"<string>\",\n      \"provider\": \"mistral\",\n      \"created_at\": \"<dateTime>\",\n      \"display_name\": \"<string>\",\n      \"description\": \"<string>\",\n      \"version\": \"<string>\",\n      \"capabilities\": {\n        \"text\": \"<boolean>\",\n        \"vision\": \"<boolean>\",\n        \"image_generation\": \"<boolean>\",\n        \"audio\": \"<boolean>\",\n        \"tools\": \"<boolean>\",\n        \"structured_output\": \"<boolean>\",\n        \"streaming\": \"<boolean>\",\n        \"thinking\": \"<boolean>\",\n        \"input_token_limit\": \"<integer>\",\n        \"output_token_limit\": \"<integer>\"\n      },\n      \"defaults\": {\n        \"temperature\": \"<number>\",\n        \"top_p\": \"<number>\",\n        \"top_k\": \"<integer>\",\n        \"max_output_tokens\": \"<integer>\"\n      },\n      \"provider_info\": {\n        \"routing\": [\n          {\n            \"endpoint\": \"/v1/audio/transcriptions\",\n            \"upstream_api\": \"openai/audio/transcriptions\"\n          },\n          {\n            \"endpoint\": \"/v1/moderations\",\n            \"upstream_api\": \"google/generateContent\"\n          }\n        ],\n        \"status\": \"disabled\"\n      },\n      \"provider_declared_generation_methods\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    }\n  ],\n  \"object\": \"list\"\n}",
+                  "createdAt": "2026-10-21T21:06:13.000Z",
+                  "updatedAt": "2026-10-21T21:06:13.000Z",
+                  "uid": "35240-4578fbd1-d3f4-463d-8151-5922d9dc64e1"
+                }
+              ],
+              "createdAt": "2026-10-21T21:06:13.000Z",
+              "updatedAt": "2026-10-21T21:06:13.000Z",
+              "uid": "35240-496b98ae-7fe0-44e1-930f-857c35898941"
+            }
+          ],
+          "id": "4bfd2ed1-0fef-45d8-b2a4-a2b4856ceb45",
+          "createdAt": "2026-10-21T21:06:13.000Z",
+          "updatedAt": "2026-10-21T21:06:13.000Z",
+          "uid": "35240-4bfd2ed1-0fef-45d8-b2a4-a2b4856ceb45"
+        }
+      ],
+      "id": "451b8452-07a2-4be4-9deb-a8413ba8d379",
+      "createdAt": "2026-10-21T21:06:13.000Z",
+      "updatedAt": "2026-10-21T21:06:13.000Z",
+      "uid": "35240-451b8452-07a2-4be4-9deb-a8413ba8d379"
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://api.dedaluslabs.ai"
+    }
+  ]
+}
