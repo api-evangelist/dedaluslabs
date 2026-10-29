@@ -1,4 +1,4 @@
-# Dedaluslabs
+# Dedalus Labs
 
 <!-- API-EVANGELIST-PROVENANCE:BEGIN -->
 > ### About this repository
@@ -64,6 +64,167 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-Dedaluslabs is a company surfaced as a portfolio company of kindred-ventures and added to the API Evangelist network as a stub for enrichment. This profile is a lead awaiting the enrichment pipeline.
+Dedalus Labs builds infrastructure for AI agents. It runs two production APIs: the Dedalus Agents API, an OpenAI-compatible MCP gateway that lets you mix and match any model from any provider with tools drawn from the Dedalus MCP marketplace (chat completions, embeddings, audio, images, and OCR through one endpoint); and Dedalus Cloud Services (Dedalus Machines), persistent Linux VMs for agents that start in under a second, preserve their filesystem and memory across sleep/wake, and bill per second with no idle tax. Both APIs authenticate with a Dedalus API key (Bearer or x-api-key), support idempotent mutations, and ship official SDKs in TypeScript, Python, and Go plus a CLI and Terraform provider. Dedalus is a portfolio company of Kindred Ventures.
 
-Backed by: kindred-ventures — https://dedaluslabs.ai/
+**Areas:** Company · Artificial Intelligence · Agents · MCP · LLM · Inference · Gateways · Compute · Sandbox · Developer Tools
+
+## Dedalus Labs on APIs.io
+
+Everything profiled for Dedalus Labs is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/dedaluslabs/](https://apis.io/providers/dedaluslabs/)** — or go straight to one of the APIs or properties below.
+
+### APIs (13)
+
+- [Dedalus Labs Dedalus API](https://apis.io/apis/dedaluslabs/dedaluslabs-dedalus-api-api/) — The Dedalus API API from Dedalus Labs — 1 operation(s) for dedalus api.
+- [Dedalus Labs Health API](https://apis.io/apis/dedaluslabs/dedaluslabs-health-api/) — The Health API from Dedalus Labs — 1 operation(s) for health.
+- [Dedalus Labs Machine Lifecycle API](https://apis.io/apis/dedaluslabs/dedaluslabs-machine-lifecycle-api/) — The Machine Lifecycle API from Dedalus Labs — 18 operation(s) for machine lifecycle.
+- [Dedalus Labs Marketplace API](https://apis.io/apis/dedaluslabs/dedaluslabs-marketplace-api/) — The Marketplace API from Dedalus Labs — 6 operation(s) for marketplace.
+- [Dedalus Labs Private API](https://apis.io/apis/dedaluslabs/dedaluslabs-private-api/) — The private API from Dedalus Labs — 1 operation(s) for private.
+- [Dedalus Labs Webhooks API](https://apis.io/apis/dedaluslabs/dedaluslabs-webhooks-api/) — The Webhooks API from Dedalus Labs — 1 operation(s) for webhooks.
+- [Dedalus Labs Audio API](https://apis.io/apis/dedaluslabs/dedaluslabs-audio-api/) — The Audio API from Dedalus Labs — 3 operation(s) for audio.
+- [Dedalus Labs Embeddings API](https://apis.io/apis/dedaluslabs/dedaluslabs-embeddings-api/) — The Embeddings API from Dedalus Labs — 1 operation(s) for embeddings.
+- [Dedalus Labs Images API](https://apis.io/apis/dedaluslabs/dedaluslabs-images-api/) — The Images API from Dedalus Labs — 3 operation(s) for images.
+- [Dedalus Labs Models API](https://apis.io/apis/dedaluslabs/dedaluslabs-models-api/) — The Models API from Dedalus Labs — 2 operation(s) for models.
+- [Dedalus Labs OCR API](https://apis.io/apis/dedaluslabs/dedaluslabs-ocr-api/) — The OCR API from Dedalus Labs — 1 operation(s) for ocr.
+- [Dedalus Labs Responses API](https://apis.io/apis/dedaluslabs/dedaluslabs-responses-api/) — The Responses API from Dedalus Labs — 1 operation(s) for responses.
+- [Dedalus Labs Chat Completions API](https://apis.io/apis/dedaluslabs/dedaluslabs-chat-completions-api/) — The Chat Completions API from Dedalus Labs — 1 operation(s) for chat completions.
+
+### Published properties
+
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
+
+#### Arazzo workflows (1)
+
+Multi-step workflows that chain operations into a business task.
+
+- [Create a Dedalus Machine, run a command, and sleep it](https://apis.io/arazzos/dedaluslabs/dedaluslabs-machine-run-and-sleep/)
+
+#### AsyncAPI (1)
+
+Event-driven and webhook contracts.
+
+- [Dedaluslabs Events](https://apis.io/asyncapis/dedaluslabs/dedaluslabs-events/)
+
+#### MCP servers (1)
+
+Model Context Protocol servers that expose the API to agents.
+
+- [dedaluslabs-mcp.yml](https://apis.io/servers/dedaluslabs/dedaluslabs-mcp-yml/)
+
+#### Agentic access (1)
+
+Which operations an agent can call, which act, and which need a human in the loop.
+
+- [Dedaluslabs Agentic Access](https://apis.io/agentic-access/dedaluslabs/dedaluslabs-agentic-access/)
+
+#### Collections (15)
+
+Postman and Open Collection request collections.
+
+- [Dedalus Audio API](https://apis.io/collections/dedaluslabs/open-dedaluslabs-audio-api/)
+- [Dedalus Audio Chat API](https://apis.io/collections/dedaluslabs/open-dedaluslabs-chat-api/)
+- [Dedalus Audio Dedalus API API](https://apis.io/collections/dedaluslabs/open-dedaluslabs-dedalus-api-api/)
+- [Dedalus Audio Health API](https://apis.io/collections/dedaluslabs/open-dedaluslabs-health-api/)
+- [Dedalus Audio Images API](https://apis.io/collections/dedaluslabs/open-dedaluslabs-images-api/)
+- [Dedalus Audio Machine Artifacts API](https://apis.io/collections/dedaluslabs/open-dedaluslabs-machine-artifacts-api/)
+- [Dedalus Audio Machine Executions API](https://apis.io/collections/dedaluslabs/open-dedaluslabs-machine-executions-api/)
+- [Dedalus Audio Machine Lifecycle API](https://apis.io/collections/dedaluslabs/open-dedaluslabs-machine-lifecycle-api/)
+- [Dedalus Audio Machine SSH API](https://apis.io/collections/dedaluslabs/open-dedaluslabs-machine-ssh-api/)
+- [Dedalus Audio Machine Terminals API](https://apis.io/collections/dedaluslabs/open-dedaluslabs-machine-terminals-api/)
+- [Dedalus Audio Marketplace API](https://apis.io/collections/dedaluslabs/open-dedaluslabs-marketplace-api/)
+- [Dedalus Audio OCR API](https://apis.io/collections/dedaluslabs/open-dedaluslabs-ocr-api/)
+- [Dedalus Audio private API](https://apis.io/collections/dedaluslabs/open-dedaluslabs-private-api/)
+- [Dedalus Audio V1 API](https://apis.io/collections/dedaluslabs/open-dedaluslabs-v1-api/)
+- [Dedalus Audio Webhooks API](https://apis.io/collections/dedaluslabs/open-dedaluslabs-webhooks-api/)
+
+#### Overlays (2)
+
+OpenAPI overlays, including conversational phrasing for each operation.
+
+- [Dedaluslabs Agents Overlay](https://apis.io/overlays/dedaluslabs/dedaluslabs-agents-overlay/)
+- [Dedaluslabs Machines Overlay](https://apis.io/overlays/dedaluslabs/dedaluslabs-machines-overlay/)
+
+#### Security (3)
+
+Authentication, trust centre, and vulnerability disclosure.
+
+- [Dedaluslabs Authentication](https://apis.io/security/dedaluslabs/dedaluslabs-authentication/)
+- [Dedaluslabs Domain Security](https://apis.io/security/dedaluslabs/dedaluslabs-domain-security/)
+- [Dedaluslabs Vulnerability Disclosure](https://apis.io/security/dedaluslabs/dedaluslabs-vulnerability-disclosure/)
+
+#### Plans and pricing (1)
+
+Published plans, tiers and prices.
+
+- [Dedaluslabs Plans Pricing](https://apis.io/plans/dedaluslabs/dedaluslabs-plans-pricing/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
+- [Website](https://dedaluslabs.ai/)
+- [Documentation](https://docs.dedaluslabs.ai)
+- [Getting started](https://docs.dedaluslabs.ai/dcs/dm/quickstart)
+- [API reference](https://docs.dedaluslabs.ai/api-reference)
+- [Pricing](https://dedaluslabs.ai/pricing)
+- [Sign up](https://dedaluslabs.ai/dashboard)
+- [Support](https://docs.dedaluslabs.ai/community/support)
+- [Blog](https://dedaluslabs.ai/blog)
+- [Terms of service](https://dedaluslabs.ai/terms)
+- [Privacy policy](https://dedaluslabs.ai/privacy)
+- [GitHub](https://github.com/dedalus-labs)
+- [Status](https://status.dedaluslabs.ai)
+
+## API Evangelist rating
+
+**Kin Score 59.0** — strong · rubric 0.25.0 · scored 2026-10-23
+
+| Facet | Score |
+|---|---|
+| Discoverability | 71.7 |
+| Contract quality | 56.1 |
+| Contract governance | 4.5 |
+| Operational transparency | 60.5 |
+| Developer ergonomics | 70.8 |
+| Access clarity | 69.7 |
+
+**Agent readiness 40.5** — agent-native
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | derived (partial credit) |
+| Reversibility Documented | — |
+| MCP Server | documented (partial credit) |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | verified |
+| Error Semantics | verified |
+| OpenAPI Examples | partial |
+| Rate Limit Signal | — |
+| Event Surface Described | yes |
+| Agent Skills | derived (partial credit) |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+| Pagination Ratio | — |
+| Operation Distinctiveness | distinct |
+
+**Regulatory alignment 28.2** — Horizontal (data, software, accessibility, platform)
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/dedaluslabs/](https://apis.io/providers/dedaluslabs/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Dedalus Labs: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/dedaluslabs/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
